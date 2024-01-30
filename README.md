@@ -9,6 +9,7 @@ game dev project
 [Schedule](https://docs.google.com/document/d/1g32YC58d5cUzQGRr-CICB73JjRi5tnipBRBvgDTr7zg/edit?usp=sharing)  
 [Duties](https://docs.google.com/document/d/1pSt7acFpADaEi40_wudDs9zzCZqNBB_tZAea4qARM44/edit?usp=sharing)  
 
-[Story](https://docs.google.com/document/d/17q3B3J7-ifGZnYDPa9oxWDpIhMJfPJ_qVVtLJZiSa0c/edit?usp=sharing)
+[Story](https://docs.google.com/document/d/17q3B3J7-ifGZnYDPa9oxWDpIhMJfPJ_qVVtLJZiSa0c/edit?usp=sharing)  
+[Data](https://docs.google.com/spreadsheets/d/1anQr66ZH60E-OcD_ZVCuxEj-J0hGMnBYav2UqhLw68c/edit?usp=sharing)
 
 [Google Drive](https://drive.google.com/drive/folders/1wUxiWOuVGxcR1Dyet2pAv528f52lO0sf?usp=sharing)
