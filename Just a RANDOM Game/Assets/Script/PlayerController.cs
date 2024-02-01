@@ -1,80 +1,77 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Base setup")]
-    public float walkingSpeed = 7.5f;
-    public float runningSpeed = 11.5f;
-    public float jumpSpeed = 8.0f;
-    public float gravity = 20.0f;
-    public float lookSpeed = 2.0f;
-    public float lookXLimit = 45.0f;
+	[SerializeField] private float speed;
+	[SerializeField] private float jumpSpeed;
+	[SerializeField] private float gravity;
+	[SerializeField] private float mouseSensitivity;
+	[SerializeField] private Camera playerView;
 
-    CharacterController characterController;
-    Vector3 moveDirection = Vector3.zero;
-    float rotationX = 0;
+	private Vector2 currentMovement;
+	private float verticalVelocity = 0f;
+	private GameObject currentlyHolding;
+	private float currentLookAngle = 0f;
 
-    [HideInInspector]
-    public bool canMove = true;
+	private CharacterController playerCharacterController;
 
-    [SerializeField]
-    private float cameraYOffset = 0.4f;
-    private Camera playerCamera;
+	private void Awake()
+	{
+		playerCharacterController = GetComponent<CharacterController>();
+	}
 
-    void Start()
-    {
-        characterController = GetComponent<CharacterController>();
-        playerCamera = Camera.main;
-        playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
-        playerCamera.transform.SetParent(transform);
-        // Lock cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+	private void Update()
+	{
+		// handle movement
+		Vector3 horizontalVelocity = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * speed;
+		playerCharacterController.Move(new Vector3(horizontalVelocity.x, verticalVelocity, horizontalVelocity.z) * Time.deltaTime);
 
-    void Update()
-    {
+		// handle camera rotation
+		playerView.transform.localEulerAngles = new Vector3(currentLookAngle, 0, 0);
 
-        bool isRunning = false;
+		// update vertical velocity
+		// THIS NEEDS TO HAPPEN AFTER MOVEMENT IS HANDLED im fucking dumb :/
+		if (playerCharacterController.isGrounded)
+			verticalVelocity = 0f;
+		verticalVelocity -= gravity * Time.deltaTime;
+	}
 
-        // Press Left Shift to run
-        isRunning = Input.GetKey(KeyCode.LeftShift);
+	public void MovementHandler(InputAction.CallbackContext ctx) 
+	{
+		currentMovement = ctx.ReadValue<Vector2>();
+	}
 
-        // We are grounded, so recalculate move direction based on axis
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
+	public void LookHandler(InputAction.CallbackContext ctx)
+	{
+		Vector2 lookRotation = ctx.ReadValue<Vector2>() * mouseSensitivity;
 
-        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+		// character rotation
+		transform.eulerAngles += new Vector3(0, lookRotation.x, 0);
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
-        {
-            moveDirection.y = jumpSpeed;
-        }
-        else
-        {
-            moveDirection.y = movementDirectionY;
-        }
+		// camera rotation
+		currentLookAngle -= lookRotation.y;
 
-        if (!characterController.isGrounded)
-        {
-            moveDirection.y -= gravity * Time.deltaTime;
-        }
+		// normalize angle
+		if (currentLookAngle < 0f)
+			currentLookAngle += 360f;
+		else if (currentLookAngle > 360f)
+			currentLookAngle -= 360f;
 
-        // Move the controller
-        characterController.Move(moveDirection * Time.deltaTime);
+		// clamp angle
+		if (currentLookAngle > 90f && currentLookAngle < 180f)
+			currentLookAngle = 90f;
+		else if (currentLookAngle > 180f && currentLookAngle < 270f)
+			currentLookAngle = 270f;
+	}
 
-        // Player and Camera rotation
-        if (canMove && playerCamera != null)
-        {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-        }
-    }
+	public void JumpHandler(InputAction.CallbackContext ctx)
+	{
+		if (playerCharacterController.isGrounded && ctx.performed) {
+			verticalVelocity = jumpSpeed;
+		}
+	}
 }
