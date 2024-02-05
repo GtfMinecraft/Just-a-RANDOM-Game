@@ -6,14 +6,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField] private float speed;
-	[SerializeField] private float jumpSpeed;
-	[SerializeField] private float gravity;
-	[SerializeField] private float mouseSensitivity;
+	[SerializeField] private float groundAcceleration; // acceleration while grounded
+	[SerializeField] private float airAcceleration; // acceleration while not grounded
+	[SerializeField] private float maxSpeed; // maximum speed of player
+	[SerializeField] private float jumpSpeed; // initial speed of the jump
+	[SerializeField] private float gravity; // rate at which player accelerates downwards
+	[SerializeField] private float groundFriction; // rate at which player slows down horizontally while grounded
+	[SerializeField] private float airResistance; // rate at which player slows down horizontally while not grounded
+	[SerializeField] private float mouseSensitivity; // how fast camera turns in respect to mouse movement
 	[SerializeField] private Camera playerView;
 
 	private Vector2 currentMovement;
-	private float verticalVelocity = 0f;
+	private Vector3 currentVelocity;
+	private bool isGrounded;
 	private GameObject currentlyHolding;
 	private float currentLookAngle = 0f;
 
@@ -27,17 +32,38 @@ public class PlayerController : MonoBehaviour
 	private void Update()
 	{
 		// handle movement
-		Vector3 horizontalVelocity = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * speed;
-		playerCharacterController.Move(new Vector3(horizontalVelocity.x, verticalVelocity, horizontalVelocity.z) * Time.deltaTime);
+		playerCharacterController.Move(currentVelocity * Time.deltaTime);
+		currentVelocity = UpdateVelocity(currentVelocity);
 
-		// handle camera rotation
+		// handle player rotation
 		playerView.transform.localEulerAngles = new Vector3(currentLookAngle, 0, 0);
 
+
+		Debug.Log($"currentVelocity: {currentVelocity}");
+	}
+
+	private Vector3 UpdateVelocity(Vector3 currentVelocity) {
+		Vector3 targetVelocity = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed;
+		Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
+
+		isGrounded = playerCharacterController.isGrounded;
+
+		// update horizontal velocity
+		if (targetVelocity == Vector3.zero)
+			horizontalVelocity *= Mathf.Pow(0.5f, (isGrounded ? groundFriction : airResistance) * Time.deltaTime);
+		else
+			horizontalVelocity += targetVelocity * (isGrounded ? groundAcceleration : airAcceleration) * Time.deltaTime;
+			
 		// update vertical velocity
-		// THIS NEEDS TO HAPPEN AFTER MOVEMENT IS HANDLED im fucking dumb :/
-		if (playerCharacterController.isGrounded)
-			verticalVelocity = 0f;
-		verticalVelocity -= gravity * Time.deltaTime;
+		// slight downward velocity is still needed while grounded to make playerCharacterController.isGrounded work
+		if (isGrounded)
+			currentVelocity.y = 0f;
+		currentVelocity.y -= gravity * Time.deltaTime;
+
+		// limit speed
+		horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, maxSpeed);
+
+		return new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
 	}
 
 	public void MovementHandler(InputAction.CallbackContext ctx) 
@@ -70,8 +96,7 @@ public class PlayerController : MonoBehaviour
 
 	public void JumpHandler(InputAction.CallbackContext ctx)
 	{
-		if (playerCharacterController.isGrounded && ctx.performed) {
-			verticalVelocity = jumpSpeed;
-		}
+		if (isGrounded && ctx.performed)
+			currentVelocity.y = jumpSpeed;
 	}
 }
