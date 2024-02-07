@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 	private Vector2 currentMovement;
 	private Vector3 currentVelocity;
 	private bool isGrounded;
+	private float currentHorizontalSpeed;
 	private GameObject currentlyHolding;
 	private float currentLookAngle = 0f;
 
@@ -37,12 +38,10 @@ public class PlayerController : MonoBehaviour
 
 		// handle player rotation
 		playerView.transform.localEulerAngles = new Vector3(currentLookAngle, 0, 0);
-
-
-		Debug.Log($"currentVelocity: {currentVelocity}");
 	}
 
-	private Vector3 UpdateVelocity(Vector3 currentVelocity) {
+	private Vector3 UpdateVelocity(Vector3 currentVelocity) 
+	{
 		Vector3 targetVelocity = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed;
 		Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
 
@@ -51,8 +50,13 @@ public class PlayerController : MonoBehaviour
 		// update horizontal velocity
 		if (targetVelocity == Vector3.zero)
 			horizontalVelocity *= Mathf.Pow(0.5f, (isGrounded ? groundFriction : airResistance) * Time.deltaTime);
+		else if (isGrounded) 
+		{
+			currentHorizontalSpeed += groundAcceleration * Time.deltaTime;
+			horizontalVelocity = currentHorizontalSpeed * targetVelocity;
+		}
 		else
-			horizontalVelocity += targetVelocity * (isGrounded ? groundAcceleration : airAcceleration) * Time.deltaTime;
+			horizontalVelocity += targetVelocity * airAcceleration * Time.deltaTime;
 			
 		// update vertical velocity
 		// slight downward velocity is still needed while grounded to make playerCharacterController.isGrounded work
