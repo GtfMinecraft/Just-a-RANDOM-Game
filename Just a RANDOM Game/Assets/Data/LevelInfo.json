@@ -1,0 +1,223 @@
+{
+  "$type": "LevelInfo, Assembly-CSharp",
+  "chunks": {
+    "$type": "System.Collections.Generic.List`1[[Chunk, Assembly-CSharp]], mscorlib",
+    "$values": [
+      {
+        "$type": "LoggingChunk, Assembly-CSharp",
+        "type": 0,
+        "position": {
+          "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "magnitude": 0.0,
+          "sqrMagnitude": 0.0
+        }
+      }
+    ]
+  },
+  "walls": {
+    "$type": "System.Collections.Generic.List`1[[ChunkWall, Assembly-CSharp]], mscorlib",
+    "$values": [
+      {
+        "$type": "ItemBasedChunkWall, Assembly-CSharp",
+        "position": {
+          "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+          "x": 20.0,
+          "y": 0.0,
+          "z": 0.0,
+          "normalized": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 20.0,
+          "sqrMagnitude": 400.0
+        },
+        "direction": {
+          "$type": "UnityEngine.Quaternion, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0,
+          "eulerAngles": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          }
+        }
+      },
+      {
+        "$type": "ItemBasedChunkWall, Assembly-CSharp",
+        "position": {
+          "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+          "x": -20.0,
+          "y": 0.0,
+          "z": 0.0,
+          "normalized": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": -1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 20.0,
+          "sqrMagnitude": 400.0
+        },
+        "direction": {
+          "$type": "UnityEngine.Quaternion, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0,
+          "eulerAngles": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          }
+        }
+      },
+      {
+        "$type": "ItemBasedChunkWall, Assembly-CSharp",
+        "position": {
+          "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 20.0,
+          "normalized": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 20.0,
+          "sqrMagnitude": 400.0
+        },
+        "direction": {
+          "$type": "UnityEngine.Quaternion, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.707106769,
+          "z": 0.0,
+          "w": 0.707106769,
+          "eulerAngles": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 90.0,
+            "z": 0.0,
+            "normalized": {
+              "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0,
+              "magnitude": 1.0,
+              "sqrMagnitude": 1.0
+            },
+            "magnitude": 90.0,
+            "sqrMagnitude": 8100.0
+          },
+          "normalized": {
+            "$type": "UnityEngine.Quaternion, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 0.7071068,
+            "z": 0.0,
+            "w": 0.7071068,
+            "eulerAngles": {
+              "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+              "x": 0.0,
+              "y": 90.0,
+              "z": 0.0,
+              "normalized": {
+                "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "magnitude": 1.0,
+                "sqrMagnitude": 1.0
+              },
+              "magnitude": 90.0,
+              "sqrMagnitude": 8100.0
+            }
+          }
+        }
+      },
+      {
+        "$type": "ItemBasedChunkWall, Assembly-CSharp",
+        "position": {
+          "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.0,
+          "z": -20.0,
+          "normalized": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 0.0,
+            "z": -1.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 20.0,
+          "sqrMagnitude": 400.0
+        },
+        "direction": {
+          "$type": "UnityEngine.Quaternion, UnityEngine.CoreModule",
+          "x": 0.0,
+          "y": 0.707106769,
+          "z": 0.0,
+          "w": 0.707106769,
+          "eulerAngles": {
+            "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 90.0,
+            "z": 0.0,
+            "normalized": {
+              "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0,
+              "magnitude": 1.0,
+              "sqrMagnitude": 1.0
+            },
+            "magnitude": 90.0,
+            "sqrMagnitude": 8100.0
+          },
+          "normalized": {
+            "$type": "UnityEngine.Quaternion, UnityEngine.CoreModule",
+            "x": 0.0,
+            "y": 0.7071068,
+            "z": 0.0,
+            "w": 0.7071068,
+            "eulerAngles": {
+              "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+              "x": 0.0,
+              "y": 90.0,
+              "z": 0.0,
+              "normalized": {
+                "$type": "UnityEngine.Vector3, UnityEngine.CoreModule",
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "magnitude": 1.0,
+                "sqrMagnitude": 1.0
+              },
+              "magnitude": 90.0,
+              "sqrMagnitude": 8100.0
+            }
+          }
+        }
+      }
+    ]
+  }
+}
