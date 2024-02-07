@@ -32,12 +32,12 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
+		// handle player rotation
+		playerView.transform.localEulerAngles = new Vector3(currentLookAngle, 0, 0);
+
 		// handle movement
 		playerCharacterController.Move(currentVelocity * Time.deltaTime);
 		currentVelocity = UpdateVelocity(currentVelocity);
-
-		// handle player rotation
-		playerView.transform.localEulerAngles = new Vector3(currentLookAngle, 0, 0);
 	}
 
 	private Vector3 UpdateVelocity(Vector3 currentVelocity) 
@@ -59,10 +59,14 @@ public class PlayerController : MonoBehaviour
 			horizontalVelocity += targetVelocity * airAcceleration * Time.deltaTime;
 			
 		// update vertical velocity
-		// slight downward velocity is still needed while grounded to make playerCharacterController.isGrounded work
+		// slight downward velocity is still needed while grounded to make CharacterController.isGrounded work
+		// so apparently you also have to push the player into the ground hard enough
+		// now this might be framerate dependent but whatever
+		// i hate this
 		if (isGrounded)
-			currentVelocity.y = 0f;
-		currentVelocity.y -= gravity * Time.deltaTime;
+			currentVelocity.y = -gravity;
+		else
+			currentVelocity.y -= gravity * Time.deltaTime;
 
 		// limit speed
 		horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, maxSpeed);
