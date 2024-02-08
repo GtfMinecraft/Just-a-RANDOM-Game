@@ -323,7 +323,7 @@ MonoBehaviour:
   airAcceleration: 1
   maxSpeed: 20
   jumpSpeed: 7
-  gravity: 15
+  gravity: 20
   groundFriction: 30
   airResistance: 10
   mouseSensitivity: 0.05
@@ -3406,7 +3406,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkPrefab: {fileID: 8174471865563701778, guid: 22ee8e2b3ec6a7343b5dfe5fe6fe72dc, type: 3}
-  wallPrefab: {fileID: 0}
+  wallPrefab: {fileID: 42775022301286424, guid: 77fe4a00d177f8a44a21e9220e0764f3, type: 3}
+  levelPath: Assets/Data/LevelInfo.json
 --- !u!4 &1076185830
 Transform:
   m_ObjectHideFlags: 0
