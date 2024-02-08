@@ -1,80 +1,110 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Base setup")]
-    public float walkingSpeed = 7.5f;
-    public float runningSpeed = 11.5f;
-    public float jumpSpeed = 8.0f;
-    public float gravity = 20.0f;
-    public float lookSpeed = 2.0f;
-    public float lookXLimit = 45.0f;
+	[SerializeField] private float groundAcceleration; // acceleration while grounded
+	[SerializeField] private float airAcceleration; // acceleration while not grounded
+	[SerializeField] private float maxSpeed; // maximum speed of player
+	[SerializeField] private float jumpSpeed; // initial speed of the jump
+	[SerializeField] private float gravity; // rate at which player accelerates downwards
+	[SerializeField] private float groundFriction; // rate at which player slows down horizontally while grounded
+	[SerializeField] private float airResistance; // rate at which player slows down horizontally while not grounded
+	[SerializeField] private float mouseSensitivity; // how fast camera turns in respect to mouse movement
+	[SerializeField] private Camera playerView;
 
-    CharacterController characterController;
-    Vector3 moveDirection = Vector3.zero;
-    float rotationX = 0;
+	private Vector2 currentMovement;
+	private Vector3 currentVelocity;
+	private bool isGrounded;
+	private float currentHorizontalSpeed;
+	private GameObject currentlyHolding;
+	private float currentLookAngle = 0f;
 
-    [HideInInspector]
-    public bool canMove = true;
+	private CharacterController playerCharacterController;
 
-    [SerializeField]
-    private float cameraYOffset = 0.4f;
-    private Camera playerCamera;
+	private void Awake()
+	{
+		playerCharacterController = GetComponent<CharacterController>();
+	}
 
-    void Start()
-    {
-        characterController = GetComponent<CharacterController>();
-        playerCamera = Camera.main;
-        playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
-        playerCamera.transform.SetParent(transform);
-        // Lock cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+	private void Update()
+	{
+		// handle player rotation
+		playerView.transform.localEulerAngles = new Vector3(currentLookAngle, 0, 0);
 
-    void Update()
-    {
+		// handle movement
+		playerCharacterController.Move(currentVelocity * Time.deltaTime);
+		currentVelocity = UpdateVelocity(currentVelocity);
+	}
 
-        bool isRunning = false;
+	private Vector3 UpdateVelocity(Vector3 currentVelocity) 
+	{
+		Vector3 targetVelocity = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed;
+		Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
 
-        // Press Left Shift to run
-        isRunning = Input.GetKey(KeyCode.LeftShift);
+		isGrounded = playerCharacterController.isGrounded;
 
-        // We are grounded, so recalculate move direction based on axis
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
+		// update horizontal velocity
+		if (targetVelocity == Vector3.zero)
+			horizontalVelocity *= Mathf.Pow(0.5f, (isGrounded ? groundFriction : airResistance) * Time.deltaTime);
+		else if (isGrounded) 
+		{
+			currentHorizontalSpeed += groundAcceleration * Time.deltaTime;
+			horizontalVelocity = currentHorizontalSpeed * targetVelocity;
+		}
+		else
+			horizontalVelocity += targetVelocity * airAcceleration * Time.deltaTime;
+			
+		// update vertical velocity
+		// slight downward velocity is still needed while grounded to make CharacterController.isGrounded work
+		// so apparently you also have to push the player into the ground hard enough
+		// now this might be framerate dependent but whatever
+		// i hate this
+		if (isGrounded)
+			currentVelocity.y = -gravity;
+		else
+			currentVelocity.y -= gravity * Time.deltaTime;
 
-        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+		// limit speed
+		horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, maxSpeed);
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
-        {
-            moveDirection.y = jumpSpeed;
-        }
-        else
-        {
-            moveDirection.y = movementDirectionY;
-        }
+		return new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
+	}
 
-        if (!characterController.isGrounded)
-        {
-            moveDirection.y -= gravity * Time.deltaTime;
-        }
+	public void MovementHandler(InputAction.CallbackContext ctx) 
+	{
+		currentMovement = ctx.ReadValue<Vector2>();
+	}
 
-        // Move the controller
-        characterController.Move(moveDirection * Time.deltaTime);
+	public void LookHandler(InputAction.CallbackContext ctx)
+	{
+		Vector2 lookRotation = ctx.ReadValue<Vector2>() * mouseSensitivity;
 
-        // Player and Camera rotation
-        if (canMove && playerCamera != null)
-        {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-        }
-    }
+		// character rotation
+		transform.eulerAngles += new Vector3(0, lookRotation.x, 0);
+
+		// camera rotation
+		currentLookAngle -= lookRotation.y;
+
+		// normalize angle
+		if (currentLookAngle < 0f)
+			currentLookAngle += 360f;
+		else if (currentLookAngle > 360f)
+			currentLookAngle -= 360f;
+
+		// clamp angle
+		if (currentLookAngle > 90f && currentLookAngle < 180f)
+			currentLookAngle = 90f;
+		else if (currentLookAngle > 180f && currentLookAngle < 270f)
+			currentLookAngle = 270f;
+	}
+
+	public void JumpHandler(InputAction.CallbackContext ctx)
+	{
+		if (isGrounded && ctx.performed)
+			currentVelocity.y = jumpSpeed;
+	}
 }
