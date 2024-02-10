@@ -8,6 +8,8 @@ public class ChunkDirector : MonoBehaviour
 
 	private void Start()
 	{
+		if (chunk.environment == null)
+			chunk.environment = LevelInfo.assets[chunk.environmentName];
 		Instantiate(chunk.environment, transform);
 	}
 

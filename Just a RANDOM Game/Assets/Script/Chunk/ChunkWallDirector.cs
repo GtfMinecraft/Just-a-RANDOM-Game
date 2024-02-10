@@ -8,7 +8,7 @@ public class ChunkWallDirector : MonoBehaviour
 
     private void Start()
     {
-        Instantiate(LevelInfo.chunkWallPrefab, wall.position, wall.direction, transform);
+        Instantiate(LevelInfo.assets["chunkWallPrefab"], wall.position, wall.direction, transform);
     }
 
     public void Unlock() 
