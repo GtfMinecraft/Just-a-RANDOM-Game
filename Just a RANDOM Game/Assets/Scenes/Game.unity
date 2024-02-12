@@ -320,12 +320,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundAcceleration: 10
-  airAcceleration: 1
-  maxSpeed: 20
+  airAcceleration: 2
+  maxSpeed: 10
   jumpSpeed: 7
   gravity: 20
   groundFriction: 30
-  airResistance: 10
+  airResistance: 2
   mouseSensitivity: 0.05
   playerView: {fileID: 1373347202}
 --- !u!23 &33691360
@@ -497,7 +497,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &39674425
 PrefabInstance:
@@ -3648,7 +3648,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 3
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -4598,7 +4598,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 110
   orthographic: 0
