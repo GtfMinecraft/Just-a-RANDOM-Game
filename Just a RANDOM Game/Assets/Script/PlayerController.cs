@@ -37,13 +37,13 @@ public class PlayerController : MonoBehaviour
 
 		// handle movement
 		playerCharacterController.Move(currentVelocity * Time.deltaTime);
-		currentVelocity = UpdateVelocity(currentVelocity);
+		UpdateVelocity();
 	}
 
-	private Vector3 UpdateVelocity(Vector3 currentVelocity) 
+	private void UpdateVelocity() 
 	{
 		Vector3 targetVelocity = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed;
-		Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
+		Vector3 horizontalVelocity = new Vector3(playerCharacterController.velocity.x, 0, playerCharacterController.velocity.z);
 
 		isGrounded = playerCharacterController.isGrounded;
 
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
 		// limit speed
 		horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, maxSpeed);
 
-		return new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
+		currentVelocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
 	}
 
 	public void MovementHandler(InputAction.CallbackContext ctx) 
