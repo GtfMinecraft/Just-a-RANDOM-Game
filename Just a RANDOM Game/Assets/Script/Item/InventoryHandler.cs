@@ -1,15 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class InventoryHandler : MonoBehaviour
 {
     public static InventoryHandler instance;
 
-    public Inventory currentInventory;
+    public Transform inventoryCanvas;
+
+    [System.Serializable]
+    public class InventoryPack
+    {
+        public Inventory inventory;
+        private Transform inventoryHolder;
+        private InventorySlotUI[] inventorySlots;
+
+        public void Initialize(int inventoryType)
+        {
+            inventory.ClearAllItems();
+
+            inventoryHolder = instance.inventoryCanvas.GetChild(inventoryType);
+
+            inventorySlots = new InventorySlotUI[inventory.itemSlots.Length];
+            for (int i = 0; i < inventory.itemSlots.Length; ++i)
+            {
+                inventorySlots[i] = inventoryHolder.GetChild(i).GetComponent<InventorySlotUI>();
+            }
+        }
+
+        public void UpdateInventoryUI()
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                inventorySlots[i].RefreshItemIcons();
+            }
+        }
+    }
+
+    public InventoryPack[] inventoryList = new InventoryPack[6];
+
+    /*
+     *  0 storage
+     *  1 weapon
+     *  2 axe
+     *  3 pickaxe
+     *  4 hoe
+     *  5 rod
+    */
 
     private GameObject inventoryPanel;
-    private InventorySlotUI[] inventorySlotUIs;
 
     private void Awake()
     {
@@ -25,15 +65,9 @@ public class InventoryHandler : MonoBehaviour
 
     private void Start()
     {
-        inventorySlotUIs = FindObjectsOfType<InventorySlotUI>();
-        inventoryPanel = transform.GetChild(0).gameObject;
-    }
-
-    public void UpdateInventoryUI()
-    {
-        for(int i=0;i<inventorySlotUIs.Length;i++)
+        for(int i = 0; i < inventoryList.Length; ++i)
         {
-            inventorySlotUIs[i].RefreshItemIcons();
+            inventoryList[i].Initialize(i);
         }
     }
 }

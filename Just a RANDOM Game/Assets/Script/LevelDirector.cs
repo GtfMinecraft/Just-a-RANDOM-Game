@@ -13,6 +13,8 @@ public class LevelDirector : MonoBehaviour
     [SerializeField] private GameObject levelLoaderPrefab;
     [SerializeField] private string levelPath;
 
+    public Transform levelLoadingParent;
+
     private LevelInfo level;
 
     private void Awake()
@@ -29,10 +31,18 @@ public class LevelDirector : MonoBehaviour
     public void GenerateLevel()
     {
         foreach (Chunk chunk in level.chunks)
-            Instantiate(chunkPrefab, chunk.position, Quaternion.identity).GetComponent<ChunkDirector>().SetChunk(chunk);
+        {
+            GameObject temp = Instantiate(chunkPrefab, chunk.position, Quaternion.identity);
+            temp.transform.parent = levelLoadingParent;
+            temp.GetComponent<ChunkDirector>().SetChunk(chunk);
+        }
 
         foreach (ChunkWall wall in level.walls)
-            Instantiate(wallPrefab, wall.position, wall.direction).GetComponent<ChunkWallDirector>().SetChunkWall(wall);
+        {
+            GameObject temp = Instantiate(wallPrefab, wall.position, wall.direction);
+            temp.transform.parent = levelLoadingParent;
+            temp.GetComponent<ChunkWallDirector>().SetChunkWall(wall);
+        }
     }
 
     public void SaveLevel()

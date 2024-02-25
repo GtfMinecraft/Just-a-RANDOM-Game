@@ -4,23 +4,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventorySlotUI : SlotUI
 {
     protected override void Start()
     {
-        thisItemSlot = InventoryHandler.instance.currentInventory.itemSlots[slotIndex];
+        base.Start();
+        thisItemSlot = InventoryHandler.instance.inventoryList[inventoryType].inventory.itemSlots[slotIndex];
     }
 
-    public override void OnDrop(PointerEventData eventData)
-    {
-        base.OnDrop(eventData);
-        if(eventData.pointerDrag.transform.parent == gameObject)
-        {
-            return;
-        }
+    //public override void OnDrop(PointerEventData eventData)
+    //{
+    //    if (eventData.button == PointerEventData.InputButton.Left)
+    //    {
+    //        base.OnDrop(eventData);
+    //        if (eventData.pointerDrag.transform.parent == gameObject)
+    //        {
+    //            return;
+    //        }
 
-        HandleItemDrop(eventData);
-    }
+    //        HandleItemDrop(eventData);
+    //    }
+    //}
 }

@@ -10,6 +10,7 @@ public class Item : ScriptableObject
     public string itemDescription = "New Description";
     public int price = 0;
     public Sprite icon;
+    public InventoryTypes inventoryType = InventoryTypes.storage;
     public ItemTypes itemType = ItemTypes.Basic;
     public int durability;
     public float attackSpeed;

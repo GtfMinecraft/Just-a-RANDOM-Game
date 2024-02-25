@@ -32,23 +32,34 @@ public class ItemHolder : ScriptableObject
         }
     }
 
-    private bool AddItem(Item item)
+    public bool AddItem(Item item)
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
             if (itemSlots[i].item == item && itemSlots[i].currentStack < itemSlots[i].item.maxStack)
             {
                 itemSlots[i].currentStack++;
-                //update ui
+                InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
                 return true;
             }
         }
         for (int i=0; i<itemSlots.Length; i++)
         {
-            itemSlots[i].SetNewItem(item);
-            //update ui
-            return true;
+            if (itemSlots[i].item == null)
+            {
+                itemSlots[i].SetNewItem(item);
+                InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
+                return true;
+            }
         }
         return false;
+    }
+
+    public void ClearAllItems()
+    {
+        for (int i = 0; i < itemSlots.Length; ++i)
+        {
+            itemSlots[i].Clear();
+        }
     }
 }

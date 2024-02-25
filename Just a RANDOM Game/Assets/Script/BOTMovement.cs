@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BOTMovement : MonoBehaviour
+public class BotMovement : MonoBehaviour
 {
     public GameObject player;
     public void Call()

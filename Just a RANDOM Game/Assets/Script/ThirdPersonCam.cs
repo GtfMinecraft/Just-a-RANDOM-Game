@@ -8,9 +8,9 @@ public class ThirdPersonCam : MonoBehaviour
     public Transform orientation;
     public Transform player;
     public Transform playerObj;
-    public Rigidbody rb;
 
     public float rotationSpeed;
+    public float combatRotationSpeed;
 
     public Transform combatLookAt;
 
@@ -24,12 +24,6 @@ public class ThirdPersonCam : MonoBehaviour
         Basic,
         Combat,
         Topdown
-    }
-
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void Update()
