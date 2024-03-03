@@ -17,7 +17,7 @@ public class SlotUI : MonoBehaviour
 
     protected virtual void Start()
     {
-        inventoryType = transform.parent.GetSiblingIndex();
+        inventoryType = transform.parent.parent.GetSiblingIndex();
         slotIndex = transform.GetSiblingIndex();
         icon = transform.GetChild(0).gameObject;
         stack = icon.transform.GetChild(0).GetComponent<TMP_Text>();
@@ -92,6 +92,12 @@ public class SlotUI : MonoBehaviour
             {
                 stack.text = "";
             }
+            icon.SetActive(true);
+        }
+        else if (thisItemSlot.defaultItem != null)
+        {
+            icon.GetComponent<Image>().sprite = thisItemSlot.defaultItem.blackIcon;
+            stack.text = "";
             icon.SetActive(true);
         }
         else

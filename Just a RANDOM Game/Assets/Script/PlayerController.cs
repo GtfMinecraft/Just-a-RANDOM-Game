@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     [Header("Bot")]
     public GameObject Bot;
 
+	[HideInInspector]
+    public bool canMove = true;
 
     private Vector2 currentMovement;
 	private Vector3 currentVelocity;
@@ -61,26 +63,29 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
 	{
-		// pick up item
-		if (isPicking)
+		if(canMove)
 		{
-            Collider[] hits;
+            // pick up item
+            if (isPicking)
+            {
+                Collider[] hits;
 
-            hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
+                hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
 
-            foreach (Collider hit in hits)
-			{
-				if (hit.GetComponent<Interactable>() != null)
-				{
-					hit.GetComponent<Interactable>().Interact();
-				}
-			}
+                foreach (Collider hit in hits)
+                {
+                    if (hit.GetComponent<Interactable>() != null)
+                    {
+                        hit.GetComponent<Interactable>().Interact();
+                    }
+                }
+            }
+
+            UpdateVelocity();
+
+            // handle movement
+            playerCharacterController.Move(currentVelocity * Time.deltaTime);
         }
-
-        UpdateVelocity();
-
-		// handle movement
-		playerCharacterController.Move(currentVelocity * Time.deltaTime);
 	}
 
 	private void UpdateVelocity()

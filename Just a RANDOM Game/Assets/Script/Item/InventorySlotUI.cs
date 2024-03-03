@@ -11,6 +11,7 @@ public class InventorySlotUI : SlotUI
     {
         base.Start();
         thisItemSlot = InventoryHandler.instance.inventoryList[inventoryType].inventory.itemSlots[slotIndex];
+        RefreshItemIcons();
     }
 
     //public override void OnDrop(PointerEventData eventData)

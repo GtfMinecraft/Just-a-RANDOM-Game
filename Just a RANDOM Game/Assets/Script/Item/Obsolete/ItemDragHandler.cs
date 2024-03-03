@@ -12,7 +12,7 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
     protected int slotIndex;
     protected ItemHolder.ItemSlot itemSlot;
     private Transform originalParent;
-    private bool isDragging;
+    //private bool isDragging;
 
     public ItemHolder.ItemSlot GetItemSlot() { return itemSlot; }
 
@@ -25,7 +25,7 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            isDragging = true;
+            //isDragging = true;
             originalParent = transform.parent;
             transform.SetParent(itemHolderParent);
             GetComponent<Image>().raycastTarget = false;
@@ -43,7 +43,7 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            isDragging = false;
+            //isDragging = false;
             transform.SetParent(originalParent);
             transform.localPosition = Vector3.zero;
             GetComponent<Image>().raycastTarget = true;

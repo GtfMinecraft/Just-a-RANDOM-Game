@@ -20,7 +20,9 @@ public class InventoryHandler : MonoBehaviour
         {
             inventory.ClearAllItems();
 
-            inventoryHolder = instance.inventoryCanvas.GetChild(inventoryType);
+            //replace clear all items with reading saved inventory data
+
+            inventoryHolder = instance.inventoryCanvas.GetChild(inventoryType).GetChild(0);
 
             inventorySlots = new InventorySlotUI[inventory.itemSlots.Length];
             for (int i = 0; i < inventory.itemSlots.Length; ++i)
@@ -49,8 +51,6 @@ public class InventoryHandler : MonoBehaviour
      *  5 rod
     */
 
-    private GameObject inventoryPanel;
-
     private void Awake()
     {
         if(instance == null)
@@ -65,7 +65,7 @@ public class InventoryHandler : MonoBehaviour
 
     private void Start()
     {
-        for(int i = 0; i < inventoryList.Length; ++i)
+        for (int i = 0; i < inventoryList.Length; ++i)
         {
             inventoryList[i].Initialize(i);
         }

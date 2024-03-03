@@ -11,6 +11,7 @@ public class ItemHolder : ScriptableObject
     public class ItemSlot
     {
         public Item item;
+        public Item defaultItem;
         public int currentStack;
 
         public ItemSlot(Item setItem, int stack) 
@@ -25,10 +26,15 @@ public class ItemHolder : ScriptableObject
             currentStack = 0;
         }
 
-        public void SetNewItem(Item setItem)
+        public bool SetNewItem(Item setItem)
         {
+            if(defaultItem != null && setItem != defaultItem)
+            {
+                return false;
+            }
             item = setItem;
             currentStack = 1;
+            return true;
         }
     }
 
@@ -45,9 +51,22 @@ public class ItemHolder : ScriptableObject
         }
         for (int i=0; i<itemSlots.Length; i++)
         {
-            if (itemSlots[i].item == null)
+            if (itemSlots[i].item == null && itemSlots[i].SetNewItem(item))
             {
-                itemSlots[i].SetNewItem(item);
+                InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool RemoveItem(Item item, int count)
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i].item == item && itemSlots[i].currentStack >= count)
+            {
+                itemSlots[i].currentStack -= count;
                 InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
                 return true;
             }
