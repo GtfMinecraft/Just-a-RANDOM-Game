@@ -16,6 +16,7 @@ MonoBehaviour:
   itemDescription: a pile of wood
   price: 10
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  blackIcon: {fileID: 0}
   inventoryType: 0
   itemType: 13
   durability: 0

@@ -49,6 +49,7 @@ public class InventoryHandler : MonoBehaviour
      *  3 pickaxe
      *  4 hoe
      *  5 rod
+     *  6 food
     */
 
     private void Awake()

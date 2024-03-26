@@ -27,10 +27,14 @@ public class PlayerController : MonoBehaviour
     public Vector3 boxCastSize;
 
     [Header("Bot")]
-    public GameObject Bot;
+    public GameObject bot;
 
 	[HideInInspector]
     public bool canMove = true;
+    [HideInInspector]
+    public bool canRotate = true;
+    [HideInInspector]
+    public bool canControl = true;
 
     private Vector2 currentMovement;
 	private Vector3 currentVelocity;
@@ -42,7 +46,7 @@ public class PlayerController : MonoBehaviour
 	private bool isDashing;
 	private bool isPicking = false;
 	private bool nowDashing = false;
-	private float dashTimer;
+    private float dashTimer;
 	private float dashTime;
 	private float dashCooldownTracker = 0f;
 
@@ -63,7 +67,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
 	{
-		if(canMove)
+        isGrounded = playerCharacterController.isGrounded;
+
+        if (canMove)
+		{
+            UpdateVelocity();
+
+            // handle movement
+            playerCharacterController.Move(currentVelocity * Time.deltaTime);
+        }
+
+		if (canControl)
 		{
             // pick up item
             if (isPicking)
@@ -80,11 +94,6 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-
-            UpdateVelocity();
-
-            // handle movement
-            playerCharacterController.Move(currentVelocity * Time.deltaTime);
         }
 	}
 
@@ -96,8 +105,6 @@ public class PlayerController : MonoBehaviour
 		{
 			targetVelocity = Quaternion.AngleAxis(orientation.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed * speedMultiplier;
 			horizontalVelocity = new Vector3(playerCharacterController.velocity.x, 0, playerCharacterController.velocity.z);
-
-			isGrounded = playerCharacterController.isGrounded;
 
 			if (isGrounded && isJumping)
 			{
@@ -205,6 +212,29 @@ public class PlayerController : MonoBehaviour
         else if (ctx.canceled)
         {
             isPicking = false;
+        }
+    }
+
+    public void EatHandler(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && canControl)
+        {
+            InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(InventoryTypes.food);
+            PlayerItemController.instance.SwapHandItem(PlayerItemController.instance.defaultItems[6]);
+            //eat anim
+        }
+        else if (ctx.canceled)
+        {
+            InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(PlayerChunkInteraction.instance.currentChunk);
+        }
+    }
+
+    public void CallBotHandler(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && canControl)
+        {
+            //anim
+            bot.GetComponent<BotMovement>().Call();
         }
     }
 

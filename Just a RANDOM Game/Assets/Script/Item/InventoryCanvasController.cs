@@ -9,7 +9,7 @@ public class InventoryCanvasController : MonoBehaviour
     [SerializeField]
     private InventoryTypes currentInventory;
 
-    private Canvas[] inventoryList = new Canvas[6];
+    private Canvas[] inventoryList = new Canvas[7];
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +27,6 @@ public class InventoryCanvasController : MonoBehaviour
         currentInventory = tmp;
     }
 
-    public void SwapHandItem()
-    {
-        //swap hand item
-    }
-
     public void CloseAllInventory()
     {
         for(int i = 0; i < inventoryList.Length; ++i)
@@ -44,21 +39,20 @@ public class InventoryCanvasController : MonoBehaviour
     {
         if (ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.none)
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.tool, true);
+            InterfaceHandler.instance.OpenInterface(Interfaces.tool);
             inventoryList[(int)currentInventory].enabled = true;
         }
         else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.tool)
         {
-            SwapHandItem();
             InterfaceHandler.instance.CloseAllInterface();
         }
     }
 
     public void PlayerInventoryHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.none)
+        if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.storage);
+            InterfaceHandler.instance.OpenInterface(Interfaces.storage, true, false, true);
             inventoryList[0].enabled = true;
         }
         else if(ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.storage)

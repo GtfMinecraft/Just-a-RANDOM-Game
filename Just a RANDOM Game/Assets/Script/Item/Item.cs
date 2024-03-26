@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     public int price = 0;
     public Sprite icon;
     public Sprite blackIcon;
+    public GameObject model;
     public InventoryTypes inventoryType = InventoryTypes.storage;
     public ItemTypes itemType = ItemTypes.Basic;
     public int durability;

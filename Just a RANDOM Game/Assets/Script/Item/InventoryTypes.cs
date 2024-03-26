@@ -6,4 +6,5 @@ public enum InventoryTypes
     pickaxe,
     hoe,
     rod,
+    food,
 }

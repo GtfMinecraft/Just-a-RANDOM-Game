@@ -29,19 +29,32 @@ public class InterfaceHandler : MonoBehaviour
     {
         inventoryCanvas.CloseAllInventory();
         //close trading interface
+        EscCanvas.enabled = false;
 
+        Time.timeScale = 1f;
         instance.currentInterface = Interfaces.none;
-        player.canMove = true; 
+        player.canMove = true;
+        player.canRotate = true;
+        player.canControl = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    public void OpenInterface(Interfaces tmp, bool playerMovement = false)
+    public void OpenInterface(Interfaces tmp, bool movement = true, bool rotation = true, bool control = true)
     {
+        CloseAllInterface();
         instance.currentInterface = tmp;
-        if(playerMovement == false)
+        if(movement == false)
         {
             player.canMove = false;
+        }
+        if(rotation == false)
+        {
+            player.canRotate = false;
+        }
+        if(control == false)
+        {
+            player.canControl = false;
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -51,27 +64,14 @@ public class InterfaceHandler : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if (currentInterface == Interfaces.esc)
+            if(currentInterface != Interfaces.none)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                instance.currentInterface = Interfaces.none;
-                Time.timeScale = 1f;
-                player.canMove = true;
-                EscCanvas.enabled = false;
-            }
-            else if(currentInterface != Interfaces.none)
-            {
-                player.canMove = true;
                 CloseAllInterface();
             }
             else
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                instance.currentInterface = Interfaces.esc;
+                OpenInterface(Interfaces.esc, false, false, false);
                 Time.timeScale = 0;
-                player.canMove = false;
                 EscCanvas.enabled = true;
             }
         }

@@ -3,39 +3,30 @@
     "maps": [
         {
             "name": "Default",
-            "id": "aa3fb8eb-ab30-43f6-9a87-bb2a04ecfac5",
+            "id": "3db89f9b-633f-4a28-b615-8a42316e6e66",
             "actions": [
                 {
                     "name": "Movement",
                     "type": "Value",
-                    "id": "8d955a6b-08c0-4032-b48c-f58125fe85a7",
+                    "id": "fb3ebba2-1126-4a08-b30a-0485e71efee2",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Aiming",
-                    "type": "Value",
-                    "id": "b7e4d582-6ca0-4c0e-be4a-8a2474b441b9",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Jump",
+                    "name": "Run",
                     "type": "Button",
-                    "id": "231df987-07a8-47fe-8f28-988a1902cc5a",
+                    "id": "12cf9491-af5b-4644-becb-e1bbb606e89c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
+                    "name": "Jump",
                     "type": "Button",
-                    "id": "2c9df6f8-16b6-43a0-a631-564d36b9578d",
+                    "id": "bc70295d-9425-4f50-97bf-64db04fc9939",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -44,7 +35,7 @@
                 {
                     "name": "Dash",
                     "type": "Button",
-                    "id": "a03a1094-5574-4032-ba0e-4c6257286b81",
+                    "id": "e5676245-3311-4da5-abdf-90ee9f4b3bc6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -53,34 +44,16 @@
                 {
                     "name": "CallBot",
                     "type": "Button",
-                    "id": "193e97be-6d4b-4dc2-805a-020cc2ddd783",
+                    "id": "ccf47ac2-ae52-4e92-99d2-06938335822f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PickItem",
+                    "name": "Eat",
                     "type": "Button",
-                    "id": "509cae76-c774-403e-b363-25e3bae6cd3e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ItemWheel",
-                    "type": "Button",
-                    "id": "3aea73fa-555e-4fb3-a0d2-3f2a02676f3a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PlayerInventory",
-                    "type": "Button",
-                    "id": "25c2dda2-6763-4418-b719-b433d8fee0d6",
+                    "id": "c5636af3-b0b2-4fff-b001-176ab8b3526a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -89,7 +62,34 @@
                 {
                     "name": "Esc",
                     "type": "Button",
-                    "id": "cd8816fd-891d-4221-bd19-3e63ac7be45c",
+                    "id": "fe226bd2-5109-4d4a-aafa-b8782703f6d4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PickItem",
+                    "type": "Button",
+                    "id": "5bce2279-40f0-42e0-b23f-7b712f5dc0dd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ItemWheel",
+                    "type": "Button",
+                    "id": "d7ec2092-4c2c-4032-893c-d32b9c0c2eac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PlayerInventory",
+                    "type": "Button",
+                    "id": "7f106540-b86e-407c-bdf2-04d54857c387",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -99,7 +99,7 @@
             "bindings": [
                 {
                     "name": "WASD",
-                    "id": "e3afee11-c376-41b8-bf08-05e3ab6411e9",
+                    "id": "bbb66711-1691-49ad-992a-5bb459dfa78d",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -110,7 +110,7 @@
                 },
                 {
                     "name": "up",
-                    "id": "ef976ee5-9c58-494a-98b6-f0251dd22d65",
+                    "id": "62c9cc3b-d919-4e9a-a486-632798ca8023",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
@@ -121,7 +121,7 @@
                 },
                 {
                     "name": "down",
-                    "id": "9fbfb550-f7ff-474d-82d6-1b92bbb7b45d",
+                    "id": "c30e5f0e-c4ee-401b-a5f5-baf8cb4e8991",
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
@@ -132,7 +132,7 @@
                 },
                 {
                     "name": "left",
-                    "id": "a2a03fc8-36e0-4e9e-9886-f595a5ea981f",
+                    "id": "19098b06-fddd-4a44-8b45-182c3c00a01e",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -143,7 +143,7 @@
                 },
                 {
                     "name": "right",
-                    "id": "44733198-aebd-42bb-83e9-0c3338290783",
+                    "id": "40e8b105-2813-47b5-85e5-50f696f9b4a6",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -154,40 +154,7 @@
                 },
                 {
                     "name": "",
-                    "id": "e4a838ef-ce72-43b2-9a2d-d8d9efd41507",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aiming",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "af6d41fe-6619-4a17-9e69-410d87c325ae",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ea411c7c-6fb6-4fa2-8e73-17a3211aba92",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "73ceda74-e917-404a-8535-f2b3c32130d1",
+                    "id": "d677bb9d-e1d2-4f01-8e97-079933e77f59",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
@@ -198,7 +165,29 @@
                 },
                 {
                     "name": "",
-                    "id": "e7989b72-d96a-4d7e-a74f-f650114e0c12",
+                    "id": "f4027063-0ee2-4bf1-96d4-228af89f3de4",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b85b181a-7f76-4f5c-bf31-cc62db543c49",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88a63e59-fd2e-4aa6-bcb3-b6e7c4027803",
                     "path": "<Keyboard>/b",
                     "interactions": "",
                     "processors": "",
@@ -209,7 +198,29 @@
                 },
                 {
                     "name": "",
-                    "id": "641cb714-cb4e-4d3c-a1bd-4e466a68cda5",
+                    "id": "8341fc9a-abef-4bf3-95fe-54cb95d081a9",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Eat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b75636b-0a79-4860-829e-da8e7ab39aeb",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b253e76-e448-46de-9942-891105445085",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
@@ -220,7 +231,7 @@
                 },
                 {
                     "name": "",
-                    "id": "4ed739dc-8291-446d-b9e0-32894d9fe472",
+                    "id": "38a3d55a-9de6-4ea9-a0f1-983624326ee0",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
@@ -231,23 +242,12 @@
                 },
                 {
                     "name": "",
-                    "id": "922b36c2-4921-47c2-8700-64bd779a82ce",
+                    "id": "aa04d6b5-8857-4a99-aa7a-e0c07c3ad9bc",
                     "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "PlayerInventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cc9bf4f8-8c14-43ca-9df7-7b6844b653ba",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Esc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
