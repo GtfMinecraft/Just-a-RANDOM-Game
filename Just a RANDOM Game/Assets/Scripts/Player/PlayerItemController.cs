@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
-using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 
 public class PlayerItemController : MonoBehaviour
 {
@@ -15,14 +11,15 @@ public class PlayerItemController : MonoBehaviour
     private Animator animator;
     private Item rightItem;
     private Item leftItem;
-    private InventoryTypes currentChunk;
+    private InventoryTypes currentInventory;
 
     [HideInInspector] public bool canEat = false;
 
     public GameObject rightHand;
     public GameObject leftHand;
 
-    public Item[] defaultItems;
+    public Item[] defaultRightItems;
+    public Item[] defaultLeftItems;
 
     /*
      *  0 empty
@@ -32,7 +29,6 @@ public class PlayerItemController : MonoBehaviour
      *  4 hoe
      *  5 rod
      *  6 food
-     *  7 bait
     */
 
     private void Awake()
@@ -50,27 +46,26 @@ public class PlayerItemController : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        leftItem = null;
-        UpdateHandModel(magicStone, leftHand);
     }
 
-    public void ChangeChunk(InventoryTypes chunk)
+    public void ChangeInventory(InventoryTypes chunk)
     {
         InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(chunk);
-
-        currentChunk = chunk;
-        SwapHandItem(defaultItems[(int)chunk]);
+        
+        currentInventory = chunk;
+        SwapHandItem(defaultRightItems[(int)chunk], rightHand);
+        SwapHandItem(defaultLeftItems[(int)chunk], leftHand);
         leftItem = null;
         UpdateHandModel(magicStone, leftHand);
     }
 
-    public void SwapHandItem(Item item)
+    public void SwapHandItem(Item item, GameObject hand)
     {
-        if(item == null)
+        if (item == null)
         {
-            UpdateHandModel(null, rightHand);
+            UpdateHandModel(null, hand);
         }
-        else if (item.itemType == ItemTypes.Tool && item.inventoryType == currentChunk)
+        else if (item.itemType == ItemTypes.Tool && item.inventoryType == currentInventory)
         {
             rightItem = item;
             UpdateHandModel(rightItem.model, rightHand);
@@ -81,16 +76,16 @@ public class PlayerItemController : MonoBehaviour
             UpdateHandModel(item.model, leftHand);
             canEat = true;
         }
-        else if (item.itemType == ItemTypes.Potion && item.inventoryType == currentChunk)
+        else if (item.itemType == ItemTypes.Potion && item.inventoryType == currentInventory)
         {
             leftItem = item;
             UpdateHandModel(item.model, leftHand);
             //use potion anim
             //potion effect
             leftItem = null;
-            UpdateHandModel(magicStone, leftHand);
+            UpdateHandModel(null, leftHand);
         }
-        else if(item.itemType == ItemTypes.Bait && item.inventoryType == currentChunk)
+        else if(item.itemType == ItemTypes.Bait && item.inventoryType == currentInventory)
         {
 
         }

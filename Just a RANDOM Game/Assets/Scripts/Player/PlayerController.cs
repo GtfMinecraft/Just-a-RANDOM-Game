@@ -215,20 +215,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void EatHandler(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed && canControl)
-        {
-            InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(InventoryTypes.food);
-            PlayerItemController.instance.SwapHandItem(PlayerItemController.instance.defaultItems[6]);
-            //eat anim
-        }
-        else if (ctx.canceled)
-        {
-            InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(PlayerChunkInteraction.instance.currentChunk);
-        }
-    }
-
     public void CallBotHandler(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && canControl)
