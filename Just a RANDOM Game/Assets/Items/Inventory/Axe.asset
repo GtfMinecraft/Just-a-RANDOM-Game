@@ -12,19 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e6b7aac71742144ab1403102acd0c9, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
+  database: {fileID: 11400000, guid: 1c421054f33915244978fbed717afd09, type: 2}
   itemSlots:
-  - item: {fileID: 0}
-    defaultItem: {fileID: 11400000, guid: ebfb2f7b7f6e4a6419715a4b616c6b72, type: 2}
+  - ID: 1
+    item: {fileID: 11400000, guid: e1ad0bb8d3504c942903b43c1e5f35cc, type: 2}
+    defaultID: 0
+    defaultItem: {fileID: 0}
     currentStack: 0
-  - item: {fileID: 0}
-    defaultItem: {fileID: 11400000, guid: 63c8067756ba97e49971f122a9b7ec7c, type: 2}
+  - ID: 2
+    item: {fileID: 11400000, guid: 63c8067756ba97e49971f122a9b7ec7c, type: 2}
+    defaultID: 0
+    defaultItem: {fileID: 0}
     currentStack: 0
-  - item: {fileID: 0}
-    defaultItem: {fileID: 11400000, guid: 6614f175ad37d6f4d8b2988edb6494af, type: 2}
+  - ID: 0
+    item: {fileID: 0}
+    defaultID: 0
+    defaultItem: {fileID: 0}
     currentStack: 0
-  - item: {fileID: 0}
-    defaultItem: {fileID: 11400000, guid: 614ea1c8778e9c541b7c17064cd268c1, type: 2}
+  - ID: 0
+    item: {fileID: 0}
+    defaultID: 0
+    defaultItem: {fileID: 0}
     currentStack: 0
-  - item: {fileID: 0}
-    defaultItem: {fileID: 11400000, guid: 2dec98c54472b1243ad1199e7a884b10, type: 2}
+  - ID: 0
+    item: {fileID: 0}
+    defaultID: 0
+    defaultItem: {fileID: 0}
     currentStack: 0

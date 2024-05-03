@@ -6,12 +6,14 @@ public class PlayerItemController : MonoBehaviour
 {
     public static PlayerItemController instance;
 
+    public ItemDatabase database;
+
     public GameObject magicStone;
 
     private Animator animator;
     private Item rightItem;
     private Item leftItem;
-    private InventoryTypes currentInventory;
+    public InventoryTypes currentInventory { get; private set; }
 
     [HideInInspector] public bool canEat = false;
 
@@ -48,13 +50,13 @@ public class PlayerItemController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void ChangeInventory(InventoryTypes chunk)
+    public void ChangeInventory(InventoryTypes inv)
     {
-        InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(chunk);
+        InventoryCanvasController.instance.ChangeToolInventory(inv);
         
-        currentInventory = chunk;
-        SwapHandItem(defaultRightItems[(int)chunk], rightHand);
-        SwapHandItem(defaultLeftItems[(int)chunk], leftHand);
+        currentInventory = inv;
+        SwapHandItem(defaultRightItems[(int)inv], rightHand);
+        SwapHandItem(defaultLeftItems[(int)inv], leftHand);
         leftItem = null;
         UpdateHandModel(magicStone, leftHand);
     }

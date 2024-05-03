@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ChallengeMode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ChallengeMode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public TMP_Text text;
     public float moveDuration = 0.1f; // Duration for the text movement
@@ -44,6 +45,13 @@ public class ChallengeMode : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         StartCoroutine(FadeImage(GetComponent<RawImage>(), 0f, fadeDuration));
         text.color = Color.white;
         StartCoroutine(MoveText(text.transform, new Vector3(-647f, text.transform.localPosition.y, text.transform.localPosition.z), moveDuration));
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        //TODO: testing, delete this afterwards
+        DataPersistenceManager.instance.LoadGame();
+        SceneManager.LoadScene("Game");
     }
 
     IEnumerator MoveText(Transform targetTransform, Vector3 targetPosition, float duration)

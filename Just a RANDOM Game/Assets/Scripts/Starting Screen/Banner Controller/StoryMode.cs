@@ -49,6 +49,9 @@ public class StoryMode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        //TODO: swipe left to the save files
+        //TODO: set DataPersistenceManager saveFileIndex
+        DataPersistenceManager.instance.NewGame();
         SceneManager.LoadScene("Game");
     }
 

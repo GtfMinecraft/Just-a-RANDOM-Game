@@ -7,6 +7,8 @@ using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
 	[Header("Movement")]
     [SerializeField] private float groundAcceleration; // acceleration while grounded
 	[SerializeField] private float airAcceleration; // acceleration while not grounded
@@ -54,7 +56,16 @@ public class PlayerController : MonoBehaviour
 
 	private void Awake()
 	{
-		playerCharacterController = GetComponent<CharacterController>();
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
+
+        playerCharacterController = GetComponent<CharacterController>();
 
 		dashTime = dashDistance / dashSpeed;
     }

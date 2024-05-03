@@ -6,10 +6,24 @@ using UnityEngine.UI;
 
 public class InventoryCanvasController : MonoBehaviour
 {
+    public static InventoryCanvasController instance;
+
     [SerializeField]
     private InventoryTypes currentInventory;
 
     private Canvas[] inventoryList;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +35,6 @@ public class InventoryCanvasController : MonoBehaviour
             inventoryList[i] = transform.GetChild(i).GetComponent<Canvas>();
             inventoryList[i].enabled = false;
         }
-
-        //read from memory to get which is the currentInventory
     }
 
     public void ChangeToolInventory(InventoryTypes inv)
@@ -43,7 +55,7 @@ public class InventoryCanvasController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if(ctx.valueType == typeof(Vector2) && InterfaceHandler.instance.currentInterface == Interfaces.none)
+            if(ctx.valueType == typeof(Vector2) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
             {
                 InterfaceHandler.instance.CloseAllInterface();
                 int scroll = (int)currentInventory + (int)ctx.ReadValue<Vector2>().normalized.y;
@@ -57,7 +69,7 @@ public class InventoryCanvasController : MonoBehaviour
                 }
                 PlayerItemController.instance.ChangeInventory((InventoryTypes)scroll);
             }
-            else if (ctx.valueType == typeof(float) && InterfaceHandler.instance.currentInterface == Interfaces.none)
+            else if (ctx.valueType == typeof(float) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
             {
                 InterfaceHandler.instance.OpenInterface(Interfaces.tool);
                 inventoryList[inventoryList.Length-1].enabled = true;
@@ -72,7 +84,7 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.none)
+        if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
         {
             InterfaceHandler.instance.OpenInterface(Interfaces.item);
             inventoryList[(int)currentInventory].enabled = true;

@@ -10,7 +10,7 @@ public class ToolWheelUI : WheelUI
 {
     public float freeDistance;
 
-    private int currentTool = 1;
+    private int currentTool = 0;//InventoryTypes
     private Image[] toolImages = new Image[6];
     private Image[] toolSelected = new Image[6];
 
@@ -23,10 +23,12 @@ public class ToolWheelUI : WheelUI
             toolSelected[i].enabled = false;
         }
 
-        string selectedToolJSON = JsonUtility.ToJson(currentTool);
-        //File.WriteAllText(Application.dataPath + "/savingText.txt", selectedToolJSON);
-
-        //Read from memory to get which type of tool was selected
+        currentTool = PlayerPrefs.GetInt("selectedTool");
+        if(currentTool != 0)
+        {
+            toolSelected[currentTool - 1].enabled = true;
+            PlayerItemController.instance.ChangeInventory((InventoryTypes)(currentTool));
+        }
     }
 
     public void SwapTool()
@@ -36,15 +38,21 @@ public class ToolWheelUI : WheelUI
         {
             return;
         }
-        toolSelected[currentTool].enabled = false;
-        toolSelected[section].enabled = true;
-        currentTool = section;
-        if(File.Exists(Application.dataPath + "/savingText.txt"))
+        if(currentTool != section + 1)
         {
-            string saveString = File.ReadAllText(Application.dataPath + "/savingText.txt");
-            int a = JsonUtility.FromJson<int>(saveString);
-            Debug.Log(saveString);
-            Debug.Log(a);
+            if(currentTool != 0)
+            {
+                toolSelected[currentTool - 1].enabled = false;
+            }
+            toolSelected[section].enabled = true;
+            currentTool = section + 1;
+            PlayerItemController.instance.ChangeInventory((InventoryTypes)(currentTool));
+        }
+        else
+        {
+            toolSelected[section].enabled = false;
+            currentTool = 0;
+            PlayerItemController.instance.ChangeInventory((InventoryTypes)(currentTool));
         }
     }
 }

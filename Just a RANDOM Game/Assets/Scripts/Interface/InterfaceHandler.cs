@@ -7,11 +7,11 @@ public class InterfaceHandler : MonoBehaviour
 {
     public static InterfaceHandler instance;
 
-    public PlayerController player;
+    private PlayerController player;
     public Canvas EscCanvas;
-    public InventoryCanvasController inventoryCanvas;
-    public TradingInterface trading;
-    public Interfaces currentInterface;
+    private InventoryCanvasController inventoryCanvas;
+    private TradingInterface trading;
+    public Interfaces currentInterface { get; private set; }
 
     private void Awake()
     {
@@ -23,6 +23,13 @@ public class InterfaceHandler : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+
+    private void Start()
+    {
+        player = PlayerController.instance;
+        inventoryCanvas = InventoryCanvasController.instance;
+        trading = TradingInterface.instance;
     }
 
     public void CloseAllInterface()
