@@ -13,9 +13,6 @@ public class BotMovement : MonoBehaviour
 
     private void Update()
     {
-        //chance to: roam around / gone when out of bound of unloaded / summon back if gone according to chunks unlocked
-        //check spawn chunk is loaded or not when moving to spawn chunk to store item
+        //roam around
     }
-
-    //if the scene of the chunk bot's in is about to unload, delete bot and let update summon bot
 }

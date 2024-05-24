@@ -5,71 +5,69 @@ using UnityEngine;
 
 public class ItemHolder : ScriptableObject
 {
-    public ItemDatabase database;
-    public List<ItemSlot> itemSlots = new List<ItemSlot>();
+    public ItemSlot[] itemSlots;
 
     [System.Serializable]
     public class ItemSlot
     {
-        public int ID;
-        public int defaultID;
+        public Item item;
+        public Item defaultItem;
         public int currentStack;
 
-        public ItemSlot(int id, int defaultId, int stack) 
+        public ItemSlot(Item setItem, int stack) 
         {
-            ID = id;
-            defaultID = defaultId;
+            item = setItem;
             currentStack = stack;
         }
 
         public void Clear()
         {
-            ID = 0;
+            item = null;
             currentStack = 0;
         }
 
-        public bool SetNewItem(int setItemID)
+        public bool SetNewItem(Item setItem)
         {
-            if(defaultID != 0 && setItemID != defaultID)
+            if(defaultItem != null && setItem != defaultItem)
             {
                 return false;
             }
-            ID = setItemID;
+            item = setItem;
             currentStack = 1;
             return true;
         }
     }
 
-    public bool AddItem(int itemID)
+    public bool AddItem(Item item)
     {
-        for (int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < itemSlots.Length; i++)
         {
-            if (itemSlots[i].ID == itemID && itemSlots[i].currentStack < database.GetItem[itemSlots[i].ID].maxStack)
+            if (itemSlots[i].item == item && itemSlots[i].currentStack < itemSlots[i].item.maxStack)
             {
                 itemSlots[i].currentStack++;
-                InventoryHandler.instance.inventoryList[(int)database.GetItem[itemID].inventoryType].UpdateInventoryUI();
+                InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
                 return true;
             }
         }
-        for (int i=0; i<itemSlots.Count; i++)
+        for (int i=0; i<itemSlots.Length; i++)
         {
-            if (itemSlots[i].ID == 0 && itemSlots[i].SetNewItem(itemID))
+            if (itemSlots[i].item == null && itemSlots[i].SetNewItem(item))
             {
-                InventoryHandler.instance.inventoryList[(int)database.GetItem[itemID].inventoryType].UpdateInventoryUI();
+                InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
                 return true;
             }
         }
         return false;
     }
 
-    public bool RemoveItem(int itemID, int count)
+    public bool RemoveItem(Item item, int count)
     {
-        for (int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < itemSlots.Length; i++)
         {
-            if (itemSlots[i].ID == itemID && itemSlots[i].currentStack >= count)
+            if (itemSlots[i].item == item && itemSlots[i].currentStack >= count)
             {
                 itemSlots[i].currentStack -= count;
-                InventoryHandler.instance.inventoryList[(int)database.GetItem[itemID].inventoryType].UpdateInventoryUI();
+                InventoryHandler.instance.inventoryList[(int)item.inventoryType].UpdateInventoryUI();
                 return true;
             }
         }
@@ -78,7 +76,7 @@ public class ItemHolder : ScriptableObject
 
     public void ClearAllItems()
     {
-        for (int i = 0; i < itemSlots.Count; ++i)
+        for (int i = 0; i < itemSlots.Length; ++i)
         {
             itemSlots[i].Clear();
         }

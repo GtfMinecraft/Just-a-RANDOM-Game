@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ItemInteractable : Interactable
 {
-    public int itemID;
+    public Item item;
 
     public override void Interact()
     {
-        bool hasPickedUp = InventoryHandler.instance.inventoryList[(int)PlayerItemController.instance.database.GetItem[itemID].inventoryType].inventory.AddItem(itemID);
+        bool hasPickedUp = InventoryHandler.instance.inventoryList[(int)item.inventoryType].inventory.AddItem(item);
         if (!hasPickedUp)
         {
-            //didn't pick up - inventory is full
+            //didn't pick up
             return;
         }
         else

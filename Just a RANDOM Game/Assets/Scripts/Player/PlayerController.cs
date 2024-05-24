@@ -7,8 +7,6 @@ using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController instance;
-
 	[Header("Movement")]
     [SerializeField] private float groundAcceleration; // acceleration while grounded
 	[SerializeField] private float airAcceleration; // acceleration while not grounded
@@ -56,16 +54,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Awake()
 	{
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(this);
-        }
-
-        playerCharacterController = GetComponent<CharacterController>();
+		playerCharacterController = GetComponent<CharacterController>();
 
 		dashTime = dashDistance / dashSpeed;
     }
@@ -223,6 +212,20 @@ public class PlayerController : MonoBehaviour
         else if (ctx.canceled)
         {
             isPicking = false;
+        }
+    }
+
+    public void EatHandler(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && canControl)
+        {
+            InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(InventoryTypes.food);
+            PlayerItemController.instance.SwapHandItem(PlayerItemController.instance.defaultItems[6]);
+            //eat anim
+        }
+        else if (ctx.canceled)
+        {
+            InterfaceHandler.instance.inventoryCanvas.ChangeToolInventory(PlayerChunkInteraction.instance.currentChunk);
         }
     }
 
