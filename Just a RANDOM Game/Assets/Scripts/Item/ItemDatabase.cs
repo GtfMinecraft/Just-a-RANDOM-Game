@@ -20,20 +20,21 @@ public class ItemDatabase : ScriptableObject, ISerializationCallbackReceiver
                 continue;
             }
 
-            if (items[i].ID == 0)
+            //if (items[i].ID == 0)
+            //{
+            //    Debug.LogError($"Wrong ID, cannot set an item ID to be zero as zero is the null item. Item name: {items[i].name}");
+            //    continue;
+            //}
+
+            if (GetItem.TryGetValue(items[i].ID, out Item item) && item.ID != items[i].ID)
             {
-                Debug.LogError("Wrong ID, cannot set an item ID to be zero as it is the null item");
+                Debug.LogError($"Repeated item ID, please set a valid item ID. Item names: {items[i].name} and {item.name}");
                 continue;
             }
-            var item = GetItem.FirstOrDefault(o => o.Key == items[i].ID).Value;
-            if (item != null && item.ID != items[i].ID)
+            else if (item == null)
             {
-                Debug.LogError("Repeated item ID, please set a valid item ID");
-                continue;
-            }
-            else if(item == null)
-            {
-                GetItem.Add(items[i].ID, items[i]);
+                GetItem.Add(i, items[i]);
+                items[i].ID = i;
             }
         }
     }

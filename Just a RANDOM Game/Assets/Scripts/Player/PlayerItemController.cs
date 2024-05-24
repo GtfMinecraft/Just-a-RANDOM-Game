@@ -20,6 +20,7 @@ public class PlayerItemController : MonoBehaviour
     public GameObject rightHand;
     public GameObject leftHand;
 
+    //TODO: save and load default items (use playerprefs)
     public Item[] defaultRightItems;
     public Item[] defaultLeftItems;
 
@@ -48,6 +49,7 @@ public class PlayerItemController : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
+        currentInventory = (InventoryTypes)PlayerPrefs.GetInt("selectedTool");
     }
 
     public void ChangeInventory(InventoryTypes inv)

@@ -9,7 +9,7 @@ public class TradingInterface : MonoBehaviour
 
     [SerializeField]
     private Trade currentTrade;
-    private bool isTrade = false;
+    private bool isTrading = false;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class TradingInterface : MonoBehaviour
         {
             InterfaceHandler.instance.CloseAllInterface();
             transform.GetComponent<Canvas>().enabled = false;
-            isTrade = false;
+            isTrading = false;
         }
     }
 
@@ -40,7 +40,7 @@ public class TradingInterface : MonoBehaviour
             RefreshTradingInterface();
             InterfaceHandler.instance.OpenInterface(Interfaces.trading, false, false, false);
             transform.GetComponent<Canvas>().enabled = true;
-            isTrade = true;
+            isTrading = true;
         }
     }
 

@@ -27,7 +27,6 @@ public class ToolWheelUI : WheelUI
         if(currentTool != 0)
         {
             toolSelected[currentTool - 1].enabled = true;
-            PlayerItemController.instance.ChangeInventory((InventoryTypes)(currentTool));
         }
     }
 

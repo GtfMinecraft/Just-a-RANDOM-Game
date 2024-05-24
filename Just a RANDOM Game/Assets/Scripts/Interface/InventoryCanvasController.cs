@@ -35,6 +35,7 @@ public class InventoryCanvasController : MonoBehaviour
             inventoryList[i] = transform.GetChild(i).GetComponent<Canvas>();
             inventoryList[i].enabled = false;
         }
+        currentInventory = (InventoryTypes)PlayerPrefs.GetInt("selectedTool");
     }
 
     public void ChangeToolInventory(InventoryTypes inv)
@@ -84,7 +85,7 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
+        if (ctx.performed && currentInventory != InventoryTypes.storage && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
         {
             InterfaceHandler.instance.OpenInterface(Interfaces.item);
             inventoryList[(int)currentInventory].enabled = true;
