@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class InventoryHandler : MonoBehaviour
+public class InventoryHandler : MonoBehaviour, IDataPersistence
 {
     public static InventoryHandler instance;
 
@@ -18,14 +19,10 @@ public class InventoryHandler : MonoBehaviour
 
         public void Initialize(int inventoryType)
         {
-            inventory.ClearAllItems();
-
-            //replace clear all items with reading saved inventory data
-
             inventoryHolder = instance.inventoryCanvas.GetChild(inventoryType).GetChild(0);
 
-            inventorySlots = new InventorySlotUI[inventory.itemSlots.Length];
-            for (int i = 0; i < inventory.itemSlots.Length; ++i)
+            inventorySlots = new InventorySlotUI[inventory.itemSlots.Count];
+            for (int i = 0; i < inventory.itemSlots.Count; ++i)
             {
                 inventorySlots[i] = inventoryHolder.GetChild(i).GetComponent<InventorySlotUI>();
             }
@@ -40,7 +37,7 @@ public class InventoryHandler : MonoBehaviour
         }
     }
 
-    public InventoryPack[] inventoryList = new InventoryPack[6];
+    public InventoryPack[] inventoryList = new InventoryPack[(int)InventoryTypes.food + 1];
 
     /*
      *  0 storage
@@ -64,11 +61,28 @@ public class InventoryHandler : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void LoadData(GameData data)
     {
-        for (int i = 0; i < inventoryList.Length; ++i)
+        for(int i = 0; i < inventoryList.Length; i++)
         {
+            inventoryList[i].inventory.itemSlots = data.inventoryData[i].itemIDs.Zip(
+                data.inventoryData[i].defaultItemIDs, (f1, f2) => new { f1, f2 })
+                .Zip(data.inventoryData[i].currentStacks, (f12, f3) => 
+                new ItemHolder.ItemSlot(f12.f1, f12.f2, f3)).ToList();
             inventoryList[i].Initialize(i);
+        }
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.inventoryData.Clear();
+        foreach(var invList in inventoryList)
+        {
+            data.inventoryData.Add(new GameData.InventoryData { 
+                itemIDs = invList.inventory.itemSlots.ConvertAll(o => o.ID), 
+                defaultItemIDs = invList.inventory.itemSlots.ConvertAll((o) => o.defaultID),
+                currentStacks = invList.inventory.itemSlots.ConvertAll(((o) => o.currentStack)),
+            });
         }
     }
 }

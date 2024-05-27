@@ -12,11 +12,13 @@ public class SlotUI : MonoBehaviour
     protected int slotIndex;
     private TMP_Text stack;
 
+    protected ItemDatabase database;
     protected ItemHolder.ItemSlot thisItemSlot;
     //protected ItemHolder.ItemSlot droppedItemSlot;
 
     protected virtual void Start()
     {
+        database = PlayerItemController.instance.database;
         inventoryType = transform.parent.parent.GetSiblingIndex();
         slotIndex = transform.GetSiblingIndex();
         icon = transform.GetChild(0).gameObject;
@@ -81,9 +83,9 @@ public class SlotUI : MonoBehaviour
 
     public void RefreshItemIcons()
     {
-        if(thisItemSlot.item != null)
+        if(thisItemSlot.ID != 0)
         {
-            icon.GetComponent<Image>().sprite = thisItemSlot.item.icon;
+            icon.GetComponent<Image>().sprite = database.GetItem[thisItemSlot.ID].icon;
             if(thisItemSlot.currentStack > 1)
             {
                 stack.text = thisItemSlot.currentStack.ToString();
@@ -94,9 +96,9 @@ public class SlotUI : MonoBehaviour
             }
             icon.SetActive(true);
         }
-        else if (thisItemSlot.defaultItem != null)
+        else if (thisItemSlot.defaultID != 0)
         {
-            icon.GetComponent<Image>().sprite = thisItemSlot.defaultItem.blackIcon;
+            icon.GetComponent<Image>().sprite = database.GetItem[thisItemSlot.defaultID].blackIcon;
             stack.text = "";
             icon.SetActive(true);
         }
