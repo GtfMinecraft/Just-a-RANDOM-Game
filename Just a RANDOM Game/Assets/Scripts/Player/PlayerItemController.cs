@@ -15,7 +15,8 @@ public class PlayerItemController : MonoBehaviour
     private Item leftItem;
     public InventoryTypes currentInventory { get; private set; }
 
-    [HideInInspector] public bool canEat = false;
+    [HideInInspector]
+    public bool canEat = false;
 
     public GameObject rightHand;
     public GameObject leftHand;

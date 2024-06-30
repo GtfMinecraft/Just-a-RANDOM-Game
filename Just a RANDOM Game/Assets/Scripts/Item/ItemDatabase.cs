@@ -2,39 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
+using Unity.VisualScripting.FullSerializer;
+using UnityEngine.Rendering.Universal;
 
 [CreateAssetMenu(fileName = "New Item Database", menuName = "Inventory/Item Database")]
 public class ItemDatabase : ScriptableObject, ISerializationCallbackReceiver
 {
-    public Item[] items;
+    [Header("Item names and IDs")]
+    public List<ItemAndID> items;
     public Dictionary<int, Item> GetItem = new Dictionary<int, Item>();
+
+    [Serializable]
+    public struct ItemAndID
+    {
+        public Item item;
+        public int ID;
+    }
 
     public void OnAfterDeserialize()
     {
         GetItem = new Dictionary<int, Item>();
 
-        for(int i=0; i<items.Length; i++)
+        if(items == null)
         {
-            if (items[i] == null)
+            return;
+        }
+
+        for(int i=0; i<items.Count; i++)
+        {
+            if (items[i].item == null || items[i].ID == 0)
             {
                 continue;
             }
 
-            //if (items[i].ID == 0)
-            //{
-            //    Debug.LogError($"Wrong ID, cannot set an item ID to be zero as zero is the null item. Item name: {items[i].name}");
-            //    continue;
-            //}
-
-            if (GetItem.TryGetValue(items[i].ID, out Item item) && item.ID != items[i].ID)
+            var checkItem = GetItem.FirstOrDefault(o => o.Value == items[i].item);
+            if (GetItem.TryGetValue(items[i].ID, out Item item))
             {
-                Debug.LogError($"Repeated item ID, please set a valid item ID. Item names: {items[i].name} and {item.name}");
+                Debug.LogError($"Item Database repeated item ID, please set a valid item ID. Item ID: {items[i].ID}");
+                continue;
+            }
+            else if(!checkItem.Equals(default(KeyValuePair<int, Item>)))
+            {
+                Debug.LogError($"Item Database repeated item, please only set each item once. Item ID: {checkItem.Value.ID} and {items[i].ID}");
                 continue;
             }
             else if (item == null)
             {
-                GetItem.Add(i, items[i]);
-                items[i].ID = i;
+                GetItem.Add(i, items[i].item);
+                items[i].item.ID = items[i].ID;
             }
         }
     }

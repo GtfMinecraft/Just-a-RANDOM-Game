@@ -29,7 +29,6 @@ public class GameData
     public class InventoryData
     {
         public List<int> itemIDs;
-        public List<int> defaultItemIDs;
         //TODO: fill in the defaultItemIDs
         public List<int> currentStacks;
 
@@ -42,43 +41,35 @@ public class GameData
             {
                 case InventoryTypes.storage:
                     itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 case InventoryTypes.weapon:
                     itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
                     currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 case InventoryTypes.axe:
-                    itemIDs = new List<int> { 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 1, 2, 3, 4, 5 };
-                    currentStacks = new List<int> { 0, 0, 0, 0, 0 };
+                    itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                    currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 case InventoryTypes.pickaxe:
                     itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
                     currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 case InventoryTypes.hoe:
                     itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
                     currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 case InventoryTypes.rod:
                     itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
                     currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 case InventoryTypes.food:
                     itemIDs = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    defaultItemIDs = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
                     currentStacks = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                     break;
                 default:
                     Debug.LogError("Undefined InventoryData when creating an instace of GameData.InventoryData");
                     itemIDs = new List<int>();
-                    defaultItemIDs = new List<int>();
                     currentStacks = new List<int>();
                     break;
             }

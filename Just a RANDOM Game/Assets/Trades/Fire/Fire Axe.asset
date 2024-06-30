@@ -13,23 +13,43 @@ MonoBehaviour:
   m_Name: Fire Axe
   m_EditorClassIdentifier: 
   offers:
-  - merchandice: {fileID: 0}
+  - merchandice: 0
     price: 0
-    materials: []
+    crystals: 0
+    materials:
+      keys: 
+      values: 
+    quantity: 0
     show: 0
-  - merchandice: {fileID: 0}
+  - merchandice: 0
     price: 0
-    materials: []
+    crystals: 0
+    materials:
+      keys: 
+      values: 
+    quantity: 0
     show: 0
-  - merchandice: {fileID: 0}
+  - merchandice: 0
     price: 0
-    materials: []
+    crystals: 0
+    materials:
+      keys: 
+      values: 
+    quantity: 0
     show: 0
-  - merchandice: {fileID: 0}
+  - merchandice: 0
     price: 0
-    materials: []
+    crystals: 0
+    materials:
+      keys: 
+      values: 
+    quantity: 0
     show: 0
-  - merchandice: {fileID: 0}
+  - merchandice: 0
     price: 0
-    materials: []
+    crystals: 0
+    materials:
+      keys: 
+      values: 
+    quantity: 0
     show: 0

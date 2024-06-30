@@ -15,27 +15,22 @@ MonoBehaviour:
   database: {fileID: 11400000, guid: 1c421054f33915244978fbed717afd09, type: 2}
   itemSlots:
   - ID: 1
-    item: {fileID: 11400000, guid: e1ad0bb8d3504c942903b43c1e5f35cc, type: 2}
-    defaultID: 0
-    defaultItem: {fileID: 0}
+    currentStack: 1
+  - ID: 0
     currentStack: 0
   - ID: 2
-    item: {fileID: 11400000, guid: 63c8067756ba97e49971f122a9b7ec7c, type: 2}
-    defaultID: 0
-    defaultItem: {fileID: 0}
-    currentStack: 0
+    currentStack: 1
   - ID: 0
-    item: {fileID: 0}
-    defaultID: 0
-    defaultItem: {fileID: 0}
     currentStack: 0
+  - ID: 3
+    currentStack: 1
   - ID: 0
-    item: {fileID: 0}
-    defaultID: 0
-    defaultItem: {fileID: 0}
     currentStack: 0
+  - ID: 5
+    currentStack: 1
   - ID: 0
-    item: {fileID: 0}
-    defaultID: 0
-    defaultItem: {fileID: 0}
+    currentStack: 0
+  - ID: 4
+    currentStack: 1
+  - ID: 0
     currentStack: 0

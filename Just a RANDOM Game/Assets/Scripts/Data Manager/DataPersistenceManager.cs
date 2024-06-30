@@ -108,7 +108,10 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
 
+        //PlayerPrefs
         PlayerPrefs.SetInt("selectedTool", (int)PlayerItemController.instance.currentInventory);
+        PlayerPrefs.SetInt("currentGroup", InventoryHandler.instance.currentGroup);
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(gameData);
