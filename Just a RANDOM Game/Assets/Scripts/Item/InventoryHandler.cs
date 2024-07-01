@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -123,7 +125,16 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     public void SwitchGroup(int group)
     {
         currentGroup = group;
+        ResetDraggingUI();
         UpdateInventoryUI();
+    }
+
+    public void ResetDraggingUI()
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            inventorySlots[i].icon.GetComponent<InventoryDragHandler>().ReturnItem();
+        }
     }
 
     public void UpdateInventoryUI()

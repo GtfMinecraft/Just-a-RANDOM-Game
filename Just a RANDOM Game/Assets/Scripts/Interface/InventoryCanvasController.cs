@@ -13,7 +13,7 @@ public class InventoryCanvasController : MonoBehaviour
     public Animator toolAnim;
     public Animator itemAnim;
 
-    [Header("Inventory")]
+    [Header("Inventory (Don't edit currentInventory)")]
     [SerializeField]
     private InventoryTypes currentInventory;
 
@@ -36,7 +36,9 @@ public class InventoryCanvasController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CloseAllInventory();
+        storage.enabled = false;
+        toolWheel.enabled = false;
+        itemWheel.enabled = false;
 
         currentInventory = (InventoryTypes)PlayerPrefs.GetInt("selectedTool");
     }
@@ -48,6 +50,7 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void CloseAllInventory()
     {
+        InventoryHandler.instance.ResetDraggingUI();
         storage.enabled = false;
         toolWheel.enabled = false;
         itemWheel.enabled = false;

@@ -17,11 +17,9 @@ MonoBehaviour:
   itemDescription: an ordinary axe
   price: 0
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  blackIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   model: {fileID: 0}
   inventoryType: 2
   itemType: 0
   durability: 0
   attackSpeed: 0
-  currentStack: 1
-  maxStack: 1
+  maxStack: 100

@@ -13,7 +13,7 @@ public class InventorySlotUI : SlotUI
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             base.OnDrop(eventData);
-            if (eventData.pointerDrag.transform.parent == gameObject)
+            if (eventData.pointerDrag.transform.parent.gameObject == gameObject)
             {
                 return;
             }
@@ -25,7 +25,7 @@ public class InventorySlotUI : SlotUI
     public void UpdateInventorySlot(int inv)
     {
         thisItemSlot = InventoryHandler.instance.inventoryList[inv].itemSlots[slotIndex];
-        transform.GetChild(0).GetComponent<InventoryDragHandler>().UpdateItemSlot(thisItemSlot);
+        icon.GetComponent<InventoryDragHandler>().UpdateItemSlot(thisItemSlot);
 
         RefreshItemIcons();
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
 {
-    [HideInInspector]
+    [Header("(Don't edit ID, edit in ItemDatabase)")]
     public int ID = 0;
     public string itemName = "New Item";
     public string itemDescription = "New Description";
@@ -16,6 +16,5 @@ public class Item : ScriptableObject
     public ItemTypes itemType = ItemTypes.Basic;
     public int durability;
     public float attackSpeed;
-    public int currentStack = 1;
     public int maxStack = 1;
 }

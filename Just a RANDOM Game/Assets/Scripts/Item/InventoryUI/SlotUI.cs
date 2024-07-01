@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class SlotUI : MonoBehaviour, IDropHandler
 {
-    protected GameObject icon;
+    [HideInInspector]
+    public GameObject icon;
     protected int slotIndex;
     private TMP_Text stack;
 
