@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class WheelUI : MonoBehaviour
 {
-    protected int GetSection(float startAngle, float anglePerSection, int sectionCount, float freeDistance)
+    protected virtual int GetSection(float startAngle, float anglePerSection, int sectionCount, float freeDistance)
     {
         if (Cursor.lockState == CursorLockMode.None)
         {

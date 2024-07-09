@@ -11,8 +11,8 @@ public class PlayerItemController : MonoBehaviour
     public GameObject magicStone;
 
     private Animator animator;
-    private Item rightItem;
-    private Item leftItem;
+    public int rightItem { get; private set; }
+    public int leftItem { get; private set; }
     public InventoryTypes currentInventory { get; private set; }
 
     [HideInInspector]
@@ -22,8 +22,8 @@ public class PlayerItemController : MonoBehaviour
     public GameObject leftHand;
 
     //TODO: save and load default items (use playerprefs)
-    public Item[] defaultRightItems;
-    public Item[] defaultLeftItems;
+    public int[] defaultRightItems;
+    public int[] defaultLeftItems;
 
     /*
      *  0 empty
@@ -50,50 +50,56 @@ public class PlayerItemController : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        currentInventory = (InventoryTypes)PlayerPrefs.GetInt("selectedTool");
+        ChangeInventory((InventoryTypes)PlayerPrefs.GetInt("selectedTool", 0));
+        //get left and right itemID from playprefs
     }
 
     public void ChangeInventory(InventoryTypes inv)
     {
+        currentInventory = inv;
         InventoryCanvasController.instance.ChangeToolInventory(inv);
         
-        currentInventory = inv;
-        SwapHandItem(defaultRightItems[(int)inv], rightHand);
-        SwapHandItem(defaultLeftItems[(int)inv], leftHand);
-        leftItem = null;
-        UpdateHandModel(magicStone, leftHand);
+        //SwapHandItem(database.GetItem[defaultRightItems[(int)inv]], rightHand);
+        //SwapHandItem(database.GetItem[defaultLeftItems[(int)inv]], leftHand);
+        //leftItem = null;
+        //UpdateHandModel(magicStone, leftHand);
     }
 
-    public void SwapHandItem(Item item, GameObject hand)
+    public int HoldItem(int itemID)
     {
-        if (item == null)
-        {
-            UpdateHandModel(null, hand);
-        }
-        else if (item.itemType == ItemTypes.Tool && item.inventoryType == currentInventory)
-        {
-            rightItem = item;
-            UpdateHandModel(rightItem.model, rightHand);
-        }
-        else if (item.itemType == ItemTypes.Food)
-        {
-            leftItem = item;
-            UpdateHandModel(item.model, leftHand);
-            canEat = true;
-        }
-        else if (item.itemType == ItemTypes.Potion && item.inventoryType == currentInventory)
-        {
-            leftItem = item;
-            UpdateHandModel(item.model, leftHand);
-            //use potion anim
-            //potion effect
-            leftItem = null;
-            UpdateHandModel(null, leftHand);
-        }
-        else if(item.itemType == ItemTypes.Bait && item.inventoryType == currentInventory)
-        {
+        return 0;
+    }
 
-        }
+    private void SwapHandItem(Item item, GameObject hand)
+    {
+        //if (item == null)
+        //{
+        //    UpdateHandModel(null, hand);
+        //}
+        //else if (item.itemType == ItemTypes.Tool && item.inventoryType == currentInventory)
+        //{
+        //    rightItem = item;
+        //    UpdateHandModel(rightItem.model, rightHand);
+        //}
+        //else if (item.itemType == ItemTypes.Food)
+        //{
+        //    leftItem = item;
+        //    UpdateHandModel(item.model, leftHand);
+        //    canEat = true;
+        //}
+        //else if (item.itemType == ItemTypes.Potion && item.inventoryType == currentInventory)
+        //{
+        //    leftItem = item;
+        //    UpdateHandModel(item.model, leftHand);
+        //    //use potion anim
+        //    //potion effect
+        //    leftItem = null;
+        //    UpdateHandModel(null, leftHand);
+        //}
+        //else if(item.itemType == ItemTypes.Bait && item.inventoryType == currentInventory)
+        //{
+
+        //}
     }
 
     private void UpdateHandModel(GameObject Item, GameObject hand)

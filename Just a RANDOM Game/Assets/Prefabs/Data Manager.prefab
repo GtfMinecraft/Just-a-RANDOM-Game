@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205d8baff095216489bdfbec06985a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: 
-  useEncryption: 1
+  initializeDataIfNull: 1
+  fileName: []
+  useEncryption: 0
   saveFileIndex: 0
 --- !u!114 &3935964787613245646
 MonoBehaviour:

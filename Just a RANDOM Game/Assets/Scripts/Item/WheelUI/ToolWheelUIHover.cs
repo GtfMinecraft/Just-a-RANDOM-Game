@@ -25,11 +25,13 @@ public class ToolWheelUIHover : MonoBehaviour
         {
             selected = true;
             anim.SetBool("Hover", true);
+            transform.GetChild(0).gameObject.SetActive(true);
         }
         else if(selected && !hovered)
         {
             selected = false;
             anim.SetBool("Hover", false);
+            transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 }

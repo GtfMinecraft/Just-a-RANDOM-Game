@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,9 +39,8 @@ public class InventoryCanvasController : MonoBehaviour
     {
         storage.enabled = false;
         toolWheel.enabled = false;
+        toolWheel.GetComponent<ToolWheelUI>().scrollWheel.enabled = false;
         itemWheel.enabled = false;
-
-        currentInventory = (InventoryTypes)PlayerPrefs.GetInt("selectedTool");
     }
 
     public void ChangeToolInventory(InventoryTypes inv)
@@ -53,6 +53,7 @@ public class InventoryCanvasController : MonoBehaviour
         InventoryHandler.instance.ResetDraggingUI();
         storage.enabled = false;
         toolWheel.enabled = false;
+        toolWheel.GetComponent<ToolWheelUI>().scrollWheel.enabled = false;
         itemWheel.enabled = false;
     }
 
@@ -67,91 +68,35 @@ public class InventoryCanvasController : MonoBehaviour
                     ToolWheelAnimAsync();
                 }
 
-                switch (ctx.action.name)
+                string actionName = ctx.action.name.ToLower();
+                if (actionName != Enum.GetName(typeof(InventoryTypes), currentInventory))
                 {
-                    case "Weapon":
-                        if(currentInventory != InventoryTypes.weapon)
-                        {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.weapon);
-                        }
-                        break;
+                    if(Enum.TryParse(actionName, out InventoryTypes inv))
+                    {
+                        PlayerItemController.instance.ChangeInventory(inv);
 
-                    case "Axe":
-                        if (currentInventory != InventoryTypes.axe)
+                        if (InterfaceHandler.instance.currentInterface == Interfaces.item)
                         {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.axe);
+                            itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
                         }
-                        break;
 
-                    case "Pickaxe":
-                        if (currentInventory != InventoryTypes.pickaxe)
-                        {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.pickaxe);
-                        }
-                        break;
-
-                    case "Hoe":
-                        if (currentInventory != InventoryTypes.hoe)
-                        {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.hoe);
-                        }
-                        break;
-
-                    case "Rod":
-                        if (currentInventory != InventoryTypes.rod)
-                        {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.rod);
-                        }
-                        break;
-
-                    case "Food":
-                        if (currentInventory != InventoryTypes.food)
-                        {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.food);
-                        }
-                        break;
-
-                    case "Storage":
-                        if (currentInventory != InventoryTypes.storage)
-                        {
-                            if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-                            {
-                                ItemWheelAnimAsync();
-                            }
-                            PlayerItemController.instance.ChangeInventory(InventoryTypes.storage);
-                        }
-                        break;
+                        toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage((int)currentInventory);
+                    }
+                    else
+                    {
+                        Debug.LogError($"No inventory for actionName {actionName}");
+                    }
+                }
+                else
+                {
+                    toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage((int)currentInventory);
                 }
             }
             else if(ctx.valueType == typeof(Vector2) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
             {
                 if(InterfaceHandler.instance.currentInterface == Interfaces.item)
                 {
-                    ItemWheelAnimAsync();
+                    itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
                 }
 
                 int scroll = (int)currentInventory + (int)ctx.ReadValue<Vector2>().normalized.y;
@@ -164,15 +109,25 @@ public class InventoryCanvasController : MonoBehaviour
                     scroll -= 6;
                 }
                 PlayerItemController.instance.ChangeInventory((InventoryTypes)scroll);
+
+                if (InterfaceHandler.instance.currentInterface == Interfaces.none)
+                {
+                    toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage(scroll);
+                }
             }
             else if (ctx.valueType == typeof(float) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
             {
                 InterfaceHandler.instance.OpenInterface(Interfaces.tool, true, false, true);
+                toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
                 toolWheel.enabled = true;
                 toolAnim.SetBool("OpenToolWheel", true);
             }
             else if (ctx.valueType == typeof(float) && InterfaceHandler.instance.currentInterface == Interfaces.tool)
             {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+                toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
                 toolAnim.SetBool("OpenToolWheel", true);
             }
         }
@@ -185,6 +140,9 @@ public class InventoryCanvasController : MonoBehaviour
 
     private async void ToolWheelAnimAsync()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         if (toolAnim.GetBool("OpenToolWheel"))
         {
             toolAnim.Play("Close", 0, 0.3f);
@@ -208,7 +166,7 @@ public class InventoryCanvasController : MonoBehaviour
         if (ctx.performed && currentInventory != InventoryTypes.storage && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
         {
             InterfaceHandler.instance.OpenInterface(Interfaces.item, true, false, true);
-            itemWheel.GetComponent<ItemWheelUI>().RefreshItemWheel();
+            itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
             itemWheel.enabled = true;
         }
         else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.item)

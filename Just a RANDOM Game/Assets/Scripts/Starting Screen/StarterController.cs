@@ -11,11 +11,13 @@ public class StarterController : MonoBehaviour
     private bool logoBool = false;
     private bool creditsBool = false;
     private bool turn = true;
+    private Vector2 screenSize = Vector2.zero;
 
     public Camera cam;
     public Light spotlight;
     public TMP_Text copyright;
     public TMP_Text pressKey;
+    public RawImage blackBackground;
     public RawImage pressKeyBackground;
     public RawImage back;
     public RawImage logo;
@@ -35,8 +37,8 @@ public class StarterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pink.transform.localPosition = new Vector3(580, 580, 0);
-        blue.transform.localPosition = new Vector3(-580, -580, 0);
+        pink.transform.localPosition = new Vector3(0, 0, 0);
+        blue.transform.localPosition = new Vector3(0, 0, 0);
         pink.SetActive(false);
         blue.SetActive(false);
         logoBig.enabled = false;
@@ -79,9 +81,9 @@ public class StarterController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         pink.SetActive(true);
         blue.SetActive(true);
-        StartCoroutine(MoveOverSeconds(pink, new Vector3(0, 0, 0), 0.2f));
+        StartCoroutine(MoveOverSeconds(pink, new Vector3(-580, -580, 0), 0.2f));
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(MoveOverSeconds(blue, new Vector3(0, 0, 0), 0.2f));
+        StartCoroutine(MoveOverSeconds(blue, new Vector3(580, 580, 0), 0.2f));
         yield return new WaitForSeconds(0.5f);
         logoBig.enabled = true;
         yield return new WaitForSeconds(0.5f);
@@ -109,6 +111,13 @@ public class StarterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(screenSize != new Vector2 (Screen.width, Screen.height))
+        {
+            screenSize = new Vector2 (Screen.width, Screen.height);
+            blackBackground.rectTransform.sizeDelta = screenSize / GetComponent<Canvas>().scaleFactor;
+
+        }
+
         Cursor.visible = false;
         if (logoBool && logo.color.a < 1)
         {

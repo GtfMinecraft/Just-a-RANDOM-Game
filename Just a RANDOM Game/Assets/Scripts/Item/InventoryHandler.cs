@@ -60,7 +60,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     private void Start()
     {
         database = PlayerItemController.instance.database;
-        currentGroup = PlayerPrefs.GetInt("currentGroup");
+        currentGroup = PlayerPrefs.GetInt("selectedGroup", 0);
 
         groupUI.GetChild(currentGroup).GetComponent<Button>().Select();
 
@@ -90,9 +90,9 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             {
                 resources[itemID] = 1;
             }
-            itemWheel.RefreshItemWheel(itemID);
+            itemWheel.UpdateItemWheelUI(itemID);
 
-            if(invType != currentGroup)
+            if(invType == currentGroup)
             {
                 UpdateInventoryUI();
             }
@@ -113,7 +113,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         int invType = (int)database.GetItem[itemID].inventoryType;
 
         inventoryList[invType].RemoveItem(itemID, count);
-        itemWheel.RefreshItemWheel(itemID);
+        itemWheel.UpdateItemWheelUI(itemID);
 
         if (invType != currentGroup)
         {
@@ -159,8 +159,11 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         for(int i = 0; i < inventoryList.Length; i++)
         {
             inventoryList[i].itemSlots = data.inventoryData[i].itemIDs.Zip(
-                data.inventoryData[i].currentStacks,(f1, f2) =>
-                new Inventory.ItemSlot(f1, f2)).ToList();
+                data.inventoryData[i].currentStacks, (f1, f2) => 
+                { 
+                    resources[f1] = f2; 
+                    return new Inventory.ItemSlot(f1, f2); 
+                }).ToList();
         }
     }
 
@@ -174,5 +177,8 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
                 currentStacks = invList.itemSlots.ConvertAll(((o) => o.currentStack)),
             });
         }
+
+        PlayerPrefs.SetInt("selectedTool", (int)PlayerItemController.instance.currentInventory);
+        PlayerPrefs.SetInt("selectedGroup", currentGroup);
     }
 }

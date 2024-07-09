@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Trade", menuName = "Trade/New Trade")]
+[CreateAssetMenu(fileName = "New Trade", menuName = "Trade/Trade")]
 public class Trade : ScriptableObject
 {
     public Offer[] offers;
