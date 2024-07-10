@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 public class ToolWheelUI : WheelUI
 {
@@ -15,8 +16,7 @@ public class ToolWheelUI : WheelUI
 
     [Header("Scroll Tool Image")]
     public Canvas scrollWheel;
-    public Image scrollToolImage;
-    public Sprite[] scrollToolSprites = new Sprite[6];
+    public GameObject[] scrollToolImages = new GameObject[6];
     public float scrollToolDuration = 0.7f;
 
     private float scrollToolTimer = 0;
@@ -102,7 +102,11 @@ public class ToolWheelUI : WheelUI
 
         scrollToolTimer = Time.time;
 
-        scrollToolImage.sprite = scrollToolSprites[inv - 1];
+        foreach (var image in scrollToolImages)
+        {
+            image.SetActive(false);
+        }
+        scrollToolImages[inv - 1].SetActive(true);
         scrollWheel.enabled = true;
         CloseScrollToolImage();
     }
