@@ -6,23 +6,27 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static ItemWheel;
+using static System.Collections.Specialized.BitVector32;
 
 public class ItemWheelUI : WheelUI
 {
     public float freeDistance;
     public float itemWheelDistance;
+    public float subsectionDistance;
     public int subsectionDeg;
     public Transform itemWheelTransform;
     public ItemWheel[] itemWheels = new ItemWheel[6];
 
     [Header("Section Background")]
-    public Sprite oneWideSectionImage;
-    public Sprite twoWideSectionImage;
-    public Sprite subsectionImage;
+    public Sprite oneWideSectionSprite;
+    public Sprite twoWideSectionSprite;
+    public Sprite subsectionSprite;
 
     private Animator anim;
 
     private ItemWheel currentWheel;
+    private List<int>[] indexList;
 
     private int currentItem = 0;//default item if none is selected
     private int currentItem2 = 0;
@@ -34,7 +38,7 @@ public class ItemWheelUI : WheelUI
     private ItemDatabase database;
 
     private Image[] sectionImages = new Image[12];
-    private List<Image>[] itemImages = new List<Image>[12];
+    private Image[][] subsectionImages = new Image[12][];
     private List<Image>[] itemSelected = new List<Image>[12];
     private TextMeshProUGUI[] stacks = new TextMeshProUGUI[12];
 
@@ -43,10 +47,18 @@ public class ItemWheelUI : WheelUI
         database = PlayerItemController.instance.database;
         anim = itemWheelTransform.GetComponent<Animator>();
         
-        for(int i=0;i<itemImages.Length; ++i)
+        for(int i=0;i<sectionImages.Length; ++i)
         {
             sectionImages[i] = itemWheelTransform.GetChild(i).GetComponent<Image>();
             sectionImages[i].gameObject.SetActive(false);
+
+            subsectionImages[i] = new Image[5];
+            for(int j = 0; j < 5; ++j)
+            {
+                subsectionImages[i][j] = sectionImages[i].transform.GetChild(1).GetChild(j).GetComponent<Image>();
+                subsectionImages[i][j].gameObject.SetActive(false);
+            }
+            sectionImages[i].transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 
@@ -151,11 +163,35 @@ public class ItemWheelUI : WheelUI
         
     } 
 
-    protected void SelectSection(int section, int subsection = 2)
+    protected void SetSubsection(int section, int subsection)
     {
-        if (subsection == 2)
-        {
+        int count = indexList[subsection].Count;
 
+        if (count == 1)
+        {
+            count = 0;
+        }
+          
+        for(int i = count; i < 5; ++i)
+        {
+            subsectionImages[2 * section + subsection][i].gameObject.SetActive(false);
+        }
+
+        sectionImages[2 * section + subsection].transform.GetChild(1).position = itemWheelTransform.position;
+        sectionImages[2 * section + subsection].transform.GetChild(1).rotation = Quaternion.identity;
+
+
+        for (int i = 0; i < count; ++i)
+        {
+            Transform sectionTransform = sectionImages[2 * section + subsection].transform;
+
+            subsectionImages[2 * section + subsection][i].transform.localPosition = (itemWheelDistance + subsectionDistance) / 2 * (Quaternion.AngleAxis(-subsectionDeg / 2 * (count - 1) + i * subsectionDeg, Vector3.forward) * sectionTransform.localPosition.normalized);
+            subsectionImages[2 * section + subsection][i].transform.localRotation = sectionTransform.localRotation * Quaternion.Euler(0, 0, - subsectionDeg / 2 * (count - 1) + i * subsectionDeg);
+
+            subsectionImages[2 * section + subsection][i].sprite = subsectionSprite;
+            subsectionImages[2 * section + subsection][i].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[subsection][i]]].icon;
+
+            subsectionImages[2 * section + subsection][i].gameObject.SetActive(true);
         }
     }
 
@@ -189,8 +225,11 @@ public class ItemWheelUI : WheelUI
         int count = 0;
         for (int i = 0; i < 6; i++)
         {
-            List<int>[] indexList = currentWheel.SectionItemIndex(i, count);
+            indexList = currentWheel.SectionItemIndex(i, count);
             count += currentWheel.subsection[i].TotalItemCount();
+
+            sectionImages[2 * i].transform.GetChild(1).gameObject.SetActive(false);
+            sectionImages[2 * i + 1].transform.GetChild(1).gameObject.SetActive(false);
 
             if (indexList[0].Count == 0 && indexList[1].Count == 0)
             {
@@ -201,7 +240,7 @@ public class ItemWheelUI : WheelUI
             {
                 sectionImages[2 * i + 1].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
                 sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
-                sectionImages[2 * i + 1].sprite = twoWideSectionImage;
+                sectionImages[2 * i + 1].sprite = twoWideSectionSprite;
 
                 if (indexList[1].Count == 1)
                 {
@@ -212,7 +251,7 @@ public class ItemWheelUI : WheelUI
                     sectionImages[2 * i + 1].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i + 1];
                 }
 
-                SelectSection(i, 1);
+                SetSubsection(i, 1);
 
                 sectionImages[2 * i].gameObject.SetActive(false);
                 sectionImages[2 * i + 1].gameObject.SetActive(true);
@@ -221,7 +260,7 @@ public class ItemWheelUI : WheelUI
             {
                 sectionImages[2 * i].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
                 sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
-                sectionImages[2 * i].sprite = twoWideSectionImage;
+                sectionImages[2 * i].sprite = twoWideSectionSprite;
 
                 if (indexList[0].Count == 1)
                 {
@@ -232,7 +271,7 @@ public class ItemWheelUI : WheelUI
                     sectionImages[2 * i].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i];
                 }
 
-                SelectSection(i, 0);
+                SetSubsection(i, 0);
 
                 sectionImages[2 * i].gameObject.SetActive(true);
                 sectionImages[2 * i + 1].gameObject.SetActive(false);
@@ -243,9 +282,7 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * i + 1].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 15) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 15) * Mathf.Deg2Rad), 0);
                 sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 135);
                 sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 105);
-                sectionImages[2 * i].sprite = sectionImages[2 * i + 1].sprite = oneWideSectionImage;
-
-                SelectSection(i);
+                sectionImages[2 * i].sprite = sectionImages[2 * i + 1].sprite = oneWideSectionSprite;
 
                 if (indexList[0].Count == 1)
                 {
@@ -264,6 +301,9 @@ public class ItemWheelUI : WheelUI
                 {
                     sectionImages[2 * i + 1].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i + 1];
                 }
+
+                SetSubsection(i, 0);
+                SetSubsection(i, 1);
 
                 sectionImages[2 * i ].gameObject.SetActive(true);
                 sectionImages[2 * i + 1].gameObject.SetActive(true);
@@ -279,5 +319,8 @@ public class ItemWheelUI : WheelUI
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(Vector3.zero, itemWheelDistance);
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(Vector3.zero, subsectionDistance);
     }
 }
