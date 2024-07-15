@@ -160,8 +160,15 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         {
             inventoryList[i].itemSlots = data.inventoryData[i].itemIDs.Zip(
                 data.inventoryData[i].currentStacks, (f1, f2) => 
-                { 
-                    resources[f1] = f2; 
+                {
+                    if (resources.ContainsKey(f1))
+                    {
+                        resources[f1] += f2;
+                    }
+                    else
+                    {
+                        resources[f1] = f2;
+                    }
                     return new Inventory.ItemSlot(f1, f2); 
                 }).ToList();
         }

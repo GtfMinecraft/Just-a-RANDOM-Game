@@ -9,7 +9,7 @@ public class ItemWheel : ScriptableObject
     public Sprite[] groupImages = new Sprite[12];
     public Subsection[] subsection = new Subsection[6];
 
-    private int[] stacks;
+    public int[] stacks {  get; private set; }
 
     [System.Serializable]
     public struct Subsection
@@ -62,7 +62,15 @@ public class ItemWheel : ScriptableObject
 
         for (int i = 0; i < itemID.Count; ++i)
         {
-            stacks[i] = InventoryHandler.instance.resources[itemID[i]];
+            UDictionaryIntInt resources = InventoryHandler.instance.resources;
+            if (resources.ContainsKey(itemID[i]))
+            {
+                stacks[i] = resources[itemID[i]];
+            }
+            else
+            {
+                stacks[i] = 0;
+            }
         }
     }
 }

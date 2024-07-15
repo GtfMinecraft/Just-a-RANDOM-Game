@@ -170,12 +170,24 @@ public class ItemWheelUI : WheelUI
         if (count == 1)
         {
             count = 0;
+            
+            if (currentWheel.stacks[indexList[subsection][0]] == 1)
+            {
+                sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+            }
+            else
+            {
+                sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = currentWheel.stacks[indexList[subsection][0]].ToString();
+            }
         }
           
         for(int i = count; i < 5; ++i)
         {
             subsectionImages[2 * section + subsection][i].gameObject.SetActive(false);
         }
+
+        if(count != 0)
+            sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
 
         sectionImages[2 * section + subsection].transform.GetChild(1).position = itemWheelTransform.position;
         sectionImages[2 * section + subsection].transform.GetChild(1).rotation = Quaternion.identity;
@@ -190,6 +202,15 @@ public class ItemWheelUI : WheelUI
 
             subsectionImages[2 * section + subsection][i].sprite = subsectionSprite;
             subsectionImages[2 * section + subsection][i].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[subsection][i]]].icon;
+
+            if (currentWheel.stacks[indexList[subsection][i]] == 1)
+            {
+                subsectionImages[2 * section + subsection][i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+            }
+            else
+            {
+                subsectionImages[2 * section + subsection][i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = currentWheel.stacks[indexList[subsection][i]].ToString();
+            }
 
             subsectionImages[2 * section + subsection][i].gameObject.SetActive(true);
         }
