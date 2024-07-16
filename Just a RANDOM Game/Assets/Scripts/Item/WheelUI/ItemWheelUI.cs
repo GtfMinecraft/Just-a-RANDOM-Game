@@ -170,6 +170,8 @@ public class ItemWheelUI : WheelUI
         if (count == 1)
         {
             count = 0;
+
+            sectionImages[2 * section + subsection].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[0][0]]].icon;
             
             if (currentWheel.stacks[indexList[subsection][0]] == 1)
             {
@@ -180,17 +182,20 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = currentWheel.stacks[indexList[subsection][0]].ToString();
             }
         }
-          
-        for(int i = count; i < 5; ++i)
+        else
+        {
+            sectionImages[2 * section + subsection].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * section + subsection];
+            sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+        }
+
+        sectionImages[2 * section + subsection].transform.GetChild(0).rotation = Quaternion.identity;
+
+        for (int i = count; i < 5; ++i)
         {
             subsectionImages[2 * section + subsection][i].gameObject.SetActive(false);
         }
 
-        if(count != 0)
-            sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
-
-        sectionImages[2 * section + subsection].transform.GetChild(1).position = itemWheelTransform.position;
-        sectionImages[2 * section + subsection].transform.GetChild(1).rotation = Quaternion.identity;
+        sectionImages[2 * section + subsection].transform.GetChild(1).SetPositionAndRotation(itemWheelTransform.position, Quaternion.identity);
 
 
         for (int i = 0; i < count; ++i)
@@ -202,6 +207,7 @@ public class ItemWheelUI : WheelUI
 
             subsectionImages[2 * section + subsection][i].sprite = subsectionSprite;
             subsectionImages[2 * section + subsection][i].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[subsection][i]]].icon;
+            subsectionImages[2 * section + subsection][i].transform.GetChild(0).rotation = Quaternion.identity;
 
             if (currentWheel.stacks[indexList[subsection][i]] == 1)
             {
@@ -263,15 +269,6 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
                 sectionImages[2 * i + 1].sprite = twoWideSectionSprite;
 
-                if (indexList[1].Count == 1)
-                {
-                    sectionImages[2 * i + 1].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[1][0]]].icon;
-                }
-                else
-                {
-                    sectionImages[2 * i + 1].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i + 1];
-                }
-
                 SetSubsection(i, 1);
 
                 sectionImages[2 * i].gameObject.SetActive(false);
@@ -282,15 +279,6 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * i].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
                 sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
                 sectionImages[2 * i].sprite = twoWideSectionSprite;
-
-                if (indexList[0].Count == 1)
-                {
-                    sectionImages[2 * i].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[0][0]]].icon;
-                }
-                else
-                {
-                    sectionImages[2 * i].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i];
-                }
 
                 SetSubsection(i, 0);
 
@@ -304,24 +292,6 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 135);
                 sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 105);
                 sectionImages[2 * i].sprite = sectionImages[2 * i + 1].sprite = oneWideSectionSprite;
-
-                if (indexList[0].Count == 1)
-                {
-                    sectionImages[2 * i].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[0][0]]].icon;
-                }
-                else
-                {
-                    sectionImages[2 * i].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i];
-                }
-
-                if (indexList[1].Count == 1)
-                {
-                    sectionImages[2 * i + 1].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[1][0]]].icon;
-                }
-                else
-                {
-                    sectionImages[2 * i + 1].transform.GetChild(0).GetComponent<Image>().sprite = currentWheel.groupImages[2 * i + 1];
-                }
 
                 SetSubsection(i, 0);
                 SetSubsection(i, 1);
