@@ -120,7 +120,7 @@ public class InventoryCanvasController : MonoBehaviour
                 InterfaceHandler.instance.OpenInterface(Interfaces.tool, true, false, true);
                 toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
                 toolWheel.enabled = true;
-                toolAnim.SetBool("OpenToolWheel", true);
+                toolAnim.SetBool("OpenWheel", true);
             }
             else if (ctx.valueType == typeof(float) && InterfaceHandler.instance.currentInterface == Interfaces.tool)
             {
@@ -128,7 +128,7 @@ public class InventoryCanvasController : MonoBehaviour
                 Cursor.visible = true;
 
                 toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
-                toolAnim.SetBool("OpenToolWheel", true);
+                toolAnim.SetBool("OpenWheel", true);
             }
         }
         else if (ctx.canceled && ctx.action.name == "ToolWheel" && InterfaceHandler.instance.currentInterface == Interfaces.tool)
@@ -143,31 +143,44 @@ public class InventoryCanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        if (toolAnim.GetBool("OpenToolWheel"))
+        if (toolAnim.GetBool("OpenWheel"))
         {
             toolAnim.Play("Close", 0, 0.3f);
         }
-        toolAnim.SetBool("OpenToolWheel", false);
+        toolAnim.SetBool("OpenWheel", false);
 
         while (!toolAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden"))
         {
-            if (toolAnim.GetBool("OpenToolWheel"))
+            if (toolAnim.GetBool("OpenWheel"))
             {
                 return;
             }
             await Task.Delay(100);
         }
+
         if (InterfaceHandler.instance.currentInterface == Interfaces.tool)
             InterfaceHandler.instance.CloseAllInterface();
     }
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && currentInventory != InventoryTypes.storage && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
+        if (ctx.performed && currentInventory != InventoryTypes.storage)
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.item, true, false, true);
-            itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
-            itemWheel.enabled = true;
+            if(InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            {
+                InterfaceHandler.instance.OpenInterface(Interfaces.item, true, false, true);
+                itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
+                itemWheel.enabled = true;
+                itemAnim.SetBool("OpenWheel", true);
+            }
+            else if(InterfaceHandler.instance.currentInterface == Interfaces.item)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+                itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
+                itemAnim.SetBool("OpenWheel", true);
+            }
         }
         else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.item)
         {
@@ -178,10 +191,26 @@ public class InventoryCanvasController : MonoBehaviour
 
     private async void ItemWheelAnimAsync()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (itemAnim.GetBool("OpenWheel"))
+        {
+            itemAnim.Play("Close", 0, 0.3f);
+        }
+        itemAnim.SetBool("OpenWheel", false);
+
+        while (!itemAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden"))
+        {
+            if (itemAnim.GetBool("OpenWheel"))
+            {
+                return;
+            }
+            await Task.Delay(100);
+        }
+
         if (InterfaceHandler.instance.currentInterface == Interfaces.item)
             InterfaceHandler.instance.CloseAllInterface();
-
-        await Task.Delay(100);
     }
 
     public void PlayerInventoryHandler(InputAction.CallbackContext ctx)

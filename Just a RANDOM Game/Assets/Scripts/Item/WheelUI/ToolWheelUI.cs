@@ -43,7 +43,7 @@ public class ToolWheelUI : WheelUI
 
     private void Update()
     {
-        if(anim.GetBool("OpenToolWheel"))
+        if(anim.GetBool("OpenWheel"))
         {
             int tool = ToolGetSection();
             if (hoveredTool != tool)

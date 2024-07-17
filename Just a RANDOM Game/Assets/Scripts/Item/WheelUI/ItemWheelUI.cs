@@ -33,9 +33,10 @@ public class ItemWheelUI : WheelUI
 
     private int hoveredSection = -1;
     private int currentSection = -1; // come from currentItem from PlayerItemController
-    private int curreentSubsection = -1;
+    private int curreentSubsection = -1; 
 
     private ItemDatabase database;
+    private UDictionaryIntInt resources;
 
     private Image[] sectionImages = new Image[12];
     private Image[][] subsectionImages = new Image[12][];
@@ -45,6 +46,7 @@ public class ItemWheelUI : WheelUI
     private void Start()
     {
         database = PlayerItemController.instance.database;
+        resources = InventoryHandler.instance.resources;
         anim = itemWheelTransform.GetComponent<Animator>();
         
         for(int i=0;i<sectionImages.Length; ++i)
@@ -64,7 +66,7 @@ public class ItemWheelUI : WheelUI
 
     private void Update()
     {
-        if (!anim.GetBool("OpenItemWheel"))
+        if (!anim.GetBool("OpenWheel"))
         {
             return;
         }
@@ -72,7 +74,7 @@ public class ItemWheelUI : WheelUI
         float mouseDistance = new Vector2(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2).magnitude;
         if (mouseDistance < freeDistance && hoveredSection != -1)
         {
-            CloseSubsection();
+            sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
             hoveredSection = -1;
         }
         else if (mouseDistance >= freeDistance && mouseDistance < itemWheelDistance)
@@ -82,11 +84,15 @@ public class ItemWheelUI : WheelUI
             {
                 if(hoveredSection != -1)
                 {
-                    //close hoveredSection
+                    sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
                 }
-                //open section if has subsection
                 hoveredSection = section;
+                sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = true;
             }
+        }
+        else if(mouseDistance >= itemWheelDistance)
+        {
+            sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().subsectionHovered = GetSubsectionItemIndex(true);
         }
     }
 
@@ -95,7 +101,7 @@ public class ItemWheelUI : WheelUI
         return GetSection(-60, 30, 12, freeDistance);
     }
 
-    protected int GetSubsectionItemIndex()
+    protected int GetSubsectionItemIndex(bool getSubsection = false)
     {
         List<int>[] sectionItemIndex = currentWheel.SectionItemIndex(hoveredSection / 2);
         int[] itemCount = new int[2] { sectionItemIndex[0].Count, sectionItemIndex[1].Count };
@@ -126,6 +132,10 @@ public class ItemWheelUI : WheelUI
 
         int subsection = GetSection(hoveredSection / 2 * 60 - 60 + startAngle - sectionCount * subsectionDeg / 2, subsectionDeg, sectionCount, itemWheelDistance);
 
+        if (getSubsection)
+        {
+            return subsection;
+        }
         return sectionItemIndex[firstOrSecond][subsection];
     }
 
@@ -139,8 +149,6 @@ public class ItemWheelUI : WheelUI
         int itemIndex = GetSubsectionItemIndex();
         if (itemIndex == -1)
         {
-            CloseSubsection();
-            hoveredSection = ItemGetSection();
             return;
         }
 
@@ -148,20 +156,13 @@ public class ItemWheelUI : WheelUI
         int holdItemResult = PlayerItemController.instance.HoldItem(itemID);
         if (holdItemResult == 1 && currentItem != itemID)
         {
-            //put selected
             currentItem = itemID;
         }
         else if (holdItemResult == 2 && currentItem2 != itemID) 
         {
-            //put second selected
             currentItem2 = itemID;
         }
     }
-
-    protected void CloseSubsection()
-    {
-        
-    } 
 
     protected void SetSubsection(int section, int subsection)
     {
@@ -246,17 +247,19 @@ public class ItemWheelUI : WheelUI
 
         currentWheel.RefreshStack();
 
+
+        //disable previous selected / second selected
         currentItem = PlayerItemController.instance.rightItem;
         currentItem2 = PlayerItemController.instance.leftItem;
+
+        //put selected
+        //put second selected
 
         int count = 0;
         for (int i = 0; i < 6; i++)
         {
             indexList = currentWheel.SectionItemIndex(i, count);
             count += currentWheel.subsection[i].TotalItemCount();
-
-            sectionImages[2 * i].transform.GetChild(1).gameObject.SetActive(false);
-            sectionImages[2 * i + 1].transform.GetChild(1).gameObject.SetActive(false);
 
             if (indexList[0].Count == 0 && indexList[1].Count == 0)
             {
