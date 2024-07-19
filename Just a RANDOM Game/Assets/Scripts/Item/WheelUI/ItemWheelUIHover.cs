@@ -14,7 +14,7 @@ public class ItemWheelUIHover : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
-        for(int i=0; i<subsectionAnim.Length; i++)
+        for (int i = 0; i < subsectionAnim.Length; i++)
         {
             subsectionAnim[i] = transform.GetChild(1).GetChild(i).GetComponent<Animator>();
         }
@@ -34,14 +34,22 @@ public class ItemWheelUIHover : MonoBehaviour
             anim.SetBool("Hover", false);
             transform.GetChild(1).gameObject.SetActive(false);
         }
-        else if(selected && hovered)
+        else if (selected && hovered)
         {
-            if(subsectionSelected != subsectionHovered && subsectionSelected != -1)
+            if (subsectionSelected != subsectionHovered && subsectionSelected != -1)
             {
                 subsectionAnim[subsectionSelected].SetBool("Hover", false);
             }
             subsectionSelected = subsectionHovered;
-            subsectionAnim[subsectionSelected].SetBool("Hover", true);
+            if (subsectionSelected != -1)
+            {
+                subsectionAnim[subsectionSelected].SetBool("Hover", true);
+            }
+        }
+        else if (subsectionSelected != -1)
+        {
+            subsectionAnim[subsectionSelected].SetBool("Hover", false);
+            subsectionSelected = -1;
         }
     }
 }

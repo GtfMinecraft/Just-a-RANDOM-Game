@@ -33,7 +33,7 @@ public class ItemWheelUI : WheelUI
 
     private int hoveredSection = -1;
     private int currentSection = -1; // come from currentItem from PlayerItemController
-    private int curreentSubsection = -1; 
+    private int curreentSubsection = -1;
 
     private ItemDatabase database;
     private UDictionaryIntInt resources;
@@ -48,14 +48,14 @@ public class ItemWheelUI : WheelUI
         database = PlayerItemController.instance.database;
         resources = InventoryHandler.instance.resources;
         anim = itemWheelTransform.GetComponent<Animator>();
-        
-        for(int i=0;i<sectionImages.Length; ++i)
+
+        for (int i = 0; i < sectionImages.Length; ++i)
         {
             sectionImages[i] = itemWheelTransform.GetChild(i).GetComponent<Image>();
             sectionImages[i].gameObject.SetActive(false);
 
             subsectionImages[i] = new Image[5];
-            for(int j = 0; j < 5; ++j)
+            for (int j = 0; j < 5; ++j)
             {
                 subsectionImages[i][j] = sectionImages[i].transform.GetChild(1).GetChild(j).GetComponent<Image>();
                 subsectionImages[i][j].gameObject.SetActive(false);
@@ -82,7 +82,7 @@ public class ItemWheelUI : WheelUI
             int section = ItemGetSection();
             if (hoveredSection != section)
             {
-                if(hoveredSection != -1)
+                if (hoveredSection != -1)
                 {
                     sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
                 }
@@ -90,7 +90,7 @@ public class ItemWheelUI : WheelUI
                 sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = true;
             }
         }
-        else if(mouseDistance >= itemWheelDistance)
+        else if (mouseDistance >= itemWheelDistance)
         {
             sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().subsectionHovered = GetSubsectionItemIndex(true);
         }
@@ -127,7 +127,9 @@ public class ItemWheelUI : WheelUI
 
         if (sectionItemIndex[firstOrSecond].Count == 1)
         {
-            return sectionItemIndex[firstOrSecond][0];
+            if (!getSubsection)
+                return sectionItemIndex[firstOrSecond][0];
+            return -1;
         }
 
         int subsection = GetSection(hoveredSection / 2 * 60 - 60 + startAngle - sectionCount * subsectionDeg / 2, subsectionDeg, sectionCount, itemWheelDistance);
@@ -136,12 +138,12 @@ public class ItemWheelUI : WheelUI
         {
             return subsection;
         }
-        return sectionItemIndex[firstOrSecond][subsection];
+        return (subsection == -1) ? -1 : sectionItemIndex[firstOrSecond][subsection];
     }
 
     public void SwapTool()
     {
-        if(hoveredSection == -1)
+        if (hoveredSection == -1)
         {
             return;
         }
@@ -158,7 +160,7 @@ public class ItemWheelUI : WheelUI
         {
             currentItem = itemID;
         }
-        else if (holdItemResult == 2 && currentItem2 != itemID) 
+        else if (holdItemResult == 2 && currentItem2 != itemID)
         {
             currentItem2 = itemID;
         }
@@ -173,7 +175,7 @@ public class ItemWheelUI : WheelUI
             count = 0;
 
             sectionImages[2 * section + subsection].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[0][0]]].icon;
-            
+
             if (currentWheel.stacks[indexList[subsection][0]] == 1)
             {
                 sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
@@ -204,7 +206,7 @@ public class ItemWheelUI : WheelUI
             Transform sectionTransform = sectionImages[2 * section + subsection].transform;
 
             subsectionImages[2 * section + subsection][i].transform.localPosition = (itemWheelDistance + subsectionDistance) / 2 * (Quaternion.AngleAxis(-subsectionDeg / 2 * (count - 1) + i * subsectionDeg, Vector3.forward) * sectionTransform.localPosition.normalized);
-            subsectionImages[2 * section + subsection][i].transform.localRotation = sectionTransform.localRotation * Quaternion.Euler(0, 0, - subsectionDeg / 2 * (count - 1) + i * subsectionDeg);
+            subsectionImages[2 * section + subsection][i].transform.localRotation = sectionTransform.localRotation * Quaternion.Euler(0, 0, -subsectionDeg / 2 * (count - 1) + i * subsectionDeg);
 
             subsectionImages[2 * section + subsection][i].sprite = subsectionSprite;
             subsectionImages[2 * section + subsection][i].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[subsection][i]]].icon;
@@ -225,14 +227,14 @@ public class ItemWheelUI : WheelUI
 
     public void UpdateItemWheelUI(int item = 0)
     {
-        if(InterfaceHandler.instance.currentInterface != Interfaces.item)
+        if (InterfaceHandler.instance.currentInterface != Interfaces.item)
         {
             return;
         }
 
         InventoryTypes currentInventory = PlayerItemController.instance.currentInventory;
 
-        if(currentInventory == InventoryTypes.storage)
+        if (currentInventory == InventoryTypes.storage)
         {
             InterfaceHandler.instance.CloseAllInterface();
             return;
@@ -299,7 +301,7 @@ public class ItemWheelUI : WheelUI
                 SetSubsection(i, 0);
                 SetSubsection(i, 1);
 
-                sectionImages[2 * i ].gameObject.SetActive(true);
+                sectionImages[2 * i].gameObject.SetActive(true);
                 sectionImages[2 * i + 1].gameObject.SetActive(true);
             }
         }
