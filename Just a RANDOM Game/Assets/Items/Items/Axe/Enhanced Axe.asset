@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
   m_Name: Enhanced Axe
   m_EditorClassIdentifier: 
-  ID: 1
+  ID: 7
   itemName: Enhanced Axe
   itemDescription: A broken axe with an eroded handle and dull edges
   price: 0
   icon: {fileID: 21300000, guid: e366613a4fb4d7249985f30b7ecae247, type: 3}
   model: {fileID: 919132149155446097, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
   inventoryType: 2
-  itemType: 0
+  itemType: 1
   durability: 0
   attackSpeed: 0
   maxStack: 1

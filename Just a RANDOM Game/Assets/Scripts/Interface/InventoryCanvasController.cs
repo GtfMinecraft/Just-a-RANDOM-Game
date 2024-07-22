@@ -55,6 +55,7 @@ public class InventoryCanvasController : MonoBehaviour
         toolWheel.enabled = false;
         toolWheel.GetComponent<ToolWheelUI>().scrollWheel.enabled = false;
         itemWheel.enabled = false;
+        itemWheel.GetComponent<ItemWheelUI>().itemWheelTransform.gameObject.SetActive(false);
     }
 
     public void ToolWheelHandler(InputAction.CallbackContext ctx)

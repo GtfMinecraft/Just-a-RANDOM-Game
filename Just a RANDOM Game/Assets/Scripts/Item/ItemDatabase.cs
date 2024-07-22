@@ -31,7 +31,7 @@ public class ItemDatabase : ScriptableObject, ISerializationCallbackReceiver
 
         for(int i=0; i<items.Count; i++)
         {
-            if (items[i].item == null || items[i].ID == 0)
+            if (items[i].item == null)
             {
                 continue;
             }

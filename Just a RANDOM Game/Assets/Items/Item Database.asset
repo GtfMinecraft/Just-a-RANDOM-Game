@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item Database
   m_EditorClassIdentifier: 
   items:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: f8d09c719692d444d9e3a85e5f253c72, type: 2}
     ID: 0
   - item: {fileID: 11400000, guid: 0df3c140891411945988105155cde02b, type: 2}
     ID: 1

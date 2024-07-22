@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
-  ID: 6
+  ID: 9
   itemName: Wood
   itemDescription: a pile of wood
   price: 10
   icon: {fileID: 21300000, guid: 6294e631a0dec8944820e8a30e05977c, type: 3}
   model: {fileID: 0}
   inventoryType: 0
-  itemType: 0
+  itemType: 7
   durability: 0
   attackSpeed: 0
   maxStack: 100

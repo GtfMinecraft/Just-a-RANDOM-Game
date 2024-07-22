@@ -187,5 +187,14 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
         PlayerPrefs.SetInt("selectedTool", (int)PlayerItemController.instance.currentInventory);
         PlayerPrefs.SetInt("selectedGroup", currentGroup);
+
+        string rightItemsString = "", leftItemsString = "";
+        for(int i = 0; i < PlayerItemController.instance.rightItems.Length; i++)
+        {
+            rightItemsString += PlayerItemController.instance.rightItems[i];
+            leftItemsString += PlayerItemController.instance.leftItems[i];
+        }
+        PlayerPrefs.SetString("rightItemsString", rightItemsString);
+        PlayerPrefs.SetString("leftItemsString", leftItemsString);
     }
 }

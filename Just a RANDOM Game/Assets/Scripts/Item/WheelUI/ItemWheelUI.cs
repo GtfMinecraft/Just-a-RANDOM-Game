@@ -155,15 +155,7 @@ public class ItemWheelUI : WheelUI
         }
 
         int itemID = currentWheel.itemID[itemIndex];
-        int holdItemResult = PlayerItemController.instance.HoldItem(itemID);
-        if (holdItemResult == 1 && currentItem != itemID)
-        {
-            currentItem = itemID;
-        }
-        else if (holdItemResult == 2 && currentItem2 != itemID)
-        {
-            currentItem2 = itemID;
-        }
+        PlayerItemController.instance.SwapHandItem(itemID);
     }
 
     protected void SetSubsection(int section, int subsection)
@@ -240,6 +232,8 @@ public class ItemWheelUI : WheelUI
             return;
         }
 
+        itemWheelTransform.gameObject.SetActive(true);
+
         currentWheel = itemWheels[(int)currentInventory - 1];
 
         if (item != 0 && !currentWheel.itemID.Contains(item))
@@ -251,8 +245,8 @@ public class ItemWheelUI : WheelUI
 
 
         //disable previous selected / second selected
-        currentItem = PlayerItemController.instance.rightItem;
-        currentItem2 = PlayerItemController.instance.leftItem;
+        currentItem = PlayerItemController.instance.rightItems[(int)currentInventory];
+        currentItem2 = PlayerItemController.instance.leftItems[(int)currentInventory];
 
         //put selected
         //put second selected

@@ -17,9 +17,9 @@ MonoBehaviour:
   itemDescription: New Description
   price: 0
   icon: {fileID: 21300000, guid: 4b15382827254e4429bfcbe371f94664, type: 3}
-  model: {fileID: 0}
-  inventoryType: 0
-  itemType: 0
+  model: {fileID: 919132149155446097, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
+  inventoryType: 1
+  itemType: 1
   durability: 0
   attackSpeed: 0
   maxStack: 1
