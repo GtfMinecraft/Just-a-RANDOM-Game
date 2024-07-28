@@ -10,8 +10,7 @@ public class Trade : ScriptableObject
     [System.Serializable]
     public class Offer
     {
-        public int merchandice;
-        public int price;
+        public int item;
         public int crystals;
         [UDictionary.Split(30, 70)]
         public UDictionaryIntInt materials;
@@ -21,22 +20,22 @@ public class Trade : ScriptableObject
         public bool Buy(int playerCrystals, UDictionaryIntInt playerMaterials)
         {
             if (quantity == 0) return false;
-            if(playerCrystals<crystals) return false;
-            if(!show) return false;
-            
-            foreach(var mat in materials)
+            if (playerCrystals < crystals) return false;
+            if (!show) return false;
+
+            foreach (var mat in materials)
             {
                 if (playerMaterials[mat.Key] < mat.Value)
                 {
                     return false;
                 }
             }
-            
+
             if (quantity > 1)
             {
                 quantity--;
             }
-            else if(quantity == 1)
+            else if (quantity == 1)
             {
                 quantity = 0;
                 show = false;
@@ -50,7 +49,7 @@ public class Trade : ScriptableObject
     {
         for (int i = 0; i < offers.Length; ++i)
         {
-            if (offers[i].merchandice == item)
+            if (offers[i].item == item)
             {
                 offers[i].show = true;
                 TradingInterface.instance.RefreshTradingInterface();

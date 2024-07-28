@@ -116,7 +116,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         inventoryList[invType].RemoveItem(itemID, count);
         itemWheel.UpdateItemWheelUI(itemID);
 
-        if (invType != currentGroup)
+        if (invType == currentGroup)
         {
             UpdateInventoryUI();
         }
