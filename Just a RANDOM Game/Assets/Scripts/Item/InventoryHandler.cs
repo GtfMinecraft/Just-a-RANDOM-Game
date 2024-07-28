@@ -90,6 +90,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             {
                 resources[itemID] = 1;
             }
+            PlayerItemController.instance.SetDefaultItem(itemID);
             itemWheel.UpdateItemWheelUI(itemID);
 
             if(invType == currentGroup)
@@ -169,7 +170,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
                     {
                         resources[f1] = f2;
                     }
-                    return new Inventory.ItemSlot(f1, f2); 
+                    return new Inventory.ItemSlot(f1, f2);
                 }).ToList();
         }
     }
@@ -189,7 +190,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         PlayerPrefs.SetInt("selectedGroup", currentGroup);
 
         string rightItemsString = "", leftItemsString = "";
-        for(int i = 0; i < PlayerItemController.instance.rightItems.Length; i++)
+        for (int i = 0; i < PlayerItemController.instance.rightItems.Length; i++)
         {
             rightItemsString += PlayerItemController.instance.rightItems[i];
             leftItemsString += PlayerItemController.instance.leftItems[i];

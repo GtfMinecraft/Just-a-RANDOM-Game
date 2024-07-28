@@ -148,15 +148,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Storage",
-                    "type": "Button",
-                    "id": "d2f4efd6-1c69-4817-9649-c8f94ec2f3fb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -454,28 +445,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "PlayerInventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c0cbaf01-8b38-425d-9ff0-65bee01dac5d",
-                    "path": "<Keyboard>/0",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Storage",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "01e2b42d-b063-40fc-8b30-c87b18789844",
-                    "path": "<Keyboard>/numpad0",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Storage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

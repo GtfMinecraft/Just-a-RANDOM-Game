@@ -17,7 +17,7 @@ MonoBehaviour:
   itemDescription: New Description
   price: 0
   icon: {fileID: 21300000, guid: 4b15382827254e4429bfcbe371f94664, type: 3}
-  model: {fileID: 919132149155446097, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
+  model: {fileID: 5863745638388628282, guid: 02a0afde967a2084aa840f4af2a75709, type: 3}
   inventoryType: 1
   itemType: 1
   durability: 0

@@ -5499,22 +5499,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7ea2269f-3707-4bba-8726-4f32e9d8586d
     m_ActionName: Default/Food[/Keyboard/6,/Keyboard/numpad6]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1020271363}
-        m_TargetAssemblyTypeName: InventoryCanvasController, Assembly-CSharp
-        m_MethodName: ToolWheelHandler
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: d2f4efd6-1c69-4817-9649-c8f94ec2f3fb
-    m_ActionName: Default/Storage[/Keyboard/0,/Keyboard/numpad0]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Default
@@ -96013,7 +95997,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7008745923462664202}
   - {fileID: 148624815}
   - {fileID: 1560214100}
   - {fileID: 1996716467}
@@ -103628,79 +103611,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
---- !u!1001 &4938307000275138363
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1683019484}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.534
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -5.55
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.462
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-      propertyPath: m_Name
-      value: Fractured Axe
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
 --- !u!1001 &5023861296253378458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -103802,11 +103712,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13e2ab043897f3b4f8ccb54df9ddf4c6, type: 3}
---- !u!4 &7008745923462664202 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
-  m_PrefabInstance: {fileID: 4938307000275138363}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

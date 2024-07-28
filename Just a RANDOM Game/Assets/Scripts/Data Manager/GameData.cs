@@ -7,7 +7,6 @@ using UnityEngine;
 public class GameData
 {
     public List<InventoryData> inventoryData;
-    public bool inventoryFirstInstance;
 
     //TODO: put all data that need to save in this class
 
@@ -23,7 +22,6 @@ public class GameData
             new(InventoryTypes.rod),
             new(InventoryTypes.food),
         };
-        inventoryFirstInstance = true;
     }
 
     public class InventoryData

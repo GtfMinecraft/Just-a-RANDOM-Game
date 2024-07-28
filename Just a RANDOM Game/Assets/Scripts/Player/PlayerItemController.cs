@@ -93,10 +93,7 @@ public class PlayerItemController : MonoBehaviour
         {
             int temp = leftItems[(int)currentInventory];
 
-            leftItems[(int)currentInventory] = itemID;
             UpdateHandModel(item.model, true);
-
-            leftItems[(int)currentInventory] = temp;
             UpdateHandModel(database.GetItem[temp].model, true);
         }
         else if (item.itemType == ItemTypes.Bait)
@@ -129,5 +126,24 @@ public class PlayerItemController : MonoBehaviour
                 Instantiate(itemModel, leftHandObj.transform);
             }
         }
+    }
+
+    public void SetDefaultItem(int itemID)
+    {
+        Item item = database.GetItem[itemID];
+
+        if ((item.itemType == ItemTypes.Bait || item.itemType == ItemTypes.Seed) && leftItems[(int)item.inventoryType] == 0)
+        {
+            leftItems[(int)item.inventoryType] = itemID;
+            UpdateHandModel(item.model, true);
+        }
+        else if(item.itemType == ItemTypes.Tool && rightItems[(int)item.inventoryType] == 0)
+        {
+            rightItems[(int)item.inventoryType] = itemID;
+            UpdateHandModel(item.model);
+        }
+        //set left / right item to this item if it is one of the necessary items
+
+        //basic tool, tool upgrade, aquire off-hand item
     }
 }
