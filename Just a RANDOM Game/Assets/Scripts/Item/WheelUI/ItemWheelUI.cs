@@ -11,12 +11,16 @@ using static System.Collections.Specialized.BitVector32;
 
 public class ItemWheelUI : WheelUI
 {
+    public Transform itemWheelTransform;
+    public ItemWheel[] itemWheels = new ItemWheel[6];
+
+    [Header("Section Transform")]
     public float freeDistance;
     public float itemWheelDistance;
     public float subsectionDistance;
     public int subsectionDeg;
-    public Transform itemWheelTransform;
-    public ItemWheel[] itemWheels = new ItemWheel[6];
+    public int oneWideSectionSize;
+    public int twoWideSectionSize;
 
     [Header("Section Background")]
     public Sprite[] oneWideSectionSprites;
@@ -24,7 +28,7 @@ public class ItemWheelUI : WheelUI
     public Sprite[] subsectionSprites;
 
     [Header("Element Stone")]
-    public Sprite[] elementStoneSprites;
+    public Image[] elementStones;
 
     private Animator anim;
 
@@ -65,6 +69,11 @@ public class ItemWheelUI : WheelUI
             }
             sectionImages[i].transform.GetChild(1).gameObject.SetActive(false);
         }
+
+        for(int i=0;i<elementStones.Length; ++i)
+        {
+            elementStones[i].enabled = false;
+        }
     }
 
     private void Update()
@@ -80,7 +89,7 @@ public class ItemWheelUI : WheelUI
             sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
             hoveredSection = -1;
         }
-        else if (mouseDistance >= freeDistance && mouseDistance < itemWheelDistance)
+        else if (mouseDistance >= freeDistance && mouseDistance < itemWheelDistance || hoveredSection == -1)
         {
             int section = ItemGetSection();
             if (hoveredSection != section)
@@ -95,7 +104,13 @@ public class ItemWheelUI : WheelUI
         }
         else if (mouseDistance >= itemWheelDistance)
         {
-            sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().subsectionHovered = GetSubsectionItemIndex(true);
+            int section = GetSubsectionItemIndex(true);
+            sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().subsectionHovered = section;
+            if(section == -1)
+            {
+                sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
+                hoveredSection = -1;
+            }
         }
     }
 
@@ -270,22 +285,34 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * i + 1].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
                 sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
                 sectionImages[2 * i + 1].sprite = twoWideSectionSprites[i];
+                sectionImages[2*i+1].rectTransform.sizeDelta = new Vector2(twoWideSectionSize, twoWideSectionSize);
 
                 SetSubsection(i, 1);
 
                 sectionImages[2 * i].gameObject.SetActive(false);
                 sectionImages[2 * i + 1].gameObject.SetActive(true);
+
+                if (!elementStones[i].enabled)
+                {
+                    elementStones[i].enabled = true;
+                }
             }
             else if (indexList[1].Count == 0)
             {
                 sectionImages[2 * i].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
                 sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
                 sectionImages[2 * i].sprite = twoWideSectionSprites[i];
+                sectionImages[2 * i].rectTransform.sizeDelta = new Vector2(twoWideSectionSize, twoWideSectionSize);
 
                 SetSubsection(i, 0);
 
                 sectionImages[2 * i].gameObject.SetActive(true);
                 sectionImages[2 * i + 1].gameObject.SetActive(false);
+
+                if (!elementStones[i].enabled)
+                {
+                    elementStones[i].enabled = true;
+                }
             }
             else
             {
@@ -294,12 +321,18 @@ public class ItemWheelUI : WheelUI
                 sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 135);
                 sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 105);
                 sectionImages[2 * i].sprite = sectionImages[2 * i + 1].sprite = oneWideSectionSprites[i];
+                sectionImages[2 * i].rectTransform.sizeDelta = sectionImages[2 * i + 1].rectTransform.sizeDelta = new Vector2(oneWideSectionSize, oneWideSectionSize);
 
                 SetSubsection(i, 0);
                 SetSubsection(i, 1);
 
                 sectionImages[2 * i].gameObject.SetActive(true);
                 sectionImages[2 * i + 1].gameObject.SetActive(true);
+
+                if (!elementStones[i].enabled)
+                {
+                    elementStones[i].enabled = true;
+                }
             }
         }
     }

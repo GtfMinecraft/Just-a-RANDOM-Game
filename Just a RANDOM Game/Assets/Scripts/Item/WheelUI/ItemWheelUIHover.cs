@@ -33,6 +33,12 @@ public class ItemWheelUIHover : MonoBehaviour
             selected = false;
             anim.SetBool("Hover", false);
             transform.GetChild(1).gameObject.SetActive(false);
+
+            if (subsectionSelected != -1)
+            {
+                subsectionAnim[subsectionSelected].SetBool("Hover", false);
+                subsectionSelected = -1;
+            }
         }
         else if (selected && hovered && subsectionSelected != subsectionHovered)
         {
@@ -45,11 +51,6 @@ public class ItemWheelUIHover : MonoBehaviour
             {
                 subsectionAnim[subsectionSelected].SetBool("Hover", true);
             }
-        }
-        else if (!selected && !hovered && subsectionSelected != -1)
-        {
-            subsectionAnim[subsectionSelected].SetBool("Hover", false);
-            subsectionSelected = -1;
         }
     }
 }
