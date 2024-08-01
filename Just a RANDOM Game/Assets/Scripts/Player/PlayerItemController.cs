@@ -18,8 +18,8 @@ public class PlayerItemController : MonoBehaviour
     public GameObject rightHandObj;
     public GameObject leftHandObj;
 
-    public int[] rightItems { get; private set; } = new int[6];
-    public int[] leftItems { get; private set; } = new int[6];
+    public int[] rightItems { get; private set; } = new int[7];
+    public int[] leftItems { get; private set; } = new int[7];
 
     /*
      *  0 empty
@@ -55,17 +55,23 @@ public class PlayerItemController : MonoBehaviour
             rightItems[i] = (rightItemsString.Length > i) ? rightItemsString[i] - '0' : 0;
             leftItems[i] = (leftItemsString.Length > i) ? leftItemsString[i] - '0' : 0;
         }
-        UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
-        UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
+        if(currentInventory != InventoryTypes.storage)
+        {
+            UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
+            UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
+        }
     }
 
     public void ChangeInventory(InventoryTypes inv)
     {
         currentInventory = inv;
-        InventoryCanvasController.instance.ChangeToolInventory(inv);
+        InventoryCanvasController.instance.ChangeToolInventory(currentInventory);
         
-        //SwapHandItem(database.GetItem[defaultRightItems[(int)inv]], rightHand);
-        //SwapHandItem(database.GetItem[defaultLeftItems[(int)inv]], leftHand);
+        if(inv != InventoryTypes.storage)
+        {
+            UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
+            UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
+        }
         //leftItem = null;
         //UpdateHandModel(magicStone, leftHand);
     }

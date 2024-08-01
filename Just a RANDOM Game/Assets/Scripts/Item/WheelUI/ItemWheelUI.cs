@@ -35,6 +35,8 @@ public class ItemWheelUI : WheelUI
     public Transform subsectionSelected;
     public Transform subsectionSelected2;
 
+    private bool[] selectedBool = new bool[6];
+
     [Header("Element Stone")]
     public Image[] elementStones;
 
@@ -48,22 +50,17 @@ public class ItemWheelUI : WheelUI
 
     private int hoveredSection = -1;
     private int hoveredSubsection = -1;
-    private int currentSection = -1; // come from currentItem from PlayerItemController
+    private int currentSection = -1;
     private int currentSection2 = -1;
-    private int curreentSubsection = -1;
 
     private ItemDatabase database;
-    private UDictionaryIntInt resources;
 
     private Image[] sectionImages = new Image[12];
     private Image[][] subsectionImages = new Image[12][];
-    private List<Image>[] itemSelected = new List<Image>[12];
-    private TextMeshProUGUI[] stacks = new TextMeshProUGUI[12];
 
     private void Start()
     {
         database = PlayerItemController.instance.database;
-        resources = InventoryHandler.instance.resources;
         anim = itemWheelTransform.GetComponent<Animator>();
 
         for (int i = 0; i < sectionImages.Length; ++i)
@@ -138,12 +135,11 @@ public class ItemWheelUI : WheelUI
             }
             hoveredSection = section;
             sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = true;
-            if (currentSection == hoveredSection)
+            if (currentSection == hoveredSection && selectedBool[4])
             {
                 subsectionSelected.GetComponent<Image>().enabled = true;
             }
-
-            if (currentSection2 == hoveredSection)
+            if (currentSection2 == hoveredSection && selectedBool[5])
             {
                 subsectionSelected2.GetComponent<Image>().enabled = true;
             }
@@ -290,6 +286,7 @@ public class ItemWheelUI : WheelUI
                 subsectionSelected.localRotation = subsectionImages[2 * section + subsection][i].transform.localRotation;
 
                 currentSection = 2 * section + subsection;
+                selectedBool[4] = true;
 
                 hasSelectedItem = 1;
             }
@@ -301,6 +298,7 @@ public class ItemWheelUI : WheelUI
                 subsectionSelected2.localRotation = subsectionImages[2 * section + subsection][i].transform.localRotation;
 
                 currentSection2 = 2 * section + subsection;
+                selectedBool[5] = true;
 
                 hasSelectedItem = 2;
             }
@@ -342,6 +340,11 @@ public class ItemWheelUI : WheelUI
         subsectionSelected.GetComponent<Image>().enabled = false;
         subsectionSelected2.GetComponent<Image>().enabled = false;
 
+        for(int i = 0; i < selectedBool.Length; ++i)
+        {
+            selectedBool[i] = false;
+        }
+
         currentItem = PlayerItemController.instance.rightItems[(int)currentInventory];
         currentItem2 = PlayerItemController.instance.leftItems[(int)currentInventory];
 
@@ -370,12 +373,16 @@ public class ItemWheelUI : WheelUI
                     twoWideSelected.localPosition = sectionImages[2 * i + 1].transform.localPosition;
                     twoWideSelected.localRotation = sectionImages[2 * i + 1].transform.localRotation;
                     twoWideSelected.GetComponent<Image>().enabled = true;
+
+                    selectedBool[2] = true;
                 }
                 else if(setSelected == 2)
                 {
                     twoWideSelected2.localPosition = sectionImages[2 * i + 1].transform.localPosition;
                     twoWideSelected2.localRotation = sectionImages[2 * i + 1].transform.localRotation;
                     twoWideSelected2.GetComponent<Image>().enabled = true;
+
+                    selectedBool[3] = true;
                 }
 
                 sectionImages[2 * i].gameObject.SetActive(false);
@@ -400,12 +407,16 @@ public class ItemWheelUI : WheelUI
                     twoWideSelected.localPosition = sectionImages[2 * i].transform.localPosition;
                     twoWideSelected.localRotation = sectionImages[2 * i].transform.localRotation;
                     twoWideSelected.GetComponent<Image>().enabled = true;
+
+                    selectedBool[2] = true;
                 }
                 else if(setSelected == 2)
                 {
                     twoWideSelected2.localPosition = sectionImages[2 * i].transform.localPosition;
                     twoWideSelected2.localRotation = sectionImages[2 * i].transform.localRotation;
                     twoWideSelected2.GetComponent<Image>().enabled = true;
+
+                    selectedBool[3] = true;
                 }
 
                 sectionImages[2 * i].gameObject.SetActive(true);
@@ -432,12 +443,16 @@ public class ItemWheelUI : WheelUI
                     oneWideSelected.localPosition = sectionImages[2 * i].transform.localPosition;
                     oneWideSelected.localRotation = sectionImages[2 * i].transform.localRotation;
                     oneWideSelected.GetComponent<Image>().enabled = true;
+
+                    selectedBool[1] = true;
                 }
                 else if(setSelected == 2)
                 {
                     oneWideSelected2.localPosition = sectionImages[2 * i].transform.localPosition;
                     oneWideSelected2.localRotation = sectionImages[2 * i].transform.localRotation;
                     oneWideSelected2.GetComponent<Image>().enabled = true;
+
+                    selectedBool[2] = true;
                 }
 
                 setSelected = SetSubsection(i, 1);

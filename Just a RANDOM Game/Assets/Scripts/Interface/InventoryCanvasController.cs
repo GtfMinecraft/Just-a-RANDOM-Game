@@ -22,6 +22,9 @@ public class InventoryCanvasController : MonoBehaviour
     public Canvas toolWheel;
     public Canvas itemWheel;
 
+    private bool closeToolWheel = false;
+    private bool closeItemWheel = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -41,6 +44,35 @@ public class InventoryCanvasController : MonoBehaviour
         toolWheel.enabled = false;
         toolWheel.GetComponent<ToolWheelUI>().scrollWheel.enabled = false;
         itemWheel.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (closeToolWheel)
+        {
+            if (toolAnim.GetBool("OpenWheel"))
+            {
+                closeToolWheel = false;
+            }
+            else if (toolAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            {
+                closeToolWheel = false;
+                InterfaceHandler.instance.CloseAllInterface();
+            }
+        }
+
+        if(closeItemWheel)
+        {
+            if (itemAnim.GetBool("OpenWheel"))
+            {
+                closeItemWheel = false;
+            }
+            else if (itemAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.item)
+            {
+                closeItemWheel = false;
+                InterfaceHandler.instance.CloseAllInterface();
+            }
+        }
     }
 
     public void ChangeToolInventory(InventoryTypes inv)
@@ -66,7 +98,7 @@ public class InventoryCanvasController : MonoBehaviour
             {
                 if(InterfaceHandler.instance.currentInterface == Interfaces.tool)
                 {
-                    ToolWheelAnimAsync();
+                    CloseToolWheelAnim();
                 }
 
                 string actionName = ctx.action.name.ToLower();
@@ -135,32 +167,22 @@ public class InventoryCanvasController : MonoBehaviour
         else if (ctx.canceled && ctx.action.name == "ToolWheel" && InterfaceHandler.instance.currentInterface == Interfaces.tool)
         {
             toolWheel.GetComponent<ToolWheelUI>().SwapTool();
-            ToolWheelAnimAsync();
+            CloseToolWheelAnim();
         }
     }
 
-    private async void ToolWheelAnimAsync()
+    private void CloseToolWheelAnim()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         if (toolAnim.GetBool("OpenWheel"))
         {
+            toolAnim.SetBool("OpenWheel", false);
             toolAnim.Play("Close", 0, 0.3f);
         }
-        toolAnim.SetBool("OpenWheel", false);
 
-        while (!toolAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden"))
-        {
-            if (toolAnim.GetBool("OpenWheel"))
-            {
-                return;
-            }
-            await Task.Delay(100);
-        }
-
-        if (InterfaceHandler.instance.currentInterface == Interfaces.tool)
-            InterfaceHandler.instance.CloseAllInterface();
+        closeToolWheel = true;
     }
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
@@ -186,32 +208,22 @@ public class InventoryCanvasController : MonoBehaviour
         else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.item)
         {
             itemWheel.GetComponent<ItemWheelUI>().SwapTool();
-            ItemWheelAnimAsync();
+            CloseItemWheelAnim();
         }
     }
 
-    private async void ItemWheelAnimAsync()
+    private void CloseItemWheelAnim()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         if (itemAnim.GetBool("OpenWheel"))
         {
+            itemAnim.SetBool("OpenWheel", false);
             itemAnim.Play("Close", 0, 0.3f);
         }
-        itemAnim.SetBool("OpenWheel", false);
 
-        while (!itemAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden"))
-        {
-            if (itemAnim.GetBool("OpenWheel"))
-            {
-                return;
-            }
-            await Task.Delay(100);
-        }
-
-        if (InterfaceHandler.instance.currentInterface == Interfaces.item)
-            InterfaceHandler.instance.CloseAllInterface();
+        closeItemWheel = true;
     }
 
     public void PlayerInventoryHandler(InputAction.CallbackContext ctx)
