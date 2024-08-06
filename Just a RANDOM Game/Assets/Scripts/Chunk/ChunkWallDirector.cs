@@ -11,7 +11,7 @@ public class ChunkWallDirector : MonoBehaviour
         Instantiate(LevelInfo.assets["chunkWallPrefab"], wall.position, wall.direction, transform);
     }
 
-    public void Unlock() 
+    public void Unlock()
     {
         if (!wall.UnlockCriteriaMet())
             return;

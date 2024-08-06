@@ -8,7 +8,6 @@ public class ItemBasedChunkWall : ChunkWall
 
 	public override bool UnlockCriteriaMet()
 	{
-		// TODO: add check
 		return true;
 	}
 }

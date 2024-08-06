@@ -238,6 +238,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AttackHandler(InputAction.CallbackContext ctx)
+    {
+        // TODO: implement
+
+        // placeholder implementation
+        if (ctx.performed)
+        {
+            // TODO: implement!!!! why am i so lazy lmao
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

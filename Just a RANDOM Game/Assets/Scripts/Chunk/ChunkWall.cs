@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class ChunkWall
 {
+	public static readonly float unlockDistance = 5f;
 	public Vector3 position;
 	public Quaternion direction;
 	[System.NonSerialized] public GameObject wallModel;
