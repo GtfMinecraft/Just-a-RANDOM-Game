@@ -51,15 +51,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Eat",
-                    "type": "Button",
-                    "id": "c5636af3-b0b2-4fff-b001-176ab8b3526a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Esc",
                     "type": "Button",
                     "id": "fe226bd2-5109-4d4a-aafa-b8782703f6d4",
@@ -90,6 +81,15 @@
                     "name": "PlayerInventory",
                     "type": "Button",
                     "id": "7f106540-b86e-407c-bdf2-04d54857c387",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToolWheel",
+                    "type": "Button",
+                    "id": "b9943230-4565-4421-b1d3-52b61b93b67d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -207,17 +207,6 @@
                 },
                 {
                     "name": "",
-                    "id": "8341fc9a-abef-4bf3-95fe-54cb95d081a9",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Eat",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "6b75636b-0a79-4860-829e-da8e7ab39aeb",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -257,17 +246,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "PlayerInventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "100e2c83-0e02-4fcb-b2cd-d2671f8aaada",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
