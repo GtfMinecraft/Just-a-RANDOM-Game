@@ -22,10 +22,12 @@ public class ItemWheelUI : WheelUI
     public int oneWideSectionSize;
     public int twoWideSectionSize;
 
-    [Header("Section Background")]
+    [Header("Section Sprite")]
     public Sprite[] oneWideSectionSprites;
     public Sprite[] twoWideSectionSprites;
     public Sprite[] subsectionSprites;
+    public Sprite sectionLockedBackground;
+    public Sprite sectionLocked;
 
     [Header("Selected")]
     public Transform oneWideSelected;
@@ -76,11 +78,6 @@ public class ItemWheelUI : WheelUI
             }
             sectionImages[i].transform.GetChild(1).gameObject.SetActive(false);
         }
-
-        for(int i=0;i<elementStones.Length; ++i)
-        {
-            elementStones[i].enabled = false;
-        }
     }
 
     private void Update()
@@ -93,8 +90,7 @@ public class ItemWheelUI : WheelUI
         float mouseDistance = new Vector2(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2).magnitude;
         if (mouseDistance < freeDistance && hoveredSection != -1)
         {
-            sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
-            hoveredSection = hoveredSubsection = -1;
+            SetHoveredSection();
         }
         else if (mouseDistance >= itemWheelDistance && hoveredSection != -1)
         {
@@ -134,21 +130,33 @@ public class ItemWheelUI : WheelUI
                 sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = false;
             }
             hoveredSection = section;
-            sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = true;
-            if (currentSection == hoveredSection && selectedBool[4])
+            if(hoveredSection != -1)
             {
-                subsectionSelected.GetComponent<Image>().enabled = true;
-            }
-            if (currentSection2 == hoveredSection && selectedBool[5])
-            {
-                subsectionSelected2.GetComponent<Image>().enabled = true;
+                sectionImages[hoveredSection].GetComponent<ItemWheelUIHover>().hovered = true;
+                if (currentSection == hoveredSection && selectedBool[4])
+                {
+                    subsectionSelected.GetComponent<Image>().enabled = true;
+                }
+                if (currentSection2 == hoveredSection && selectedBool[5])
+                {
+                    subsectionSelected2.GetComponent<Image>().enabled = true;
+                }
             }
         }
     }
 
     protected int ItemGetSection()
     {
-        return GetSection(-60, 30, 12, freeDistance);
+        int section = GetSection(-60, 30, 12, freeDistance);
+
+        if(section == -1)
+        {
+            return -1;
+        }
+
+        bool active = sectionImages[section].gameObject.activeSelf;
+
+        return active ? section : section - 2 * (section & 1) + 1;
     }
 
     protected int GetSubsectionItemIndex(bool getSubsection = false)
@@ -248,8 +256,6 @@ public class ItemWheelUI : WheelUI
             sectionImages[2 * section + subsection].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
         }
 
-        sectionImages[2 * section + subsection].transform.GetChild(0).rotation = Quaternion.identity;
-
         for (int i = count; i < 5; ++i)
         {
             subsectionImages[2 * section + subsection][i].gameObject.SetActive(false);
@@ -340,7 +346,12 @@ public class ItemWheelUI : WheelUI
         subsectionSelected.GetComponent<Image>().enabled = false;
         subsectionSelected2.GetComponent<Image>().enabled = false;
 
-        for(int i = 0; i < selectedBool.Length; ++i)
+        for (int i = 0; i < elementStones.Length; ++i)
+        {
+            elementStones[i].enabled = false;
+        }
+
+        for (int i = 0; i < selectedBool.Length; ++i)
         {
             selectedBool[i] = false;
         }
@@ -354,32 +365,39 @@ public class ItemWheelUI : WheelUI
             indexList = currentWheel.SectionItemIndex(i, count);
             count += currentWheel.subsection[i].TotalItemCount();
 
+            sectionImages[2 * i].transform.GetChild(0).rotation = Quaternion.identity;
+            sectionImages[2 * i + 1].transform.GetChild(0).rotation = Quaternion.identity;
+
             if (indexList[0].Count == 0 && indexList[1].Count == 0)
             {
-                sectionImages[2 * i].gameObject.SetActive(false);
+                sectionImages[2 * i].transform.SetLocalPositionAndRotation((freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0), Quaternion.Euler(0, 0, i * 60 - 120));
+                sectionImages[2 * i].sprite = sectionLockedBackground;
+                sectionImages[2 * i].rectTransform.sizeDelta = new Vector2(twoWideSectionSize, twoWideSectionSize);
+
+                sectionImages[2 * i].transform.GetChild(0).GetComponent<Image>().sprite = sectionLocked;
+                sectionImages[2 * i].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+
+                sectionImages[2 * i].gameObject.SetActive(true);
                 sectionImages[2 * i + 1].gameObject.SetActive(false);
             }
             else if (indexList[0].Count == 0)
             {
-                sectionImages[2 * i + 1].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
-                sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
+                sectionImages[2 * i + 1].transform.SetLocalPositionAndRotation((freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0), Quaternion.Euler(0, 0, i * 60 - 120));
                 sectionImages[2 * i + 1].sprite = twoWideSectionSprites[i];
-                sectionImages[2*i+1].rectTransform.sizeDelta = new Vector2(twoWideSectionSize, twoWideSectionSize);
+                sectionImages[2 * i + 1].rectTransform.sizeDelta = new Vector2(twoWideSectionSize, twoWideSectionSize);
 
                 int setSelected = SetSubsection(i, 1);
 
                 if (setSelected == 1)
                 {
-                    twoWideSelected.localPosition = sectionImages[2 * i + 1].transform.localPosition;
-                    twoWideSelected.localRotation = sectionImages[2 * i + 1].transform.localRotation;
+                    twoWideSelected.SetLocalPositionAndRotation(sectionImages[2 * i + 1].transform.localPosition, sectionImages[2 * i + 1].transform.localRotation);
                     twoWideSelected.GetComponent<Image>().enabled = true;
 
                     selectedBool[2] = true;
                 }
                 else if(setSelected == 2)
                 {
-                    twoWideSelected2.localPosition = sectionImages[2 * i + 1].transform.localPosition;
-                    twoWideSelected2.localRotation = sectionImages[2 * i + 1].transform.localRotation;
+                    twoWideSelected2.SetLocalPositionAndRotation(sectionImages[2 * i + 1].transform.localPosition, sectionImages[2 * i + 1].transform.localRotation);
                     twoWideSelected2.GetComponent<Image>().enabled = true;
 
                     selectedBool[3] = true;
@@ -395,8 +413,7 @@ public class ItemWheelUI : WheelUI
             }
             else if (indexList[1].Count == 0)
             {
-                sectionImages[2 * i].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0);
-                sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 120);
+                sectionImages[2 * i].transform.SetLocalPositionAndRotation((freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 30) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 30) * Mathf.Deg2Rad), 0), Quaternion.Euler(0, 0, i * 60 - 120));
                 sectionImages[2 * i].sprite = twoWideSectionSprites[i];
                 sectionImages[2 * i].rectTransform.sizeDelta = new Vector2(twoWideSectionSize, twoWideSectionSize);
 
@@ -404,16 +421,14 @@ public class ItemWheelUI : WheelUI
 
                 if(setSelected == 1)
                 {
-                    twoWideSelected.localPosition = sectionImages[2 * i].transform.localPosition;
-                    twoWideSelected.localRotation = sectionImages[2 * i].transform.localRotation;
+                    twoWideSelected.SetLocalPositionAndRotation(sectionImages[2 * i].transform.localPosition, sectionImages[2 * i].transform.localRotation);
                     twoWideSelected.GetComponent<Image>().enabled = true;
 
                     selectedBool[2] = true;
                 }
                 else if(setSelected == 2)
                 {
-                    twoWideSelected2.localPosition = sectionImages[2 * i].transform.localPosition;
-                    twoWideSelected2.localRotation = sectionImages[2 * i].transform.localRotation;
+                    twoWideSelected2.SetLocalPositionAndRotation(sectionImages[2 * i].transform.localPosition, sectionImages[2 * i].transform.localRotation);
                     twoWideSelected2.GetComponent<Image>().enabled = true;
 
                     selectedBool[3] = true;
@@ -429,10 +444,8 @@ public class ItemWheelUI : WheelUI
             }
             else
             {
-                sectionImages[2 * i].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 45) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 45) * Mathf.Deg2Rad), 0);
-                sectionImages[2 * i + 1].transform.localPosition = (freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 15) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 15) * Mathf.Deg2Rad), 0);
-                sectionImages[2 * i].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 135);
-                sectionImages[2 * i + 1].transform.localRotation = Quaternion.Euler(0, 0, i * 60 - 105);
+                sectionImages[2 * i].transform.SetLocalPositionAndRotation((freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 45) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 45) * Mathf.Deg2Rad), 0), Quaternion.Euler(0, 0, i * 60 - 135));
+                sectionImages[2 * i + 1].transform.SetLocalPositionAndRotation((freeDistance + itemWheelDistance) / 2 * new Vector3(Mathf.Cos((60 * i - 15) * Mathf.Deg2Rad), Mathf.Sin((60 * i - 15) * Mathf.Deg2Rad), 0), Quaternion.Euler(0, 0, i * 60 - 105));
                 sectionImages[2 * i].sprite = sectionImages[2 * i + 1].sprite = oneWideSectionSprites[i];
                 sectionImages[2 * i].rectTransform.sizeDelta = sectionImages[2 * i + 1].rectTransform.sizeDelta = new Vector2(oneWideSectionSize, oneWideSectionSize);
 
@@ -440,16 +453,14 @@ public class ItemWheelUI : WheelUI
 
                 if (setSelected == 1)
                 {
-                    oneWideSelected.localPosition = sectionImages[2 * i].transform.localPosition;
-                    oneWideSelected.localRotation = sectionImages[2 * i].transform.localRotation;
+                    oneWideSelected.SetLocalPositionAndRotation(sectionImages[2 * i].transform.localPosition, sectionImages[2 * i].transform.localRotation);
                     oneWideSelected.GetComponent<Image>().enabled = true;
 
                     selectedBool[1] = true;
                 }
                 else if(setSelected == 2)
                 {
-                    oneWideSelected2.localPosition = sectionImages[2 * i].transform.localPosition;
-                    oneWideSelected2.localRotation = sectionImages[2 * i].transform.localRotation;
+                    oneWideSelected2.SetLocalPositionAndRotation(sectionImages[2 * i].transform.localPosition, sectionImages[2 * i].transform.localRotation);
                     oneWideSelected2.GetComponent<Image>().enabled = true;
 
                     selectedBool[2] = true;
@@ -459,14 +470,12 @@ public class ItemWheelUI : WheelUI
                 
                 if (setSelected == 1)
                 {
-                    oneWideSelected.localPosition = sectionImages[2 * i + 1].transform.localPosition;
-                    oneWideSelected.localRotation = sectionImages[2 * i + 1].transform.localRotation;
+                    oneWideSelected.SetLocalPositionAndRotation(sectionImages[2 * i + 1].transform.localPosition, sectionImages[2 * i + 1].transform.localRotation);
                     oneWideSelected.GetComponent<Image>().enabled = true;
                 }
                 else if (setSelected == 2)
                 {
-                    oneWideSelected2.localPosition = sectionImages[2 * i + 1].transform.localPosition;
-                    oneWideSelected2.localRotation = sectionImages[2 * i + 1].transform.localRotation;
+                    oneWideSelected2.SetLocalPositionAndRotation(sectionImages[2 * i + 1].transform.localPosition, sectionImages[2 * i + 1].transform.localRotation);
                     oneWideSelected2.GetComponent<Image>().enabled = true;
                 }
 
