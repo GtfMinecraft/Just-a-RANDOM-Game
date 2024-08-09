@@ -91,8 +91,6 @@ public class FileDataHandler
                     }
                     dataToSave = JsonConvert.SerializeObject(data.inventoryData);
                 }
-<<<<<<< HEAD
-=======
                 else if (file == "MapData")
                 {
                     if (data.mapData == null)
@@ -102,7 +100,6 @@ public class FileDataHandler
                     }
                     dataToSave = JsonConvert.SerializeObject(data.mapData);
                 }
->>>>>>> map
                 else
                 {
                     Debug.LogError($"Saving action undefined for {file} when saving data");

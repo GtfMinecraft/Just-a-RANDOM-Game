@@ -13,7 +13,7 @@ public class DataPersistenceManager : MonoBehaviour
     [SerializeField] private bool initializeDataIfNull = false;
 
     [Header("File Storing Config")]
-    [SerializeField] private string[] fileName = { "InventoryData" };
+    [SerializeField] private string[] fileName;
 
     public static DataPersistenceManager instance;
 
