@@ -50,6 +50,10 @@ public class FileDataHandler
                     {
                         loadData.inventoryData = JsonConvert.DeserializeObject<List<GameData.InventoryData>>(dataToLoad);
                     }
+                    else if (file == "MapData")
+                    {
+                        loadData.mapData = JsonConvert.DeserializeObject<GameData.MapData>(dataToLoad);
+                    }
                     else
                     {
                         Debug.LogError($"Loading action undefined for {file} when loading data from file");
@@ -87,6 +91,18 @@ public class FileDataHandler
                     }
                     dataToSave = JsonConvert.SerializeObject(data.inventoryData);
                 }
+<<<<<<< HEAD
+=======
+                else if (file == "MapData")
+                {
+                    if (data.mapData == null)
+                    {
+                        Debug.Log($"No data for {file} when saving data");
+                        continue;
+                    }
+                    dataToSave = JsonConvert.SerializeObject(data.mapData);
+                }
+>>>>>>> map
                 else
                 {
                     Debug.LogError($"Saving action undefined for {file} when saving data");

@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameData
 {
     public List<InventoryData> inventoryData;
+    public MapData mapData;
     public bool inventoryFirstInstance;
 
     //TODO: put all data that need to save in this class
@@ -24,6 +25,21 @@ public class GameData
             new(InventoryTypes.food),
         };
         inventoryFirstInstance = true;
+
+        mapData = new MapData();
+    }
+
+    public class MapData
+    {
+        public bool[] unlockedChunks;
+        public List<GameObject> beacons;
+        public GameObject selectedBeacon;
+
+        public MapData() 
+        { 
+            unlockedChunks = new bool[] {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+            beacons = new List<GameObject> {};
+        }
     }
 
     public class InventoryData

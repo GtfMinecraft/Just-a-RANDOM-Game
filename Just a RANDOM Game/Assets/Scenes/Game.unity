@@ -15351,7 +15351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: fileName.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: initializeDataIfNull
@@ -15363,7 +15363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: fileName.Array.data[1]
-      value: InventoryData
+      value: MapData
       objectReference: {fileID: 0}
     - target: {fileID: 7859607502762903571, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: m_LocalPosition.x
