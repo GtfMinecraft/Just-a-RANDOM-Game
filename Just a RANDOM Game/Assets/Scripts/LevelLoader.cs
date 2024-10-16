@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 public class LevelLoader : MonoBehaviour
 {
     [SerializeField] private int maxConcurrentLoad;
-    [SerializeField] private string assetListPath;
+    [SerializeField] private string assetListName;
     [SerializeField] private GameObject loadingScreenPrefab;
 
     public LevelDirector director;
@@ -34,7 +34,7 @@ public class LevelLoader : MonoBehaviour
 
         progressBarInstance = Instantiate(loadingScreenPrefab);
         progressDirector = progressBarInstance.GetComponent<LoadingProgressDirector>();
-        assetList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(assetListPath));
+        assetList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(Path.Combine(Application.persistentDataPath, assetListName + ".dat")));
     }
 
     private void Update()

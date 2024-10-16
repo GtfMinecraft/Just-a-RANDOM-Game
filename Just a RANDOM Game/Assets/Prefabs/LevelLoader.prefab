@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxConcurrentLoad: 20
-  assetListPath: Assets/Data/AssetList.json
+  assetListName: AssetList
   loadingScreenPrefab: {fileID: 8449688279308390523, guid: afc9457bf79fc7b488fc970640cc92f5, type: 3}
   director: {fileID: 0}

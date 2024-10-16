@@ -11,7 +11,7 @@ public class LevelDirector : MonoBehaviour
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject loadingScreenPrefab;
     [SerializeField] private GameObject levelLoaderPrefab;
-    [SerializeField] private string levelPath;
+    [SerializeField] private string levelName;
 
     public Transform levelLoadingParent;
 
@@ -20,7 +20,7 @@ public class LevelDirector : MonoBehaviour
     private void Awake()
     {
         // load world info
-        level = JsonConvert.DeserializeObject<LevelInfo>(File.ReadAllText(levelPath), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+        level = JsonConvert.DeserializeObject<LevelInfo>(File.ReadAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat")), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
 
         // make an instance of `LevelLoader` that generates loading screen and loads assets
         Instantiate(levelLoaderPrefab).GetComponent<LevelLoader>().director = this;
@@ -47,6 +47,6 @@ public class LevelDirector : MonoBehaviour
 
     public void SaveLevel()
     {
-        File.WriteAllText(levelPath, JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat"), JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
     }
 }
