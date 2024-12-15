@@ -226,7 +226,7 @@ public class ItemWheelUI : WheelUI
         {
             count = 0;
 
-            sectionImages[2 * section + subsection].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[0][0]]].icon;
+            sectionImages[2 * section + subsection].transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[currentWheel.itemID[indexList[subsection][0]]].icon;
 
             if (currentWheel.stacks[indexList[subsection][0]] == 1)
             {
