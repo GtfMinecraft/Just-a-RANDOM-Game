@@ -77,6 +77,12 @@ public class DataPersistenceManager : MonoBehaviour
     public void NewGame()
     {
         gameData = new GameData();
+
+        //initialize
+        PlayerPrefs.SetString("rightItemsString", "");
+        PlayerPrefs.SetString("leftItemsString", "");
+        PlayerPrefs.SetInt("selectedTool", 0);
+        PlayerPrefs.SetInt("selectedGroup", 0);
     }
 
     public void LoadGame()
@@ -108,7 +114,6 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
 
-        PlayerPrefs.SetInt("selectedTool", (int)PlayerItemController.instance.currentInventory);
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(gameData);

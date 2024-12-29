@@ -33,12 +33,13 @@ public class TradingInterface : MonoBehaviour
         }
     }
 
-    public void OpenTradeInterface()
+    public void OpenTradeInterface(Trade trade)
     {
         if(InterfaceHandler.instance.currentInterface == Interfaces.none)
         {
-            RefreshTradingInterface();
+            currentTrade = trade;
             InterfaceHandler.instance.OpenInterface(Interfaces.trading, false, false, false);
+            RefreshTradingInterface();
             transform.GetComponent<Canvas>().enabled = true;
             isTrading = true;
         }
@@ -46,17 +47,17 @@ public class TradingInterface : MonoBehaviour
 
     public void RefreshTradingInterface()
     {
-        for(int i = 0; i < currentTrade.offers.Length; i++)
+        if (InterfaceHandler.instance.currentInterface != Interfaces.trading)
+        {
+            return;
+        }
+
+        for (int i = 0; i < currentTrade.offers.Length; i++)
         {
             if (currentTrade.offers[i].show)
             {
                 //UI
             }
         }
-    }
-
-    public void TradingHandler(InputAction.CallbackContext ctx)
-    {
-
     }
 }

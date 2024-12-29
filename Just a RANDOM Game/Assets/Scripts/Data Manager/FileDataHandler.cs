@@ -9,6 +9,7 @@ public class FileDataHandler
 {
     private string filePath;
     private const string key = "2859385910ufqnYdG7X+";
+    private const int salt1 = 23, salt2 = 31;
     private bool useEncryption;
 
     public FileDataHandler(string filePath, bool useEncryption)
@@ -40,7 +41,7 @@ public class FileDataHandler
 
                     if (dataToLoad[0] != '{' && dataToLoad[0] != '[')
                     {
-                        dataToLoad = EncryptDecrypt(dataToLoad);
+                        dataToLoad = Decrypt(dataToLoad);
                     }
 
                     loadData ??= new GameData();
@@ -86,7 +87,7 @@ public class FileDataHandler
                 {
                     if (data.inventoryData == null)
                     {
-                        Debug.Log($"No data for {file} when saving data");
+                        Debug.LogError($"Data for {file} was not initialized");
                         continue;
                     }
                     dataToSave = JsonConvert.SerializeObject(data.inventoryData);
@@ -108,7 +109,7 @@ public class FileDataHandler
 
                 if (useEncryption)
                 {
-                    dataToSave = EncryptDecrypt(dataToSave);
+                    dataToSave = Encrypt(dataToSave);
                 }
 
                 using (FileStream stream = new FileStream(fullPath, FileMode.Create))
@@ -126,12 +127,22 @@ public class FileDataHandler
         }
     }
 
-    private string EncryptDecrypt(string data)
+    private string Encrypt(string data)
     {
         string result = "";
         for (int i = 0; i < data.Length; i++)
         {
-            result += (char)(data[i] ^ key[i % key.Length]);
+            result += (char)(((data[i] + salt1) ^ key[i % key.Length]) + salt2);
+        }
+        return result;
+    }
+
+    private string Decrypt(string data)
+    {
+        string result = "";
+        for (int i = 0; i < data.Length; i++)
+        {
+            result += (char)(((data[i] - salt2) ^ key[i % key.Length]) - salt1);
         }
         return result;
     }

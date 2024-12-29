@@ -1,17 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 public class InventoryCanvasController : MonoBehaviour
 {
     public static InventoryCanvasController instance;
+    [Header("Animator")]
+    public Animator toolAnim;
+    public Animator itemAnim;
 
+    [Header("Inventory (Don't edit currentInventory)")]
     [SerializeField]
     private InventoryTypes currentInventory;
 
-    private Canvas[] inventoryList;
+    public Canvas storage;
+    public Canvas toolWheel;
+    public Canvas itemWheel;
+
+    private bool closeToolWheel = false;
+    private bool closeItemWheel = false;
 
     private void Awake()
     {
@@ -28,37 +40,98 @@ public class InventoryCanvasController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inventoryList = new Canvas[transform.childCount];
+        storage.enabled = false;
+        toolWheel.enabled = false;
+        toolWheel.GetComponent<ToolWheelUI>().scrollWheel.enabled = false;
+        itemWheel.enabled = false;
+    }
 
-        for (int i=0;i<inventoryList.Length; i++)
+    private void Update()
+    {
+        if (closeToolWheel)
         {
-            inventoryList[i] = transform.GetChild(i).GetComponent<Canvas>();
-            inventoryList[i].enabled = false;
+            if (toolAnim.GetBool("OpenWheel"))
+            {
+                closeToolWheel = false;
+            }
+            else if (toolAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            {
+                closeToolWheel = false;
+                InterfaceHandler.instance.CloseAllInterface();
+            }
         }
-        currentInventory = (InventoryTypes)PlayerPrefs.GetInt("selectedTool");
+
+        if(closeItemWheel)
+        {
+            if (itemAnim.GetBool("OpenWheel"))
+            {
+                closeItemWheel = false;
+            }
+            else if (itemAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.item)
+            {
+                closeItemWheel = false;
+                InterfaceHandler.instance.CloseAllInterface();
+            }
+        }
     }
 
     public void ChangeToolInventory(InventoryTypes inv)
     {
-        InterfaceHandler.instance.CloseAllInterface();
         currentInventory = inv;
     }
 
     public void CloseAllInventory()
     {
-        for(int i = 0; i < inventoryList.Length; ++i)
-        {
-            inventoryList[i].enabled = false;
-        }
+        InventoryHandler.instance.ResetDraggingUI();
+        storage.enabled = false;
+        toolWheel.enabled = false;
+        toolWheel.GetComponent<ToolWheelUI>().scrollWheel.enabled = false;
+        itemWheel.enabled = false;
+        itemWheel.GetComponent<ItemWheelUI>().itemWheelTransform.gameObject.SetActive(false);
     }
 
     public void ToolWheelHandler(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
-            if(ctx.valueType == typeof(Vector2) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
+            if(ctx.action.name != "ToolWheel" && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item || InterfaceHandler.instance.currentInterface == Interfaces.tool))
             {
-                InterfaceHandler.instance.CloseAllInterface();
+                if(InterfaceHandler.instance.currentInterface == Interfaces.tool)
+                {
+                    CloseToolWheelAnim();
+                }
+
+                string actionName = ctx.action.name.ToLower();
+                if (actionName != Enum.GetName(typeof(InventoryTypes), currentInventory))
+                {
+                    if(Enum.TryParse(actionName, out InventoryTypes inv))
+                    {
+                        PlayerItemController.instance.ChangeInventory(inv);
+
+                        if (InterfaceHandler.instance.currentInterface == Interfaces.item)
+                        {
+                            itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
+                        }
+
+                        toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage((int)currentInventory);
+                    }
+                    else
+                    {
+                        Debug.LogError($"No inventory for actionName {actionName}");
+                    }
+                }
+                else
+                {
+                    toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage((int)currentInventory);
+                }
+            }
+            else if(ctx.valueType == typeof(Vector2) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
+            {
+                if(InterfaceHandler.instance.currentInterface == Interfaces.item)
+                {
+                    itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
+                }
+
                 int scroll = (int)currentInventory + (int)ctx.ReadValue<Vector2>().normalized.y;
                 while(scroll <= 0)
                 {
@@ -69,31 +142,88 @@ public class InventoryCanvasController : MonoBehaviour
                     scroll -= 6;
                 }
                 PlayerItemController.instance.ChangeInventory((InventoryTypes)scroll);
+
+                if (InterfaceHandler.instance.currentInterface == Interfaces.none)
+                {
+                    toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage(scroll);
+                }
             }
             else if (ctx.valueType == typeof(float) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
             {
-                InterfaceHandler.instance.OpenInterface(Interfaces.tool);
-                inventoryList[inventoryList.Length-1].enabled = true;
+                InterfaceHandler.instance.OpenInterface(Interfaces.tool, true, false, true);
+                toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
+                toolWheel.enabled = true;
+                toolAnim.SetBool("OpenWheel", true);
+            }
+            else if (ctx.valueType == typeof(float) && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+                toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
+                toolAnim.SetBool("OpenWheel", true);
             }
         }
-        else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+        else if (ctx.canceled && ctx.action.name == "ToolWheel" && InterfaceHandler.instance.currentInterface == Interfaces.tool)
         {
-            inventoryList[inventoryList.Length - 1].GetComponent<ToolWheelUI>().SwapTool();
-            InterfaceHandler.instance.CloseAllInterface();
+            toolWheel.GetComponent<ToolWheelUI>().SwapTool();
+            CloseToolWheelAnim();
         }
+    }
+
+    private void CloseToolWheelAnim()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (toolAnim.GetBool("OpenWheel"))
+        {
+            toolAnim.SetBool("OpenWheel", false);
+            toolAnim.Play("Close", 0, 0.3f);
+        }
+
+        closeToolWheel = true;
     }
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && currentInventory != InventoryTypes.storage && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
+        if (ctx.performed && currentInventory != InventoryTypes.storage)
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.item);
-            inventoryList[(int)currentInventory].enabled = true;
+            if(InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            {
+                InterfaceHandler.instance.OpenInterface(Interfaces.item, true, false, true);
+                itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
+                itemWheel.enabled = true;
+                itemAnim.SetBool("OpenWheel", true);
+            }
+            else if(InterfaceHandler.instance.currentInterface == Interfaces.item)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+                itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
+                itemAnim.SetBool("OpenWheel", true);
+            }
         }
         else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.item)
         {
-            InterfaceHandler.instance.CloseAllInterface();
+            itemWheel.GetComponent<ItemWheelUI>().SwapTool();
+            CloseItemWheelAnim();
         }
+    }
+
+    private void CloseItemWheelAnim()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (itemAnim.GetBool("OpenWheel"))
+        {
+            itemAnim.SetBool("OpenWheel", false);
+            itemAnim.Play("Close", 0, 0.3f);
+        }
+
+        closeItemWheel = true;
     }
 
     public void PlayerInventoryHandler(InputAction.CallbackContext ctx)
@@ -101,7 +231,8 @@ public class InventoryCanvasController : MonoBehaviour
         if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
         {
             InterfaceHandler.instance.OpenInterface(Interfaces.storage, true, false, true);
-            inventoryList[(int)InventoryTypes.storage].enabled = true;
+            InventoryHandler.instance.UpdateInventoryUI();
+            storage.enabled = true;
         }
         else if(ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.storage)
         {

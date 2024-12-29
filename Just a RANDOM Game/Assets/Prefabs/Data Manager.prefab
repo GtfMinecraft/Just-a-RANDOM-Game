@@ -49,7 +49,7 @@ MonoBehaviour:
   fileName:
   - InventoryData
   - MapData
-  useEncryption: 1
+  useEncryption: 0
   saveFileIndex: 0
 --- !u!114 &3935964787613245646
 MonoBehaviour:

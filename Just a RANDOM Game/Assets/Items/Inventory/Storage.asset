@@ -14,43 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: 1c421054f33915244978fbed717afd09, type: 2}
   itemSlots:
+  - ID: 6
+    currentStack: 6
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0
   - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
-    currentStack: 0
-  - ID: 0
-    item: {fileID: 0}
-    defaultItem: {fileID: 0}
     currentStack: 0

@@ -1,11 +1,8 @@
-using Newtonsoft.Json.Bson;
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "New Trade", menuName = "Trade/New Trade")]
+[CreateAssetMenu(fileName = "New Trade", menuName = "Trade/Trade")]
 public class Trade : ScriptableObject
 {
     public Offer[] offers;
@@ -13,24 +10,46 @@ public class Trade : ScriptableObject
     [System.Serializable]
     public class Offer
     {
-        public Item merchandice;
-        public int price;
-        public Item[] materials;
+        public int item;
+        public int crystals;
+        [UDictionary.Split(30, 70)]
+        public UDictionaryIntInt materials;
+        public int quantity;// -1 = infinite
         public bool show = false;
-        
-        public Offer(Item setItem, int setPrice, Item[] setMaterials)
+
+        public bool Buy(int playerCrystals, UDictionaryIntInt playerMaterials)
         {
-            merchandice = setItem;
-            price = setPrice;
-            materials = setMaterials;
+            if (quantity == 0) return false;
+            if (playerCrystals < crystals) return false;
+            if (!show) return false;
+
+            foreach (var mat in materials)
+            {
+                if (playerMaterials[mat.Key] < mat.Value)
+                {
+                    return false;
+                }
+            }
+
+            if (quantity > 1)
+            {
+                quantity--;
+            }
+            else if (quantity == 1)
+            {
+                quantity = 0;
+                show = false;
+            }
+
+            return true;
         }
     }
 
-    public void AddOffer(Item item)
+    public void EnableOffer(int item)
     {
         for (int i = 0; i < offers.Length; ++i)
         {
-            if (offers[i].merchandice == item)
+            if (offers[i].item == item)
             {
                 offers[i].show = true;
                 TradingInterface.instance.RefreshTradingInterface();
@@ -39,16 +58,23 @@ public class Trade : ScriptableObject
         }
     }
 
-    public void SetPrice(Item item, int setPrice)
+    //public void SetPrice(int item, int setPrice)
+    //{
+    //    for (int i = 0; i < offers.Length; ++i)
+    //    {
+    //        if (offers[i].merchandice == item)
+    //        {
+    //            offers[i].price = setPrice;
+    //            TradingInterface.instance.RefreshTradingInterface();
+    //            return;
+    //        }
+    //    }
+    //}
+
+    public bool Buy(int index)
     {
-        for (int i = 0; i < offers.Length; ++i)
-        {
-            if (offers[i].merchandice == item)
-            {
-                offers[i].price = setPrice;
-                TradingInterface.instance.RefreshTradingInterface();
-                return;
-            }
-        }
+        bool tryBuy = offers[index].Buy(InventoryHandler.instance.crystals, InventoryHandler.instance.resources);
+        TradingInterface.instance.RefreshTradingInterface();
+        return tryBuy;
     }
 }

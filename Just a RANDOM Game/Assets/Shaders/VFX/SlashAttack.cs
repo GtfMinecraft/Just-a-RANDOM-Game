@@ -1,48 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class SlashAttack : MonoBehaviour
 {
-    public GameObject slash;
-    private bool isSlashing = true;
-
-    private void Start()
-    {
-        slash.SetActive(false);
-        isSlashing = false;
-    }
+    public VisualEffect vfx;
 
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Space) && isSlashing == false)
+        if(Input.GetKeyUp(KeyCode.Space))
         {
-            slash.SetActive(true);
-            isSlashing = true;
-            StartCoroutine(DisableSlash());
+            Slash();
         }
     }
 
     [ContextMenu("Slash")]
     void Slash()
     {
-        slash.SetActive(false);
-        isSlashing = false;
-        StartCoroutine(DisableSlash());
-    }
-
-    IEnumerator DisableSlash()
-    {
-        yield return new WaitForSeconds(1);
-        if (isSlashing == true)
-        {
-            slash.SetActive(false);
-            isSlashing = false;
-        }
-        else
-        {
-            slash.SetActive(true);
-            isSlashing = true;
-        }
+        vfx.Play();
     }
 }

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float airAcceleration; // acceleration while not grounded
 	[SerializeField] private float maxSpeed; // maximum speed of player
 	[SerializeField] private float jumpSpeed; // initial speed of the jump
+    [SerializeField] private bool dashInAir;
 	[SerializeField] private float dashSpeed;
     [SerializeField] private float dashDistance;
     [SerializeField] private float dashCooldown;
@@ -38,7 +39,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canControl = true;
 
-    private Vector2 currentMovement;
+    [HideInInspector]
+    public Vector2 currentMovement;
 	private Vector3 currentVelocity;
 	private Vector3 targetVelocity;
 	private Vector3 horizontalVelocity;
@@ -162,7 +164,7 @@ public class PlayerController : MonoBehaviour
 		{
             dashCooldownTracker -= Time.deltaTime;
         }
-        else if (dashCooldownTracker <= 0f && isGrounded && isDashing && !nowDashing)
+        else if (dashCooldownTracker <= 0f && (isGrounded || dashInAir) && isDashing && !nowDashing)
 		{
 			nowDashing = true;
 			dashTimer = Time.time;
