@@ -5404,7 +5404,19 @@ MonoBehaviour:
     m_ActionId: b9943230-4565-4421-b1d3-52b61b93b67d
     m_ActionName: Default/ToolWheel[/Mouse/middleButton,/Mouse/scroll/x,/Mouse/scroll/y]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 33691357}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: AttackHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 731b0aa7-be73-4fa8-9904-f0b310217271
     m_ActionName: Default/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -59194,8 +59206,8 @@ MonoBehaviour:
   loadingScreenPrefab: {fileID: 8449688279308390523, guid: afc9457bf79fc7b488fc970640cc92f5, type: 3}
   levelLoaderPrefab: {fileID: 4904514596300519237, guid: a8ee92a2b64ca364d9aaaa9744b6eba6, type: 3}
   player: {fileID: 33691356}
-  levelName: LevelInfo
   levelLoadingParent: {fileID: 293936831}
+  levelName: LevelInfo
 --- !u!4 &1076185830
 Transform:
   m_ObjectHideFlags: 0
@@ -104624,3 +104636,4 @@ SceneRoots:
   - {fileID: 1669455931}
   - {fileID: 560929238}
   - {fileID: 2196246331843425476}
+  - {fileID: 1076185830}
