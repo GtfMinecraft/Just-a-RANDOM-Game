@@ -59201,13 +59201,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a833d9f5bcdf2e4e866aef21261ec89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelName: chunk
   chunkPrefab: {fileID: 8174471865563701778, guid: 22ee8e2b3ec6a7343b5dfe5fe6fe72dc, type: 3}
   wallPrefab: {fileID: 42775022301286424, guid: 77fe4a00d177f8a44a21e9220e0764f3, type: 3}
   loadingScreenPrefab: {fileID: 8449688279308390523, guid: afc9457bf79fc7b488fc970640cc92f5, type: 3}
   levelLoaderPrefab: {fileID: 4904514596300519237, guid: a8ee92a2b64ca364d9aaaa9744b6eba6, type: 3}
   player: {fileID: 33691356}
   levelLoadingParent: {fileID: 293936831}
-  levelName: LevelInfo
 --- !u!4 &1076185830
 Transform:
   m_ObjectHideFlags: 0
@@ -59812,7 +59812,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122626105}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09252102, y: 0.000000017659854, z: -0.0000000016409462, w: 0.99571073}
+  m_LocalRotation: {x: 0.09252102, y: -0.00000001765986, z: 0.0000000016409466, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -104559,7 +104559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: fileName.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: initializeDataIfNull
@@ -104572,6 +104572,10 @@ PrefabInstance:
     - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: fileName.Array.data[1]
       value: MapData
+      objectReference: {fileID: 0}
+    - target: {fileID: 7699039697557576713, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
+      propertyPath: fileName.Array.data[2]
+      value: LevelData
       objectReference: {fileID: 0}
     - target: {fileID: 7859607502762903571, guid: 8022960940e91eb4395d714bb938c73d, type: 3}
       propertyPath: m_LocalPosition.x

@@ -6,39 +6,46 @@ using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
-public class LevelLoader : MonoBehaviour
+public class LevelLoader : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private int maxConcurrentLoad;
-    [SerializeField] private string assetListName;
+    //[SerializeField] private string assetListName;
     [SerializeField] private GameObject loadingScreenPrefab;
 
     public LevelDirector director;
+    public bool startLoading = false;
     private GameObject progressBarInstance;
     private LoadingProgressDirector progressDirector;
     private LinkedList<(int id, AsyncOperationHandle<GameObject> handle)> handles = new LinkedList<(int id, AsyncOperationHandle<GameObject> handle)>();
     private List<string> assetList;
-    private List<GameObject> rootGameObjects;
+    //private List<GameObject> rootGameObjects;
     private int nextAssetIndex = 0;
 
     private void Awake()
     {
         // get all root objects in scene
-        Scene activeScene = SceneManager.GetActiveScene();
-        rootGameObjects = new List<GameObject>();
-        activeScene.GetRootGameObjects(rootGameObjects);
+        //Scene activeScene = SceneManager.GetActiveScene();
+        //rootGameObjects = new List<GameObject>();
+        //activeScene.GetRootGameObjects(rootGameObjects);
 
         // disable all other objects in scene while loading assets
-        foreach (GameObject obj in rootGameObjects)
-            obj.SetActive(obj == gameObject);
+        //foreach (GameObject obj in rootGameObjects)
+        //    obj.SetActive(obj == gameObject || obj.name == "Level Director");
+
+        Time.timeScale = 0;
 
         progressBarInstance = Instantiate(loadingScreenPrefab);
         progressDirector = progressBarInstance.GetComponent<LoadingProgressDirector>();
-        assetList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(Path.Combine(Application.persistentDataPath, assetListName + ".dat")));
+        //assetList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(Path.Combine(Application.persistentDataPath, assetListName + ".dat")));
     }
 
     private void Update()
     {
+        if (!startLoading)
+            return;
+
         float loadingProgressSum = 0f;
         LoadAssets();
         for(LinkedListNode<(int id, AsyncOperationHandle<GameObject> handle)> node = handles.First; node != null; node = node.Next)
@@ -63,8 +70,9 @@ public class LevelLoader : MonoBehaviour
         if (nextAssetIndex >= assetList.Count && handles.Count == 0) {
             director.GenerateLevel();
             // re-enable objects in scene
-            foreach (GameObject obj in rootGameObjects)
-                obj.SetActive(true);
+            //foreach (GameObject obj in rootGameObjects)
+            //    obj.SetActive(true);
+            Time.timeScale = 1f;
             Destroy(progressBarInstance);
             Destroy(gameObject);
         }
@@ -79,4 +87,14 @@ public class LevelLoader : MonoBehaviour
             nextAssetIndex++;
         }
 	}
+
+    public void LoadData(GameData data)
+    {
+        assetList = JsonConvert.DeserializeObject<List<string>>(data.levelData[director.levelName].assetList);
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.levelData[director.levelName].assetList = JsonConvert.SerializeObject(assetList);
+    }
 }

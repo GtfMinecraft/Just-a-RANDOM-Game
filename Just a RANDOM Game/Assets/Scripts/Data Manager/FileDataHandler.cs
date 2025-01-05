@@ -55,6 +55,10 @@ public class FileDataHandler
                     {
                         loadData.mapData = JsonConvert.DeserializeObject<GameData.MapData>(dataToLoad);
                     }
+                    else if (file == "LevelData")
+                    {
+                        loadData.levelData = JsonConvert.DeserializeObject<Dictionary<string, GameData.LevelData>>(dataToLoad);
+                    }
                     else
                     {
                         Debug.LogError($"Loading action undefined for {file} when loading data from file");
@@ -96,10 +100,19 @@ public class FileDataHandler
                 {
                     if (data.mapData == null)
                     {
-                        Debug.Log($"No data for {file} when saving data");
+                        Debug.LogError($"Data for {file} was not initialized");
                         continue;
                     }
                     dataToSave = JsonConvert.SerializeObject(data.mapData);
+                }
+                else if(file == "LevelData")
+                {
+                    if (data.levelData == null)
+                    {
+                        Debug.LogError($"Data for {file} was not initialized");
+                        continue;
+                    }
+                    dataToSave = JsonConvert.SerializeObject(data.levelData);
                 }
                 else
                 {

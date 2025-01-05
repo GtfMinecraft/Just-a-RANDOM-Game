@@ -5,25 +5,27 @@ using UnityEngine;
 using UnityEditor;
 using Newtonsoft.Json;
 
-public class LevelDirector : MonoBehaviour
+public class LevelDirector : MonoBehaviour, IDataPersistence
 {
+    public string levelName;
     [SerializeField] private GameObject chunkPrefab;
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject loadingScreenPrefab;
     [SerializeField] private GameObject levelLoaderPrefab;
     [SerializeField] private GameObject player;
     [SerializeField] private Transform levelLoadingParent;
-    [SerializeField] private string levelName;
 
     private LevelInfo level;
+    private LevelLoader levelLoader;
 
     private void Awake()
     {
         // load world info
-        level = JsonConvert.DeserializeObject<LevelInfo>(File.ReadAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat")), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+        //level = JsonConvert.DeserializeObject<LevelInfo>(File.ReadAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat")), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
 
         // make an instance of `LevelLoader` that generates loading screen and loads assets
-        Instantiate(levelLoaderPrefab).GetComponent<LevelLoader>().director = this;
+        levelLoader = Instantiate(levelLoaderPrefab).GetComponent<LevelLoader>();
+        levelLoader.director = this;
 
         // initialize player entity
         player.AddComponent(typeof(EntityDirector)).GetComponent<EntityDirector>().SetEntity(new PlayerEntity(player));
@@ -46,8 +48,19 @@ public class LevelDirector : MonoBehaviour
         }
     }
 
-    public void SaveLevel()
+    //public void SaveLevel()
+    //{
+    //    File.WriteAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat"), JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+    //}
+
+    public void LoadData(GameData data)
     {
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat"), JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+        level = JsonConvert.DeserializeObject<LevelInfo>(data.levelData[levelName].levelInfo, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+        levelLoader.startLoading = true;
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.levelData[levelName].levelInfo = JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
     }
 }
