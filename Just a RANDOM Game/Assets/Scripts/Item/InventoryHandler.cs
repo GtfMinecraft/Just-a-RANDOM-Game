@@ -16,9 +16,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
     public Inventory[] inventoryList = new Inventory[(int)InventoryTypes.food + 1];
 
-    [Header("Resource")]
-    public int crystals;
-    public TMP_Text crystalText;
     [UDictionary.Split(30, 70)]
     public UDictionaryIntInt resources;
 
@@ -149,8 +146,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         {
             inventorySlots[i].UpdateInventorySlot(currentGroup);
         }
-
-        crystalText.text = crystals.ToString();
 
         // update armor ui
     }

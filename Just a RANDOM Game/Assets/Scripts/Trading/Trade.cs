@@ -11,16 +11,14 @@ public class Trade : ScriptableObject
     public class Offer
     {
         public int item;
-        public int crystals;
         [UDictionary.Split(30, 70)]
         public UDictionaryIntInt materials;
         public int quantity;// -1 = infinite
         public bool show = false;
 
-        public bool Buy(int playerCrystals, UDictionaryIntInt playerMaterials)
+        public bool Buy(UDictionaryIntInt playerMaterials)
         {
             if (quantity == 0) return false;
-            if (playerCrystals < crystals) return false;
             if (!show) return false;
 
             foreach (var mat in materials)
@@ -73,7 +71,7 @@ public class Trade : ScriptableObject
 
     public bool Buy(int index)
     {
-        bool tryBuy = offers[index].Buy(InventoryHandler.instance.crystals, InventoryHandler.instance.resources);
+        bool tryBuy = offers[index].Buy(InventoryHandler.instance.resources);
         TradingInterface.instance.RefreshTradingInterface();
         return tryBuy;
     }
