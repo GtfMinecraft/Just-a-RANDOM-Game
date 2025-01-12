@@ -22,6 +22,8 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     [Header("UI")]
     public Transform groupUI;
     public Transform storage;
+    public int slotCount;
+    public GameObject slotPrefab;
     public Transform armor;
     public Transform description;
     public ItemWheelUI itemWheel;
@@ -152,20 +154,24 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        for(int i = 0; i < inventoryList.Length; i++)
+        slotCount = data.inventoryData[0].itemIDs.Count; 
+        for (int i = 0; i < inventoryList.Length; i++)
         {
             inventoryList[i].itemSlots = data.inventoryData[i].itemIDs.Zip(
-                data.inventoryData[i].currentStacks, (f1, f2) => 
+                data.inventoryData[i].currentStacks.Zip(data.inventoryData[i].elements, (f1, f2) => new {stacks = f1, elements = f2}), (f1, f2) =>
                 {
                     if (resources.ContainsKey(f1))
                     {
-                        resources[f1] += f2;
+                        resources[f1] += f2.stacks;
                     }
                     else
                     {
-                        resources[f1] = f2;
+                        resources[f1] = f2.stacks;
                     }
-                    return new Inventory.ItemSlot(f1, f2);
+
+                    int[] elements = f2.elements.ToCharArray().Select(c => c - 48).ToArray();
+
+                    return new Inventory.ItemSlot(f1, f2.stacks, elements);
                 }).ToList();
         }
     }

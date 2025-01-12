@@ -14,11 +14,13 @@ public class Inventory : ScriptableObject
     {
         public int ID;
         public int currentStack;
+        public int[] elements = new int[5];
 
-        public ItemSlot(int id, int stack)
+        public ItemSlot(int id, int stack, int[] elements)
         {
             ID = id;
             currentStack = stack;
+            this.elements = elements;
         }
 
         public void Clear()

@@ -64,11 +64,13 @@ public class GameData
     {
         public List<int> itemIDs;
         public List<int> currentStacks;
+        public List<string> elements;
 
         public InventoryData()
         {
             itemIDs = Enumerable.Repeat(0, 10).ToList();
             currentStacks = Enumerable.Repeat(0, 10).ToList();
+            elements = Enumerable.Repeat("00000", 10).ToList();
         }
     }
 }

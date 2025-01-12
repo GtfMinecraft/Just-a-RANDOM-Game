@@ -32201,6 +32201,8 @@ MonoBehaviour:
     values: 
   groupUI: {fileID: 407294968}
   storage: {fileID: 1342263288}
+  slotCount: 10
+  slotPrefab: {fileID: 1515344462451284909, guid: bcfcdac0ceb568f40957d25332ecfcbb, type: 3}
   armor: {fileID: 1116472207}
   description: {fileID: 451932803}
   itemWheel: {fileID: 416727644}
@@ -64856,7 +64858,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237832001}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.04763198, y: -0.0000000021483566, z: 1.02446746e-10, w: 0.99886495}
+  m_LocalRotation: {x: 0.04763198, y: 0.0000000021483566, z: -1.02446746e-10, w: 0.99886495}
   m_LocalPosition: {x: 9.658215, y: 5.690946, z: -17.705399}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -65458,7 +65460,7 @@ GameObject:
   - component: {fileID: 1342263290}
   - component: {fileID: 1342263289}
   m_Layer: 5
-  m_Name: Slots
+  m_Name: Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99009,7 +99011,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024093507}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.047631975, y: -0.0000000021483564, z: 1.02446746e-10, w: 0.99886495}
+  m_LocalRotation: {x: 0.047631975, y: 0.0000000021483564, z: -1.02446746e-10, w: 0.99886495}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
