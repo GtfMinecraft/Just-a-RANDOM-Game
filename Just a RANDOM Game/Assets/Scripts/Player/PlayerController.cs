@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
     private float dashTimer;
 	private float dashTime;
 	private float dashCooldownTracker = 0f;
+    private bool usingLeft;
+    private bool usingRight;
 
 	private CharacterController playerCharacterController;
 
@@ -106,6 +108,16 @@ public class PlayerController : MonoBehaviour
                         hit.GetComponent<Interactable>().Interact();
                     }
                 }
+            }
+
+            if (usingRight)
+            {
+
+            }
+
+            if (usingLeft)
+            {
+
             }
         }
 	}
@@ -237,14 +249,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void AttackHandler(InputAction.CallbackContext ctx)
+    public void RightHandHandler(InputAction.CallbackContext ctx)
     {
-        // TODO: implement
-
-        // placeholder implementation
         if (ctx.performed)
         {
-            // TODO: implement!!!! why am i so lazy lmao
+            usingRight = true;
+        }
+        else if (ctx.canceled)
+        {
+            usingRight = false;
+        }
+    }
+
+    public void LeftHandHandler(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            usingLeft = true;
+        }
+        else if (ctx.canceled)
+        {
+            usingLeft = false;
         }
     }
 

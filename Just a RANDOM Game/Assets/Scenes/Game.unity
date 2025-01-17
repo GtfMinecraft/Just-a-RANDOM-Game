@@ -5407,7 +5407,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 33691357}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: AttackHandler
+        m_MethodName: RightHandHandler
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5515,6 +5515,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7ea2269f-3707-4bba-8726-4f32e9d8586d
     m_ActionName: Default/Food[/Keyboard/6,/Keyboard/numpad6]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 33691357}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: LeftHandHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 626528aa-c747-402a-9e31-973b4a121303
+    m_ActionName: Default/Left Hand[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Default

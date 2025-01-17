@@ -96,9 +96,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "Right Hand",
                     "type": "Button",
                     "id": "731b0aa7-be73-4fa8-9904-f0b310217271",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Hand",
+                    "type": "Button",
+                    "id": "626528aa-c747-402a-9e31-973b4a121303",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -321,7 +330,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Right Hand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -465,6 +474,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "PlayerInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77907f85-4e94-4e0a-80fd-b5aef63e08ac",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Hand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
