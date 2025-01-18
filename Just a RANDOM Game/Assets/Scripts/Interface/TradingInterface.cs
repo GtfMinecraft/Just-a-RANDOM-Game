@@ -25,7 +25,7 @@ public class TradingInterface : MonoBehaviour
 
     public void CloseTradingInterface()
     {
-        if(InterfaceHandler.instance.currentInterface == Interfaces.trading)
+        if(InterfaceHandler.instance.currentInterface == Interfaces.Trading)
         {
             InterfaceHandler.instance.CloseAllInterface();
             transform.GetComponent<Canvas>().enabled = false;
@@ -35,10 +35,10 @@ public class TradingInterface : MonoBehaviour
 
     public void OpenTradeInterface(Trade trade)
     {
-        if(InterfaceHandler.instance.currentInterface == Interfaces.none)
+        if(InterfaceHandler.instance.currentInterface == Interfaces.None)
         {
             currentTrade = trade;
-            InterfaceHandler.instance.OpenInterface(Interfaces.trading, false, false, false);
+            InterfaceHandler.instance.OpenInterface(Interfaces.Trading, false, false, false);
             RefreshTradingInterface();
             transform.GetComponent<Canvas>().enabled = true;
             isTrading = true;
@@ -47,7 +47,7 @@ public class TradingInterface : MonoBehaviour
 
     public void RefreshTradingInterface()
     {
-        if (InterfaceHandler.instance.currentInterface != Interfaces.trading)
+        if (InterfaceHandler.instance.currentInterface != Interfaces.Trading)
         {
             return;
         }

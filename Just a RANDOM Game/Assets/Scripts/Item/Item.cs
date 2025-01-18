@@ -12,7 +12,7 @@ public class Item : ScriptableObject
     public int price = 0;
     public Sprite icon;
     public GameObject model;
-    public InventoryTypes inventoryType = InventoryTypes.storage;
+    public InventoryTypes inventoryType = InventoryTypes.Storage;
     public ItemTypes itemType = ItemTypes.Basic;
     public int durability;
     public float attackSpeed;

@@ -55,7 +55,7 @@ public class PlayerItemController : MonoBehaviour
             rightItems[i] = (rightItemsString.Length > i) ? rightItemsString[i] - '0' : 0;
             leftItems[i] = (leftItemsString.Length > i) ? leftItemsString[i] - '0' : 0;
         }
-        if(currentInventory != InventoryTypes.storage)
+        if(currentInventory != InventoryTypes.Storage)
         {
             UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
             UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
@@ -67,7 +67,7 @@ public class PlayerItemController : MonoBehaviour
         currentInventory = inv;
         InventoryCanvasController.instance.ChangeToolInventory(currentInventory);
         
-        if(inv != InventoryTypes.storage)
+        if(inv != InventoryTypes.Storage)
         {
             UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
             UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);

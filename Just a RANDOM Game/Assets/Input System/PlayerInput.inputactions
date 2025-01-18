@@ -96,7 +96,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Right Hand",
+                    "name": "RightHand",
                     "type": "Button",
                     "id": "731b0aa7-be73-4fa8-9904-f0b310217271",
                     "expectedControlType": "Button",
@@ -105,7 +105,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Left Hand",
+                    "name": "LeftHand",
                     "type": "Button",
                     "id": "626528aa-c747-402a-9e31-973b4a121303",
                     "expectedControlType": "Button",
@@ -293,7 +293,7 @@
                 {
                     "name": "",
                     "id": "38a3d55a-9de6-4ea9-a0f1-983624326ee0",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -330,7 +330,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right Hand",
+                    "action": "RightHand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -484,7 +484,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Hand",
+                    "action": "LeftHand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

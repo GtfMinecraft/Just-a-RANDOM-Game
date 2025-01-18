@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +29,19 @@ public class PlayerController : MonoBehaviour
 
 	[Header("Pick Item")]
     public Vector3 boxCastSize;
+
+    [Header("Animation")]
+    public Animator anim;
+    public float animTranceDelay = 0.2f;
+    private enum AnimTrance
+    {
+        None,
+        Dash,
+        RightHand,
+        LeftHand,
+        PickItem,
+    }
+    private AnimTrance animTrance = AnimTrance.None;
 
     [Header("Bot")]
     public GameObject bot;
@@ -97,29 +111,21 @@ public class PlayerController : MonoBehaviour
             // pick up item
             if (isPicking)
             {
-                Collider[] hits;
-
-                hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
-
-                foreach (Collider hit in hits)
-                {
-                    if (hit.GetComponent<Interactable>() != null)
-                    {
-                        hit.GetComponent<Interactable>().Interact();
-                    }
-                }
+                PickItems();
             }
 
             if (usingRight)
             {
-
+                UseItem(true);
             }
 
             if (usingLeft)
             {
-
+                UseItem(false);
             }
         }
+
+        RunAnimTrance();
 	}
 
 	private void UpdateVelocity()
@@ -168,24 +174,113 @@ public class PlayerController : MonoBehaviour
 			else
 			{
 				nowDashing = false;
+                isDashing = false;
 				dashCooldownTracker = dashCooldown;
-			}
+            }
         }
 
         if (dashCooldownTracker > 0f)
 		{
             dashCooldownTracker -= Time.deltaTime;
         }
+        else if (anim.GetInteger("PlayerAction") == 1 && !nowDashing && dashCooldownTracker <= 0f)
+        {
+            anim.SetInteger("PlayerAction", 0);
+        }
         else if (dashCooldownTracker <= 0f && (isGrounded || dashInAir) && isDashing && !nowDashing)
 		{
 			nowDashing = true;
 			dashTimer = Time.time;
+            anim.SetInteger("PlayerAction", 1);
         }
 
         horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, dashSpeed);
 
 		currentVelocity = new Vector3(horizontalVelocity.x, (nowDashing ? 0 : currentVelocity.y), horizontalVelocity.z);
 	}
+
+    private void PickItems()
+    {
+        Collider[] hits;
+
+        hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.GetComponent<Interactable>() != null)
+            {
+                hit.GetComponent<Interactable>().Interact();
+            }
+        }
+        
+        isPicking = false;
+    }
+
+    private void UseItem(bool rightHand = false)
+    {
+        if (rightHand)
+        {
+            usingRight = false;
+        }
+        else
+        {
+            usingLeft = false;
+        }
+    }
+
+    private void RunAnimTrance()
+    {
+        var clipInfo = anim.GetCurrentAnimatorClipInfo(0);
+
+        if (animTrance != AnimTrance.None && (clipInfo.Length == 0 || !Enum.TryParse(clipInfo[0].clip.name, out AnimTrance _)))
+        {
+            switch (animTrance)
+            {
+                case AnimTrance.Dash:
+                    isDashing = true;
+                    break;
+                case AnimTrance.PickItem:
+                    isPicking = true;
+                    break;
+                case AnimTrance.LeftHand:
+                    usingLeft = true;
+                    break;
+                case AnimTrance.RightHand:
+                    usingRight = true;
+                    break;
+            }
+            CancelInvoke("ResetAnimTrance");
+            animTrance = AnimTrance.None;
+        }
+    }
+
+    public void AnimInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            if (anim.GetCurrentAnimatorClipInfo(0).Length == 0) return;
+
+            if(Enum.TryParse(anim.GetCurrentAnimatorClipInfo(0)[0].clip.name, out AnimTrance _))
+            {    
+                string actionName = ctx.action.name;
+                if (Enum.TryParse(actionName, out AnimTrance trance))
+                {
+                    animTrance = trance;
+                    CancelInvoke("ResetAnimTrance");
+                    Invoke("ResetAnimTrance", animTranceDelay);
+                }
+                else
+                {
+                    Debug.LogError($"No AnimTrance for actionName {actionName}");
+                }
+            }
+        }
+    }
+
+    private void ResetAnimTrance()
+    {
+        animTrance = AnimTrance.None;
+    }
 
 	public void MovementHandler(InputAction.CallbackContext ctx) 
 	{

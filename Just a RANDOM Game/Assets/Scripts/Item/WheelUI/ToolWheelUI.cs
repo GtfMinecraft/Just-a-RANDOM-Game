@@ -79,7 +79,7 @@ public class ToolWheelUI : WheelUI
 
     public void UpdateToolWheelUI()
     {
-        if (InterfaceHandler.instance.currentInterface != Interfaces.tool)
+        if (InterfaceHandler.instance.currentInterface != Interfaces.Tool)
             return;
 
         if (currentTool != (int)PlayerItemController.instance.currentInventory)

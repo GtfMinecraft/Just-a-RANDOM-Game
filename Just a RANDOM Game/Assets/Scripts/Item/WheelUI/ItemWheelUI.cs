@@ -315,14 +315,14 @@ public class ItemWheelUI : WheelUI
 
     public void UpdateItemWheelUI(int item = 0)
     {
-        if (InterfaceHandler.instance.currentInterface != Interfaces.item)
+        if (InterfaceHandler.instance.currentInterface != Interfaces.Item)
         {
             return;
         }
 
         InventoryTypes currentInventory = PlayerItemController.instance.currentInventory;
 
-        if (currentInventory == InventoryTypes.storage)
+        if (currentInventory == InventoryTypes.Storage)
         {
             InterfaceHandler.instance.CloseAllInterface();
             return;

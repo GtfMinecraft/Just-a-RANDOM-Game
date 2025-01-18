@@ -54,7 +54,7 @@ public class InventoryCanvasController : MonoBehaviour
             {
                 closeToolWheel = false;
             }
-            else if (toolAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            else if (toolAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.Tool)
             {
                 closeToolWheel = false;
                 InterfaceHandler.instance.CloseAllInterface();
@@ -67,7 +67,7 @@ public class InventoryCanvasController : MonoBehaviour
             {
                 closeItemWheel = false;
             }
-            else if (itemAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.item)
+            else if (itemAnim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") && InterfaceHandler.instance.currentInterface == Interfaces.Item)
             {
                 closeItemWheel = false;
                 InterfaceHandler.instance.CloseAllInterface();
@@ -94,21 +94,21 @@ public class InventoryCanvasController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if(ctx.action.name != "ToolWheel" && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item || InterfaceHandler.instance.currentInterface == Interfaces.tool))
+            if(ctx.action.name != "ToolWheel" && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Item || InterfaceHandler.instance.currentInterface == Interfaces.Tool))
             {
-                if(InterfaceHandler.instance.currentInterface == Interfaces.tool)
+                if(InterfaceHandler.instance.currentInterface == Interfaces.Tool)
                 {
                     CloseToolWheelAnim();
                 }
 
-                string actionName = ctx.action.name.ToLower();
+                string actionName = ctx.action.name;
                 if (actionName != Enum.GetName(typeof(InventoryTypes), currentInventory))
                 {
                     if(Enum.TryParse(actionName, out InventoryTypes inv))
                     {
                         PlayerItemController.instance.ChangeInventory(inv);
 
-                        if (InterfaceHandler.instance.currentInterface == Interfaces.item)
+                        if (InterfaceHandler.instance.currentInterface == Interfaces.Item)
                         {
                             itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
                         }
@@ -125,9 +125,9 @@ public class InventoryCanvasController : MonoBehaviour
                     toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage((int)currentInventory);
                 }
             }
-            else if(ctx.valueType == typeof(Vector2) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
+            else if(ctx.valueType == typeof(Vector2) && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Item))
             {
-                if(InterfaceHandler.instance.currentInterface == Interfaces.item)
+                if(InterfaceHandler.instance.currentInterface == Interfaces.Item)
                 {
                     itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
                 }
@@ -143,19 +143,19 @@ public class InventoryCanvasController : MonoBehaviour
                 }
                 PlayerItemController.instance.ChangeInventory((InventoryTypes)scroll);
 
-                if (InterfaceHandler.instance.currentInterface == Interfaces.none)
+                if (InterfaceHandler.instance.currentInterface == Interfaces.None)
                 {
                     toolWheel.GetComponent<ToolWheelUI>().ScrollToolImage(scroll);
                 }
             }
-            else if (ctx.valueType == typeof(float) && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.item))
+            else if (ctx.valueType == typeof(float) && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Item))
             {
-                InterfaceHandler.instance.OpenInterface(Interfaces.tool, true, false, true);
+                InterfaceHandler.instance.OpenInterface(Interfaces.Tool, true, false, true);
                 toolWheel.GetComponent<ToolWheelUI>().UpdateToolWheelUI();
                 toolWheel.enabled = true;
                 toolAnim.SetBool("OpenWheel", true);
             }
-            else if (ctx.valueType == typeof(float) && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            else if (ctx.valueType == typeof(float) && InterfaceHandler.instance.currentInterface == Interfaces.Tool)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -164,7 +164,7 @@ public class InventoryCanvasController : MonoBehaviour
                 toolAnim.SetBool("OpenWheel", true);
             }
         }
-        else if (ctx.canceled && ctx.action.name == "ToolWheel" && InterfaceHandler.instance.currentInterface == Interfaces.tool)
+        else if (ctx.canceled && ctx.action.name == "ToolWheel" && InterfaceHandler.instance.currentInterface == Interfaces.Tool)
         {
             toolWheel.GetComponent<ToolWheelUI>().SwapTool();
             CloseToolWheelAnim();
@@ -187,16 +187,16 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && currentInventory != InventoryTypes.storage)
+        if (ctx.performed && currentInventory != InventoryTypes.Storage)
         {
-            if(InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool)
+            if(InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Tool)
             {
-                InterfaceHandler.instance.OpenInterface(Interfaces.item, true, false, true);
+                InterfaceHandler.instance.OpenInterface(Interfaces.Item, true, false, true);
                 itemWheel.GetComponent<ItemWheelUI>().UpdateItemWheelUI();
                 itemWheel.enabled = true;
                 itemAnim.SetBool("OpenWheel", true);
             }
-            else if(InterfaceHandler.instance.currentInterface == Interfaces.item)
+            else if(InterfaceHandler.instance.currentInterface == Interfaces.Item)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -205,7 +205,7 @@ public class InventoryCanvasController : MonoBehaviour
                 itemAnim.SetBool("OpenWheel", true);
             }
         }
-        else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.item)
+        else if (ctx.canceled && InterfaceHandler.instance.currentInterface == Interfaces.Item)
         {
             itemWheel.GetComponent<ItemWheelUI>().SwapTool();
             CloseItemWheelAnim();
@@ -228,13 +228,13 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void PlayerInventoryHandler(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.none || InterfaceHandler.instance.currentInterface == Interfaces.tool))
+        if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Tool))
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.storage, true, false, true);
+            InterfaceHandler.instance.OpenInterface(Interfaces.Storage, true, false, true);
             InventoryHandler.instance.UpdateInventoryUI();
             storage.enabled = true;
         }
-        else if(ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.storage)
+        else if(ctx.performed && InterfaceHandler.instance.currentInterface == Interfaces.Storage)
         {
             InterfaceHandler.instance.CloseAllInterface();
         }

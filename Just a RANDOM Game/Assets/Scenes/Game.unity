@@ -5160,7 +5160,6 @@ GameObject:
   - component: {fileID: 33691366}
   - component: {fileID: 33691363}
   - component: {fileID: 33691364}
-  - component: {fileID: 33691365}
   - component: {fileID: 33691367}
   m_Layer: 3
   m_Name: Player
@@ -5196,6 +5195,8 @@ MonoBehaviour:
   orientation: {fileID: 646717172}
   playerObj: {fileID: 182564347}
   boxCastSize: {x: 2, y: 3, z: 2.5}
+  anim: {fileID: 1212025625}
+  animTranceDelay: 0.5
   bot: {fileID: 1066427514}
   canMove: 1
   canRotate: 1
@@ -5305,6 +5306,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 33691357}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: AnimInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e5676245-3311-4da5-abdf-90ee9f4b3bc6
     m_ActionName: Movement/Dash[/Keyboard/leftShift]
   - m_PersistentCalls:
@@ -5344,6 +5357,18 @@ MonoBehaviour:
       - m_Target: {fileID: 33691357}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: PickItemHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 33691357}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: AnimInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5408,6 +5433,18 @@ MonoBehaviour:
       - m_Target: {fileID: 33691357}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: RightHandHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 33691357}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: AnimInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5529,6 +5566,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 33691357}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: AnimInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 626528aa-c747-402a-9e31-973b4a121303
     m_ActionName: Default/Left Hand[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
@@ -5562,27 +5611,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!95 &33691365
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33691356}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &33691366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64733,6 +64761,32 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1212025624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f943224db86c4dd498e6687570643f70, type: 3}
+  m_PrefabInstance: {fileID: 1386351468}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1212025625
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212025624}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 902a8b2e63ae47046a0dbc2db4c33b77, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1213068803 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1515344462694713204, guid: bcfcdac0ceb568f40957d25332ecfcbb, type: 3}
@@ -80864,7 +80918,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f943224db86c4dd498e6687570643f70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 553988200}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f943224db86c4dd498e6687570643f70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1212025625}
   m_SourcePrefab: {fileID: 100100000, guid: f943224db86c4dd498e6687570643f70, type: 3}
 --- !u!1 &1430005519
 GameObject:

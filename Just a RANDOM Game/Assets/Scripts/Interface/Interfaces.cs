@@ -1,9 +1,9 @@
 public enum Interfaces
 {
-    none,
-    item,
-    tool,
-    storage,
-    trading,
-    esc,
+    None,
+    Item,
+    Tool,
+    Storage,
+    Trading,
+    Esc,
 }

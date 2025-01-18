@@ -14,7 +14,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 {
     public static InventoryHandler instance;
 
-    public Inventory[] inventoryList = new Inventory[(int)InventoryTypes.food + 1];
+    public Inventory[] inventoryList = new Inventory[(int)InventoryTypes.Food + 1];
 
     [UDictionary.Split(30, 70)]
     public UDictionaryIntInt resources;
@@ -139,7 +139,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
     public void UpdateInventoryUI()
     {
-        if(InterfaceHandler.instance.currentInterface != Interfaces.storage)
+        if(InterfaceHandler.instance.currentInterface != Interfaces.Storage)
         {
             return;
         }
