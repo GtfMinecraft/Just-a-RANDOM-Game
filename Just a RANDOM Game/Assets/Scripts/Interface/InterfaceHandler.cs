@@ -39,7 +39,7 @@ public class InterfaceHandler : MonoBehaviour
         EscCanvas.enabled = false;
 
         Time.timeScale = 1f;
-        instance.currentInterface = Interfaces.None;
+        currentInterface = Interfaces.None;
         player.canMove = true;
         player.canRotate = true;
         player.canControl = true;
@@ -50,7 +50,7 @@ public class InterfaceHandler : MonoBehaviour
     public void OpenInterface(Interfaces tmp, bool movement = true, bool rotation = true, bool control = true)
     {
         CloseAllInterface();
-        instance.currentInterface = tmp;
+        currentInterface = tmp;
         if(movement == false)
         {
             player.canMove = false;

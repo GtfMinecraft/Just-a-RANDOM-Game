@@ -47,7 +47,7 @@ public class ThirdPersonCam : MonoBehaviour
             CinemachineCore.GetInputAxis = temp => { return 0; };
         }
 
-        if (player.GetComponent<PlayerController>().canMove)
+        if (player.GetComponent<PlayerController>().MovementIsEnable())
         {
             // switch styles
             if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCameraStyle(CameraStyle.Basic);

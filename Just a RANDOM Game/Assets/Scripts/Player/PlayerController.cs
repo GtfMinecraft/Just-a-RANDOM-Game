@@ -16,8 +16,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float maxSpeed; // maximum speed of player
 	[SerializeField] private float jumpSpeed; // initial speed of the jump
     [SerializeField] private bool dashInAir;
-	[SerializeField] private float dashSpeed;
-    [SerializeField] private float dashDistance;
+	[SerializeField] private float dashSpeed; // *** speed and cooldown have to be in sync with anim
+    [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     [SerializeField] private float runMultiplier;
     [SerializeField] private float gravity; // rate at which player accelerates downwards
@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
 	public Transform orientation;
 	public Transform playerObj;
 
-	[Header("Pick Item")]
+    [Header("Pick Item")]
+    public float pickItemTime = 0.8f; // *** picking time has to be in sync with anim
     public Vector3 boxCastSize;
 
     [Header("Animation")]
@@ -37,9 +38,9 @@ public class PlayerController : MonoBehaviour
     {
         None,
         Dash,
+        PickItem,
         RightHand,
         LeftHand,
-        PickItem,
     }
     private AnimTrance animTrance = AnimTrance.None;
 
@@ -61,14 +62,16 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isRunning;
 	private bool isJumping;
-	private bool isDashing;
 	private bool isPicking = false;
-	private bool nowDashing = false;
+    private bool nowPicking = false;
+    private bool isDashing;
+    private bool nowDashing = false;
     private float dashTimer;
-	private float dashTime;
 	private float dashCooldownTracker = 0f;
-    private bool usingLeft;
     private bool usingRight;
+    private bool nowRight = false;
+    private bool usingLeft;
+    private bool nowLeft = false;
 
 	private CharacterController playerCharacterController;
 
@@ -84,8 +87,6 @@ public class PlayerController : MonoBehaviour
         }
 
         playerCharacterController = GetComponent<CharacterController>();
-
-		dashTime = dashDistance / dashSpeed;
     }
 
     private void Start()
@@ -97,8 +98,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
 	{
         isGrounded = playerCharacterController.isGrounded;
+        int playerAction = anim.GetInteger("PlayerAction");
 
-        if (canMove)
+        if (MovementIsEnable())
 		{
             UpdateVelocity();
 
@@ -109,24 +111,29 @@ public class PlayerController : MonoBehaviour
 		if (canControl)
 		{
             // pick up item
-            if (isPicking)
+            if (isPicking && playerAction == 0)
             {
                 PickItems();
             }
 
-            if (usingRight)
+            // possibly implement double-wielding
+            if (usingRight && (playerAction == 0 || playerAction == 2 || playerAction == 4))
             {
                 UseItem(true);
             }
 
-            if (usingLeft)
+            if (usingLeft && (playerAction == 0 || playerAction == 2 || playerAction == 3))
             {
                 UseItem(false);
             }
         }
 
         RunAnimTrance();
-	}
+
+        // get Interactable prompt
+        if(playerAction == 0)
+            InteractablePrompt();
+    }
 
 	private void UpdateVelocity()
 	{
@@ -174,7 +181,6 @@ public class PlayerController : MonoBehaviour
 			else
 			{
 				nowDashing = false;
-                isDashing = false;
 				dashCooldownTracker = dashCooldown;
             }
         }
@@ -187,10 +193,11 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetInteger("PlayerAction", 0);
         }
-        else if (dashCooldownTracker <= 0f && (isGrounded || dashInAir) && isDashing && !nowDashing)
+        else if (anim.GetInteger("PlayerAction") == 0 && dashCooldownTracker <= 0f && (isGrounded || dashInAir) && isDashing && !nowDashing)
 		{
 			nowDashing = true;
-			dashTimer = Time.time;
+            isDashing = false;
+            dashTimer = Time.time;
             anim.SetInteger("PlayerAction", 1);
         }
 
@@ -199,10 +206,17 @@ public class PlayerController : MonoBehaviour
 		currentVelocity = new Vector3(horizontalVelocity.x, (nowDashing ? 0 : currentVelocity.y), horizontalVelocity.z);
 	}
 
+    public bool MovementIsEnable()
+    {
+        return canMove && !nowLeft && !nowRight;
+    }
+
     private void PickItems()
     {
-        Collider[] hits;
+        nowPicking = true;
+        isPicking = false;
 
+        Collider[] hits;
         hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
 
         foreach (Collider hit in hits)
@@ -210,29 +224,76 @@ public class PlayerController : MonoBehaviour
             if (hit.GetComponent<Interactable>() != null)
             {
                 hit.GetComponent<Interactable>().Interact();
+                break;
             }
         }
-        
-        isPicking = false;
+
+        anim.SetInteger("PlayerAction", 2);
+        Invoke("ResetPickItem", pickItemTime);
     }
 
-    private void UseItem(bool rightHand = false)
+    private void ResetPickItem()
     {
+        nowPicking = false;
+        if(anim.GetInteger("PlayerAction") == 2)
+            anim.SetInteger("PlayerAction", 0);
+    }
+
+    private void InteractablePrompt()
+    {
+        Collider[] hits;
+        hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
+
+        bool canInteract = false;
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.GetComponent<Interactable>() != null)
+            {
+                InteractablePromptController.instance.OpenPrompt(hit.GetComponent<Interactable>());
+                canInteract = true;
+                break;
+            }
+        }
+
+        if (!canInteract)
+        { 
+            InteractablePromptController.instance.ClosePrompt();
+        }
+    }
+
+    private void UseItem(bool rightHand = true)
+    {
+        //get itemUseTime from item and according to the type of use
+        float itemUseTime = 0.8f;
+
         if (rightHand)
         {
+            nowRight = true;
             usingRight = false;
+            anim.SetInteger("PlayerAction", 3);
         }
         else
         {
+            nowLeft = true;
             usingLeft = false;
+            anim.SetInteger("PlayerAction", 4);
         }
+
+        CancelInvoke("ResetUseLeftRight");
+        Invoke("ResetUseLeftRight", itemUseTime);
+    }
+
+    private void ResetUseLeftRight()
+    {
+        nowLeft = nowRight = false;
+        anim.SetInteger("PlayerAction", 0);
+
     }
 
     private void RunAnimTrance()
     {
-        var clipInfo = anim.GetCurrentAnimatorClipInfo(0);
-
-        if (animTrance != AnimTrance.None && (clipInfo.Length == 0 || !Enum.TryParse(clipInfo[0].clip.name, out AnimTrance _)))
+        if (animTrance != AnimTrance.None && anim.GetInteger("PlayerAction") == 0)
         {
             switch (animTrance)
             {
@@ -258,21 +319,11 @@ public class PlayerController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if (anim.GetCurrentAnimatorClipInfo(0).Length == 0) return;
-
-            if(Enum.TryParse(anim.GetCurrentAnimatorClipInfo(0)[0].clip.name, out AnimTrance _))
-            {    
-                string actionName = ctx.action.name;
-                if (Enum.TryParse(actionName, out AnimTrance trance))
-                {
-                    animTrance = trance;
-                    CancelInvoke("ResetAnimTrance");
-                    Invoke("ResetAnimTrance", animTranceDelay);
-                }
-                else
-                {
-                    Debug.LogError($"No AnimTrance for actionName {actionName}");
-                }
+            if(anim.GetInteger("PlayerAction") != 0 && Enum.TryParse(ctx.action.name, out AnimTrance trance))
+            {
+                animTrance = trance;
+                CancelInvoke("ResetAnimTrance");
+                Invoke("ResetAnimTrance", animTranceDelay);
             }
         }
     }
