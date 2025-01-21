@@ -7,6 +7,7 @@ public class InteractablePromptController : MonoBehaviour
     public static InteractablePromptController instance;
 
     public Canvas itemPickingCanvas;
+    private Canvas currentCanvas;
 
     private void Awake()
     {
@@ -27,10 +28,9 @@ public class InteractablePromptController : MonoBehaviour
 
     public void OpenPrompt(Interactable interactableType)
     {
-        if(interactableType.GetType() == typeof(ItemInteractable) && !itemPickingCanvas.enabled)
+        if(interactableType.GetType() == typeof(ItemInteractable))
         {
-            ClosePrompt();
-            itemPickingCanvas.enabled = true;
+            EnableCanvas(itemPickingCanvas);
         }
         else if(interactableType.GetType() == typeof(MerchantInteractable))
         {
@@ -40,6 +40,20 @@ public class InteractablePromptController : MonoBehaviour
 
     public void ClosePrompt()
     {
-        itemPickingCanvas.enabled = false;
+        if(currentCanvas != null)
+        {
+            currentCanvas.enabled = false;
+            currentCanvas = null;
+        }
+    }
+
+    private void EnableCanvas(Canvas canvas)
+    {
+        if (!canvas.enabled)
+        {
+            ClosePrompt();
+            canvas.enabled = true;
+            currentCanvas = canvas;
+        }
     }
 }

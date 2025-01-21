@@ -27,8 +27,7 @@ public class PlayerController : MonoBehaviour
 	public Transform orientation;
 	public Transform playerObj;
 
-    [Header("Pick Item")]
-    public float pickItemTime = 0.8f; // *** picking time has to be in sync with anim
+    [Header("Interact")]
     public Vector3 boxCastSize;
 
     [Header("Animation")]
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         None,
         Dash,
-        PickItem,
+        Interact,
         RightHand,
         LeftHand,
     }
@@ -62,8 +61,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isRunning;
 	private bool isJumping;
-	private bool isPicking = false;
-    private bool nowPicking = false;
+	private bool isInteracting = false;
+    private bool nowInteracting = false;
     private bool isDashing;
     private bool nowDashing = false;
     private float dashTimer;
@@ -99,6 +98,7 @@ public class PlayerController : MonoBehaviour
 	{
         isGrounded = playerCharacterController.isGrounded;
         int playerAction = anim.GetInteger("PlayerAction");
+        bool canInteract = false;
 
         if (MovementIsEnable())
 		{
@@ -108,12 +108,14 @@ public class PlayerController : MonoBehaviour
             playerCharacterController.Move(currentVelocity * Time.deltaTime);
         }
 
-		if (canControl)
+        canInteract = InteractablePrompt();
+
+        if (canControl)
 		{
-            // pick up item
-            if (isPicking && playerAction == 0)
+            // interact
+            if (isInteracting && canInteract)
             {
-                PickItems();
+                Interact();
             }
 
             // possibly implement double-wielding
@@ -129,10 +131,6 @@ public class PlayerController : MonoBehaviour
         }
 
         RunAnimTrance();
-
-        // get Interactable prompt
-        if(playerAction == 0)
-            InteractablePrompt();
     }
 
 	private void UpdateVelocity()
@@ -211,10 +209,10 @@ public class PlayerController : MonoBehaviour
         return canMove && !nowLeft && !nowRight;
     }
 
-    private void PickItems()
+    private void Interact()
     {
-        nowPicking = true;
-        isPicking = false;
+        nowInteracting = true;
+        isInteracting = false;
 
         Collider[] hits;
         hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
@@ -227,39 +225,31 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
-
-        anim.SetInteger("PlayerAction", 2);
-        Invoke("ResetPickItem", pickItemTime);
     }
 
-    private void ResetPickItem()
+    public void OnInteractionComplete()
     {
-        nowPicking = false;
-        if(anim.GetInteger("PlayerAction") == 2)
-            anim.SetInteger("PlayerAction", 0);
+        nowInteracting = false;
     }
 
-    private void InteractablePrompt()
+    private bool InteractablePrompt()
     {
         Collider[] hits;
         hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
 
-        bool canInteract = false;
+        InteractablePromptController controller = InteractablePromptController.instance;
 
         foreach (Collider hit in hits)
         {
             if (hit.GetComponent<Interactable>() != null)
             {
-                InteractablePromptController.instance.OpenPrompt(hit.GetComponent<Interactable>());
-                canInteract = true;
-                break;
+                controller.OpenPrompt(hit.GetComponent<Interactable>());
+                return true;
             }
         }
 
-        if (!canInteract)
-        { 
-            InteractablePromptController.instance.ClosePrompt();
-        }
+        controller.ClosePrompt();
+        return false;
     }
 
     private void UseItem(bool rightHand = true)
@@ -300,8 +290,8 @@ public class PlayerController : MonoBehaviour
                 case AnimTrance.Dash:
                     isDashing = true;
                     break;
-                case AnimTrance.PickItem:
-                    isPicking = true;
+                case AnimTrance.Interact:
+                    isInteracting = true;
                     break;
                 case AnimTrance.LeftHand:
                     usingLeft = true;
@@ -374,15 +364,15 @@ public class PlayerController : MonoBehaviour
 		}
     }
 
-    public void PickItemHandler(InputAction.CallbackContext ctx)
+    public void InteractHandler(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
-            isPicking = true;
+            isInteracting = true;
         }
         else if (ctx.canceled)
         {
-            isPicking = false;
+            isInteracting = false;
         }
     }
 

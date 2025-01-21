@@ -75,10 +75,16 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         }
     }
 
-    public bool AddItem(int itemID)
+    public bool AddItem(int itemID, bool addItem = true)
     {
         int invType = (int)database.GetItem[itemID].inventoryType;
         bool canAdd = inventoryList[invType].AddItem(itemID);
+
+        if (!addItem)
+        {
+            return canAdd;
+        }
+
         if (canAdd)
         {
             if (resources.ContainsKey(itemID))
