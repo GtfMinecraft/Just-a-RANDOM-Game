@@ -15,10 +15,10 @@ abstract public class Entity
     public float baseDamage; // the base (100%) damage of this entity
     public float armor; // incoming damage is multiplied by 1 - armor / (100 + abs(armor)), this increases / decreases the damage value by a maximum of 100%
     public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>(); // the active status effects of this entity
-	public string name; // name of this entity
+    public string name; // name of this entity
 
     public Entity(
-		string entityName,
+        string entityName,
         GameObject entityModel,
         float entitySpeed,
         float entityDamage,
@@ -33,7 +33,7 @@ abstract public class Entity
         speed = entitySpeed;
         baseDamage = entityDamage;
         armor = entityArmor;
-		name = entityName;
+        name = entityName;
     }
 
     public virtual void TakeDamage(Damage instance)
@@ -56,7 +56,8 @@ abstract public class Entity
         GameObject.Destroy(model);
     }
 
-    public virtual void ApplyStatusEffect(StatusEffect instance) {
+    public virtual void ApplyStatusEffect(StatusEffect instance)
+    {
         foreach (StatusEffect effect in activeEffects)
         {
             if (effect.GetType() == instance.GetType())
@@ -66,7 +67,7 @@ abstract public class Entity
                 return;
             }
         }
-        
+
         // if the same type of status effect isnt found
         activeEffects.Add(instance);
     }
@@ -85,7 +86,7 @@ abstract public class Entity
         if (shield > damageValue) // shield gets depleted first
             shield -= damageValue;
         else // if shield is not enough to absorb damage, start depleting health
-        { 
+        {
             health -= damageValue - shield;
             shield = 0;
         }
