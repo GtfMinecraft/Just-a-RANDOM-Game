@@ -5,5 +5,6 @@ public enum Interfaces
     Tool,
     Storage,
     Trading,
+    Bot,
     Esc,
 }

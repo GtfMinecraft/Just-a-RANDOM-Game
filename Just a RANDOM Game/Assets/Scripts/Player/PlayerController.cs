@@ -23,8 +23,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravity; // rate at which player accelerates downwards
 	[SerializeField] private float groundFriction; // rate at which player slows down horizontally while grounded
 	[SerializeField] private float airResistance; // rate at which player slows down horizontally while not grounded
-
-	public Transform orientation;
+    [SerializeField] private float midAirUseDistance; // the distance above ground where player can use items
+    
+    public Transform orientation;
 	public Transform playerObj;
 
     [Header("Interact")]
@@ -62,7 +63,8 @@ public class PlayerController : MonoBehaviour
     private bool isRunning;
 	private bool isJumping;
 	private bool isInteracting = false;
-    private bool nowInteracting = false;
+    [HideInInspector]
+    public bool forcedInteraction = false;
     private bool isDashing;
     private bool nowDashing = false;
     private float dashTimer;
@@ -206,12 +208,11 @@ public class PlayerController : MonoBehaviour
 
     public bool MovementIsEnable()
     {
-        return canMove && !nowLeft && !nowRight;
+        return canMove && !nowLeft && !nowRight && !forcedInteraction;
     }
 
     private void Interact()
     {
-        nowInteracting = true;
         isInteracting = false;
 
         Collider[] hits;
@@ -227,28 +228,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnInteractionComplete()
-    {
-        nowInteracting = false;
-    }
-
     private bool InteractablePrompt()
     {
-        Collider[] hits;
-        hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
-
         InteractablePromptController controller = InteractablePromptController.instance;
 
-        foreach (Collider hit in hits)
+        if (!forcedInteraction)
         {
-            if (hit.GetComponent<Interactable>() != null)
+            Collider[] hits;
+            hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
+
+            foreach (Collider hit in hits)
             {
-                controller.OpenPrompt(hit.GetComponent<Interactable>());
-                return true;
+                if (hit.GetComponent<Interactable>() != null)
+                {
+                    controller.OpenPrompt(hit.GetComponent<Interactable>());
+                    return true;
+                }
             }
         }
 
-        controller.ClosePrompt();
+        controller.DisableCanvas();
         return false;
     }
 
@@ -257,17 +256,33 @@ public class PlayerController : MonoBehaviour
         //get itemUseTime from item and according to the type of use
         float itemUseTime = 0.8f;
 
-        if (rightHand)
+        if (isGrounded)
         {
-            nowRight = true;
-            usingRight = false;
-            anim.SetInteger("PlayerAction", 3);
+            if (rightHand)
+            {
+                nowRight = true;
+                usingRight = false;
+                anim.SetInteger("PlayerAction", 3);
+            }
+            else
+            {
+                nowLeft = true;
+                usingLeft = false;
+                anim.SetInteger("PlayerAction", 4);
+            }
         }
-        else
-        {
-            nowLeft = true;
-            usingLeft = false;
-            anim.SetInteger("PlayerAction", 4);
+        else if (Physics.Raycast(playerObj.position, Vector3.down, out _, midAirUseDistance))
+        { // modify to mid air use
+            if (rightHand)
+            {
+                usingRight = false;
+                anim.SetInteger("PlayerAction", 3);
+            }
+            else
+            {
+                usingLeft = false;
+                anim.SetInteger("PlayerAction", 4);
+            }
         }
 
         CancelInvoke("ResetUseLeftRight");
@@ -420,5 +435,8 @@ public class PlayerController : MonoBehaviour
         Gizmos.matrix = Matrix4x4.TRS(boxCastOrigin, boxCastRotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, boxCastSize);
         Gizmos.matrix = Matrix4x4.identity; // Reset Gizmos matrix
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(playerObj.position, playerObj.position + Vector3.down * midAirUseDistance);
     }
 }

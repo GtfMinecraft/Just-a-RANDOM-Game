@@ -79,6 +79,7 @@ public class DataPersistenceManager : MonoBehaviour
         gameData = new GameData();
 
         //initialize
+        PlayerPrefs.SetString("resourceReplenish", "000");
         PlayerPrefs.SetString("rightItemsString", "");
         PlayerPrefs.SetString("leftItemsString", "");
         PlayerPrefs.SetInt("selectedTool", 0);

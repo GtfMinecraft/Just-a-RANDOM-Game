@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UI;
 
 public class InteractablePromptController : MonoBehaviour
 {
     public static InteractablePromptController instance;
 
-    public Canvas itemPickingCanvas;
-    private Canvas currentCanvas;
+    public Image prompt;
+
+    [Header("Prompt Image")]
+    public Sprite itemPicking;
+    public Sprite botInterface;
+    public Sprite merchantInterface;
 
     private void Awake()
     {
@@ -23,37 +29,33 @@ public class InteractablePromptController : MonoBehaviour
 
     private void Start()
     {
-        itemPickingCanvas.enabled = false;
+        GetComponent<Canvas>().enabled = false;
     }
 
     public void OpenPrompt(Interactable interactableType)
     {
-        if(interactableType.GetType() == typeof(ItemInteractable))
+        EnableCanvas();
+        if (interactableType.GetType() == typeof(ItemInteractable))
         {
-            EnableCanvas(itemPickingCanvas);
+            prompt.sprite = itemPicking;
+        }
+        else if(interactableType.GetType() == typeof(BotInteractable))
+        {
+            prompt.sprite = botInterface;
         }
         else if(interactableType.GetType() == typeof(MerchantInteractable))
         {
-
+            prompt.sprite = merchantInterface;
         }
     }
 
-    public void ClosePrompt()
+    public void DisableCanvas()
     {
-        if(currentCanvas != null)
-        {
-            currentCanvas.enabled = false;
-            currentCanvas = null;
-        }
+        GetComponent<Canvas>().enabled = false;
     }
 
-    private void EnableCanvas(Canvas canvas)
+    private void EnableCanvas()
     {
-        if (!canvas.enabled)
-        {
-            ClosePrompt();
-            canvas.enabled = true;
-            currentCanvas = canvas;
-        }
+        GetComponent<Canvas>().enabled = true;
     }
 }

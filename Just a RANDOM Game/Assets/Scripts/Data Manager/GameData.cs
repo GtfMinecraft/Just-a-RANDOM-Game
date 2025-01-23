@@ -10,6 +10,7 @@ public class GameData
     public List<InventoryData> inventoryData;
     public MapData mapData;
     public Dictionary<string, LevelData> levelData;
+    public BotCraftData botCraftData;
 
     //TODO: put all data that need to save in this class
 
@@ -23,6 +24,8 @@ public class GameData
         {
             { "chunk", new("chunk") },
         };
+
+        botCraftData = new BotCraftData();
     }
 
     public class LevelData
@@ -71,6 +74,16 @@ public class GameData
             itemIDs = Enumerable.Repeat(0, 10).ToList();
             currentStacks = Enumerable.Repeat(0, 10).ToList();
             elements = Enumerable.Repeat("00000", 10).ToList();
+        }
+    }
+
+    public class BotCraftData
+    {
+        public List<int> unlockedCrafts;
+
+        public BotCraftData()
+        {
+            unlockedCrafts = new List<int>();
         }
     }
 }

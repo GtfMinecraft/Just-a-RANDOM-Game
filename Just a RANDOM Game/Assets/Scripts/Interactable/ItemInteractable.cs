@@ -18,22 +18,21 @@ public class ItemInteractable : Interactable
         }
         else
         {
-            StartInteraction();
+            OnInteractionStart();
         }
     }
 
-    public void StartInteraction()
+    private void OnInteractionStart()
     {
         anim.SetInteger("PlayerAction", 2);
-        Invoke("OnInterationComplete", interactTime);
+        Invoke("OnInteractionEnd", interactTime);
     }
 
-    protected override void OnInterationComplete()
+    private void OnInteractionEnd()
     {
         if (anim.GetInteger("PlayerAction") == 2)
             anim.SetInteger("PlayerAction", 0);
         InventoryHandler.instance.AddItem(itemID);
-        base.OnInterationComplete();
         Destroy(gameObject);
     }
 }

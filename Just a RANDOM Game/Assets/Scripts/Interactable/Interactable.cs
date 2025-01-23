@@ -11,9 +11,4 @@ public abstract class Interactable : MonoBehaviour
     {
         anim = PlayerController.instance.anim;
     }
-
-    protected virtual void OnInterationComplete()
-    {
-        PlayerController.instance.OnInteractionComplete();
-    }
 }

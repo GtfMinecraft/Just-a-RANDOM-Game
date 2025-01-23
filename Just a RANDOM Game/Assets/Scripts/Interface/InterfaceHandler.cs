@@ -11,6 +11,8 @@ public class InterfaceHandler : MonoBehaviour
     public Canvas EscCanvas;
     private InventoryCanvasController inventoryCanvas;
     private TradingInterface trading;
+    public BotInterface BotCanvas;
+
     public Interfaces currentInterface { get; private set; }
 
     private void Awake()
@@ -37,6 +39,7 @@ public class InterfaceHandler : MonoBehaviour
         inventoryCanvas.CloseAllInventory();
         trading.CloseTradingInterface();
         EscCanvas.enabled = false;
+        BotCanvas.CloseBotInterface();
 
         Time.timeScale = 1f;
         currentInterface = Interfaces.None;
