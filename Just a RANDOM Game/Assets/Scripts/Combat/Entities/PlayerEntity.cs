@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
+    [SerializeField]
+    private Transform respawnLocation;
+
     public PlayerEntity(
         GameObject playerModel,
         float playerSpeed = 10f,
@@ -20,7 +23,11 @@ public class PlayerEntity : Entity
             playerMaxHealth,
             playerMaxShield,
             playerArmor
-        ) { }
+        )
+    {
+        base.respawnPoint = respawnPoint;
+        base.respawnCooldown = float.PositiveInfinity;
+    }
 
     public override void TakeDamage(Damage instance)
     {
@@ -39,6 +46,7 @@ public class PlayerEntity : Entity
     {
         // TODO: death animation, death screen
 
-        // TODO: respawn player
+        base.respawnPoint.SpawnEntity();
+        GameObject.Destroy(base.model);
     }
 }

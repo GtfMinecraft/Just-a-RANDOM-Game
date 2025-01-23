@@ -16,6 +16,8 @@ abstract public class Entity
     public float armor; // incoming damage is multiplied by 1 - armor / (100 + abs(armor)), this increases / decreases the damage value by a maximum of 100%
     public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>(); // the active status effects of this entity
     public string name; // name of this entity
+    public SpawnPointDirector respawnPoint; // where this entity will respawn when it dies
+    public float respawnCooldown; // time before entity is respawned
 
     public Entity(
         string entityName,
@@ -53,6 +55,7 @@ abstract public class Entity
 
     public virtual void Kill()
     {
+        respawnPoint.SpawnEntityInterval(respawnCooldown, 1);
         GameObject.Destroy(model);
     }
 

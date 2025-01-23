@@ -6,11 +6,17 @@ public class EntityDirector : MonoBehaviour
 {
     [SerializeField]
     private Entity entity;
+    private bool isActive; // an inactive entity is invisible, and does not interact with anything else
 
     private void Update()
     {
-        // ignore if entity is not set
+        // ignore if entity is not set or is inactive
         if (entity == null)
+        {
+            Debug.Log($"EntityDirector attached to {gameObject.name} does not have a valid entity set");
+            return;
+        }
+        else if (isActive == false)
             return;
 
         foreach (StatusEffect effect in entity.activeEffects)
@@ -24,5 +30,12 @@ public class EntityDirector : MonoBehaviour
             entity = target;
         else
             Debug.Log("Entity already set");
+    }
+
+    // When the entity dies, respawn it at `spawnPoint` after `delaySeconds` seconds
+    public void SetRespawn(SpawnPointDirector spawnPoint, float delaySeconds = 0)
+    {
+        entity.respawnPoint = spawnPoint;
+        entity.respawnCooldown = delaySeconds;
     }
 }
