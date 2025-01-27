@@ -20,6 +20,8 @@ MonoBehaviour:
   model: {fileID: 0}
   inventoryType: 1
   itemType: 1
-  durability: 0
   attackSpeed: 0
   maxStack: 1
+  recipe:
+    keys: 
+    values: 

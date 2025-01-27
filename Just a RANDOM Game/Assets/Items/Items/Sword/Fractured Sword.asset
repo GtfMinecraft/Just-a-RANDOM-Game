@@ -20,6 +20,8 @@ MonoBehaviour:
   model: {fileID: 5863745638388628282, guid: 02a0afde967a2084aa840f4af2a75709, type: 3}
   inventoryType: 1
   itemType: 1
-  durability: 0
   attackSpeed: 0
   maxStack: 1
+  recipe:
+    keys: 0200000003000000
+    values: 0100000001000000

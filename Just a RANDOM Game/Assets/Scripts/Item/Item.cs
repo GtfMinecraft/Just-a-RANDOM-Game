@@ -14,8 +14,7 @@ public class Item : ScriptableObject
     public GameObject model;
     public InventoryTypes inventoryType = InventoryTypes.Storage;
     public ItemTypes itemType = ItemTypes.Basic;
-    public int durability;
     public float attackSpeed;
     public int maxStack = 1;
-    public List<int> recipe;
+    public UDictionaryIntInt recipe;
 }
