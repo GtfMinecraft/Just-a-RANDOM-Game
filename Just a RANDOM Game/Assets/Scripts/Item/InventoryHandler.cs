@@ -95,7 +95,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             {
                 resources[itemID] = 1;
             }
-            PlayerItemController.instance.SetDefaultItem(itemID);
+            //PlayerItemController.instance.SetDefaultItem(itemID);
             itemWheel.UpdateItemWheelUI(itemID);
 
             if(invType == currentGroup)
@@ -196,13 +196,13 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         PlayerPrefs.SetInt("selectedTool", (int)PlayerItemController.instance.currentInventory);
         PlayerPrefs.SetInt("selectedGroup", currentGroup);
 
-        string rightItemsString = "", leftItemsString = "";
-        for (int i = 0; i < PlayerItemController.instance.rightItems.Length; i++)
-        {
-            rightItemsString += PlayerItemController.instance.rightItems[i];
-            leftItemsString += PlayerItemController.instance.leftItems[i];
-        }
-        PlayerPrefs.SetString("rightItemsString", rightItemsString);
-        PlayerPrefs.SetString("leftItemsString", leftItemsString);
+        //string rightItemsString = "", leftItemsString = "";
+        //for (int i = 0; i < PlayerItemController.instance.rightItems.Length; i++)
+        //{
+        //    rightItemsString += PlayerItemController.instance.rightItems[i];
+        //    leftItemsString += PlayerItemController.instance.leftItems[i];
+        //}
+        //PlayerPrefs.SetString("rightItemsString", rightItemsString);
+        //PlayerPrefs.SetString("leftItemsString", leftItemsString);
     }
 }

@@ -83,7 +83,7 @@ public class GameData
 
         public BotCraftData()
         {
-            unlockedCrafts = new List<int>();
+            unlockedCrafts = new List<int>{ 1, 3, 2, 4 };// fill in cooked stew, and fish
         }
     }
 }

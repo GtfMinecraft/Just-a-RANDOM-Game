@@ -9,13 +9,6 @@ using UnityEngine.UI;
 
 public class BotInterface : MonoBehaviour, IDataPersistence
 {
-    [Header("Resource Replenish")]
-    public Sprite[] woodList;
-    public Sprite[] oreList;
-    public Sprite[] cropList;
-    public Image[] replenishItems;
-    public Image[] arrows;
-
     [Header("Crafting")]
     public Color faintCraftIcon;
     public Transform craftBackground;
@@ -40,60 +33,9 @@ public class BotInterface : MonoBehaviour, IDataPersistence
         GetComponent<Canvas>().enabled = false;
         itemHover.gameObject.SetActive(false);
 
-        string indexString = PlayerPrefs.GetString("resourceReplenish");
-        replenishIndexes = new int[indexString.Length];
-        for(int i=0; i<replenishItems.Length; i++)
-        {
-            replenishIndexes[i] = indexString[i] - 48;
-        }
-        replenishItems[0].sprite = woodList[replenishIndexes[0]];
-        replenishItems[1].sprite = oreList[replenishIndexes[1]];
-        replenishItems[2].sprite = cropList[replenishIndexes[2]];
-
-        for (int i = 0; i < arrows.Length; ++i)
-            arrows[i].alphaHitTestMinimumThreshold = 0.1f;
-
-        unlockedCrafts = new List<int> { 1, 3, 2, 4 };
-
         materialParent = itemHover.GetChild(1);
 
         InstantiateCraft();
-    }
-
-    public void ArrowNext(bool next)
-    {
-        this.next = next;
-    }
-
-    public void SwapResourceReplenish(int index)
-    {
-        if (index == 0)
-        {
-            replenishIndexes[0] += next ? 1 : -1;
-            if (replenishIndexes[0] == woodList.Length)
-                replenishIndexes[0] -= woodList.Length;
-            if (replenishIndexes[0] == -1)
-                replenishIndexes[0] += woodList.Length;
-            replenishItems[0].sprite = woodList[replenishIndexes[0]];
-        }
-        else if (index == 1)
-        {
-            replenishIndexes[1] += next ? 1 : -1;
-            if (replenishIndexes[1] == oreList.Length)
-                replenishIndexes[1] -= oreList.Length;
-            if (replenishIndexes[1] == -1)
-                replenishIndexes[1] += oreList.Length;
-            replenishItems[1].sprite = oreList[replenishIndexes[1]];
-        }
-        else if(index == 2)
-        {
-            replenishIndexes[2] += next ? 1 : -1;
-            if (replenishIndexes[2] == cropList.Length)
-                replenishIndexes[2] -= cropList.Length;
-            if (replenishIndexes[2] == -1)
-                replenishIndexes[2] += cropList.Length;
-            replenishItems[2].sprite = cropList[replenishIndexes[2]];
-        }
     }
 
     public void UnLockCraft(int itemID)
@@ -201,11 +143,6 @@ public class BotInterface : MonoBehaviour, IDataPersistence
 
     public void SaveData(GameData data)
     {
-        string temp = "";
-        for (int i = 0; i < replenishIndexes.Length; i++)
-        {
-            temp += replenishIndexes[i].ToString();
-        }
-        PlayerPrefs.SetString("resourceReplenish", temp);
+        data.botCraftData.unlockedCrafts = unlockedCrafts;
     }
 }

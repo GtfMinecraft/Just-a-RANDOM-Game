@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
+    public Camera playerCam;
+
 	[Header("Movement")]
     [SerializeField] private float groundAcceleration; // acceleration while grounded
 	[SerializeField] private float airAcceleration; // acceleration while not grounded
@@ -102,14 +104,6 @@ public class PlayerController : MonoBehaviour
         int playerAction = anim.GetInteger("PlayerAction");
         bool canInteract = false;
 
-        if (MovementIsEnable())
-		{
-            UpdateVelocity();
-
-            // handle movement
-            playerCharacterController.Move(currentVelocity * Time.deltaTime);
-        }
-
         canInteract = InteractablePrompt();
 
         if (canControl)
@@ -135,7 +129,18 @@ public class PlayerController : MonoBehaviour
         RunAnimTrance();
     }
 
-	private void UpdateVelocity()
+    private void FixedUpdate()
+    {
+        if (MovementIsEnable())
+        {
+            UpdateVelocity();
+
+            // handle movement
+            playerCharacterController.Move(currentVelocity * Time.deltaTime);
+        }
+    }
+
+    private void UpdateVelocity()
 	{
         float speedMultiplier = isRunning ? runMultiplier : 1f;
 

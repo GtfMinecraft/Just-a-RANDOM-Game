@@ -7,7 +7,6 @@ public class PlayerItemController : MonoBehaviour
     public static PlayerItemController instance;
 
     public ItemDatabase database;
-    public GameObject magicStone;
 
     private Animator animator;
     public InventoryTypes currentInventory { get; private set; }
@@ -18,8 +17,8 @@ public class PlayerItemController : MonoBehaviour
     public GameObject rightHandObj;
     public GameObject leftHandObj;
 
-    public int[] rightItems { get; private set; } = new int[7];
-    public int[] leftItems { get; private set; } = new int[7];
+    public int[] rightItems { get; private set; } = new int[6];// fill in basic tools
+    public int[] leftItems { get; private set; } = new int[6];
 
     /*
      *  0 empty
@@ -48,18 +47,18 @@ public class PlayerItemController : MonoBehaviour
         animator = GetComponent<Animator>();
         ChangeInventory((InventoryTypes)PlayerPrefs.GetInt("selectedTool", 0));
 
-        string rightItemsString = PlayerPrefs.GetString("rightItemsString", "");
-        string leftItemsString = PlayerPrefs.GetString("leftItemsString", "");
-        for(int i = 0; i < rightItems.Length; i++)
-        {
-            rightItems[i] = (rightItemsString.Length > i) ? rightItemsString[i] - '0' : 0;
-            leftItems[i] = (leftItemsString.Length > i) ? leftItemsString[i] - '0' : 0;
-        }
-        if(currentInventory != InventoryTypes.Storage)
-        {
-            UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
-            UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
-        }
+        //string rightItemsString = PlayerPrefs.GetString("rightItemsString", "");
+        //string leftItemsString = PlayerPrefs.GetString("leftItemsString", "");
+        //for(int i = 0; i < rightItems.Length; i++)
+        //{
+        //    rightItems[i] = (rightItemsString.Length > i) ? rightItemsString[i] - '0' : 0;
+        //    leftItems[i] = (leftItemsString.Length > i) ? leftItemsString[i] - '0' : 0;
+        //}
+        //if(currentInventory != InventoryTypes.Storage)
+        //{
+        //    UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
+        //    UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
+        //}
     }
 
     public void ChangeInventory(InventoryTypes inv)
@@ -70,43 +69,43 @@ public class PlayerItemController : MonoBehaviour
         if(inv != InventoryTypes.Storage)
         {
             UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
-            UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
+            //UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
         }
         //leftItem = null;
         //UpdateHandModel(magicStone, leftHand);
     }
 
-    public void SwapHandItem(int itemID)
-    {
-        Item item = database.GetItem[itemID];
+    //public void SwapHandItem(int itemID)
+    //{
+    //    Item item = database.GetItem[itemID];
 
-        if (item == null)
-        {
-            UpdateHandModel(null);
-        }
-        else if (item.itemType == ItemTypes.Tool)
-        {
-            rightItems[(int)currentInventory] = itemID;
-            UpdateHandModel(item.model);
-        }
-        else if (item.itemType == ItemTypes.Food)
-        {
-            leftItems[(int)currentInventory] = itemID;
-            UpdateHandModel(item.model, true);
-            canEat = true;
-        }
-        else if (item.itemType == ItemTypes.Potion)
-        {
-            int temp = leftItems[(int)currentInventory];
+    //    if (item == null)
+    //    {
+    //        UpdateHandModel(null);
+    //    }
+    //    else if (item.itemType == ItemTypes.Tool)
+    //    {
+    //        rightItems[(int)currentInventory] = itemID;
+    //        UpdateHandModel(item.model);
+    //    }
+    //    else if (item.itemType == ItemTypes.Food)
+    //    {
+    //        leftItems[(int)currentInventory] = itemID;
+    //        UpdateHandModel(item.model, true);
+    //        canEat = true;
+    //    }
+    //    else if (item.itemType == ItemTypes.Potion)
+    //    {
+    //        int temp = leftItems[(int)currentInventory];
 
-            UpdateHandModel(item.model, true);
-            UpdateHandModel(database.GetItem[temp].model, true);
-        }
-        else if (item.itemType == ItemTypes.Bait)
-        {
+    //        UpdateHandModel(item.model, true);
+    //        UpdateHandModel(database.GetItem[temp].model, true);
+    //    }
+    //    else if (item.itemType == ItemTypes.Bait)
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
     private void UpdateHandModel(GameObject itemModel, bool leftHand = false)
     {
@@ -134,22 +133,33 @@ public class PlayerItemController : MonoBehaviour
         }
     }
 
-    public void SetDefaultItem(int itemID)
+    //public void SetDefaultItem(int itemID)
+    //{
+    //    Item item = database.GetItem[itemID];
+
+    //    if ((item.itemType == ItemTypes.Bait || item.itemType == ItemTypes.Seed) && leftItems[(int)item.inventoryType] == 0)
+    //    {
+    //        leftItems[(int)item.inventoryType] = itemID;
+    //        UpdateHandModel(item.model, true);
+    //    }
+    //    else if(item.itemType == ItemTypes.Tool && rightItems[(int)item.inventoryType] == 0)
+    //    {
+    //        rightItems[(int)item.inventoryType] = itemID;
+    //        UpdateHandModel(item.model);
+    //    }
+    //    //set left / right item to this item if it is one of the necessary items
+
+    //    //basic tool, tool upgrade, aquire off-hand item
+    //}
+
+    public void UseItem(bool isRight = true)
     {
-        Item item = database.GetItem[itemID];
-
-        if ((item.itemType == ItemTypes.Bait || item.itemType == ItemTypes.Seed) && leftItems[(int)item.inventoryType] == 0)
+        Item item;
+        item = database.GetItem[rightItems[(int)currentInventory]];
+        
+        if(item.itemType == ItemTypes.Rod)
         {
-            leftItems[(int)item.inventoryType] = itemID;
-            UpdateHandModel(item.model, true);
-        }
-        else if(item.itemType == ItemTypes.Tool && rightItems[(int)item.inventoryType] == 0)
-        {
-            rightItems[(int)item.inventoryType] = itemID;
-            UpdateHandModel(item.model);
-        }
-        //set left / right item to this item if it is one of the necessary items
 
-        //basic tool, tool upgrade, aquire off-hand item
+        }
     }
 }
