@@ -11,8 +11,10 @@ public class GameStartup : MonoBehaviour
     [Header("Start")]
     public Canvas canvas;
     public Canvas starter;
-    public bool played = false;
+    public AudioSource music;
 
+    [HideInInspector]
+    public bool played = false;
     private bool once = true;
 
     // Start is called before the first frame update
@@ -28,6 +30,7 @@ public class GameStartup : MonoBehaviour
     {
         if (Input.anyKeyDown&&played&&once)
         {
+            music.Play();
             starter.GetComponent<StarterController>().enabled = false;
             Cursor.visible = true;
             once = false;

@@ -13,6 +13,7 @@ public class StartingBanner : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public float fadeDuration = 0.1f; // Duration for the fade in/out effect
 
     public Canvas canvas;
+    public AudioSource sfx;
 
     public void Reverse()
     {
@@ -29,6 +30,8 @@ public class StartingBanner : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        sfx.Stop();
+        sfx.Play();
         Reverse();
         StartCoroutine(FadeImage(GetComponent<RawImage>(), 1f, fadeDuration));
         text.color = new Color(1f, 140f / 255f, 0f);
