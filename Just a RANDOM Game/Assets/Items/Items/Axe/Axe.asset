@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
-  m_Name: Fire Axe
+  m_Name: Axe
   m_EditorClassIdentifier: 
-  ID: 8
-  itemName: Fire Axe
+  ID: 2
+  itemName: Renewed Axe
   itemDescription: A broken axe with an eroded handle and dull edges
   price: 0
-  icon: {fileID: 21300000, guid: 946d2d06bb2a61844a29706295a3d6d1, type: 3}
+  icon: {fileID: 21300000, guid: 9d74d2a526f47a741b0f8832f2e85bc4, type: 3}
   model: {fileID: 919132149155446097, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
   inventoryType: 2
-  itemType: 1
-  durability: 0
+  itemType: 3
   attackSpeed: 0
   maxStack: 1
+  recipe:
+    keys: 
+    values: 

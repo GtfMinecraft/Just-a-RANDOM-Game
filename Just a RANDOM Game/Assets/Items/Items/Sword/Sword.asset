@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
-  m_Name: Renewed Sword
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  ID: 2
-  itemName: Renewed Sword
+  ID: 1
+  itemName: Sword
   itemDescription: New Description
   price: 0
   icon: {fileID: 21300000, guid: 48f5831af4ea9964984f36d10327ea00, type: 3}
-  model: {fileID: 0}
+  model: {fileID: 5505416581070906080, guid: d162ac8eb462a4546bba203dfcf6af34, type: 3}
   inventoryType: 1
   itemType: 1
-  durability: 0
   attackSpeed: 0
   maxStack: 1
+  recipe:
+    keys: 
+    values: 

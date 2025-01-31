@@ -10,7 +10,7 @@ public class InterfaceHandler : MonoBehaviour
     private PlayerController player;
     public Canvas EscCanvas;
     private InventoryCanvasController inventoryCanvas;
-    private TradingInterface trading;
+    //private TradingInterface trading;
     public BotInterface BotCanvas;
 
     public Interfaces currentInterface { get; private set; }
@@ -31,13 +31,13 @@ public class InterfaceHandler : MonoBehaviour
     {
         player = PlayerController.instance;
         inventoryCanvas = InventoryCanvasController.instance;
-        trading = TradingInterface.instance;
+        //trading = TradingInterface.instance;
     }
 
     public void CloseAllInterface()
     {
         inventoryCanvas.CloseAllInventory();
-        trading.CloseTradingInterface();
+        //trading.CloseTradingInterface();
         EscCanvas.enabled = false;
         BotCanvas.CloseBotInterface();
 

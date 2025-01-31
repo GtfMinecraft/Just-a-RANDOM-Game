@@ -10,6 +10,7 @@ public enum ItemTypes
     Food,
     Armor,
     Potion,
+    Crop,
     Bait,
     Material,
 };

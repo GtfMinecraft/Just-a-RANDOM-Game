@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6831331016314748219}
   m_Layer: 0
-  m_Name: Refined Axe
+  m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

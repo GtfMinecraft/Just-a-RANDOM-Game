@@ -20,7 +20,6 @@ public class BotInterface : MonoBehaviour, IDataPersistence
     private UDictionaryIntInt resources;
     private List<int> unlockedCrafts;
     private int[] replenishIndexes;
-    private bool next = false;
 
     private Transform materialParent;
 

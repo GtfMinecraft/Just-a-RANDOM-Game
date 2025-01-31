@@ -104,33 +104,6 @@ public class PlayerController : MonoBehaviour
         int playerAction = anim.GetInteger("PlayerAction");
         bool canInteract = false;
 
-        canInteract = InteractablePrompt();
-
-        if (canControl)
-		{
-            // interact
-            if (isInteracting && canInteract)
-            {
-                Interact();
-            }
-
-            // possibly implement double-wielding
-            if (usingRight && (playerAction == 0 || playerAction == 2 || playerAction == 4))
-            {
-                UseItem(true);
-            }
-
-            if (usingLeft && (playerAction == 0 || playerAction == 2 || playerAction == 3))
-            {
-                UseItem(false);
-            }
-        }
-
-        RunAnimTrance();
-    }
-
-    private void FixedUpdate()
-    {
         if (MovementIsEnable())
         {
             UpdateVelocity();
@@ -138,6 +111,30 @@ public class PlayerController : MonoBehaviour
             // handle movement
             playerCharacterController.Move(currentVelocity * Time.deltaTime);
         }
+
+        canInteract = InteractablePrompt();
+
+        if (canControl)
+		{
+            // interact
+            if (!nowRight && !nowLeft && isInteracting && canInteract)
+            {
+                Interact();
+            }
+
+            // possibly implement double-wielding
+            if (usingRight && (PlayerItemController.instance.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 4))
+            {
+                UseItem(true);
+            }
+
+            if (usingLeft && (PlayerItemController.instance.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 3))
+            {
+                UseItem(false);
+            }
+        }
+
+        RunAnimTrance();
     }
 
     private void UpdateVelocity()
@@ -213,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
     public bool MovementIsEnable()
     {
-        return canMove && !nowLeft && !nowRight && !forcedInteraction;
+        return canMove && !forcedInteraction;
     }
 
     private void Interact()
@@ -258,47 +255,29 @@ public class PlayerController : MonoBehaviour
 
     private void UseItem(bool rightHand = true)
     {
-        //get itemUseTime from item and according to the type of use
-        float itemUseTime = 0.8f;
-
-        if (isGrounded)
+        if (isGrounded || Physics.Raycast(playerObj.position, Vector3.down, out _, midAirUseDistance))
         {
             if (rightHand)
             {
                 nowRight = true;
                 usingRight = false;
                 anim.SetInteger("PlayerAction", 3);
+                PlayerItemController.instance.UseItem();
             }
             else
             {
                 nowLeft = true;
                 usingLeft = false;
                 anim.SetInteger("PlayerAction", 4);
+                PlayerItemController.instance.UseItem(false);
             }
         }
-        else if (Physics.Raycast(playerObj.position, Vector3.down, out _, midAirUseDistance))
-        { // modify to mid air use
-            if (rightHand)
-            {
-                usingRight = false;
-                anim.SetInteger("PlayerAction", 3);
-            }
-            else
-            {
-                usingLeft = false;
-                anim.SetInteger("PlayerAction", 4);
-            }
-        }
-
-        CancelInvoke("ResetUseLeftRight");
-        Invoke("ResetUseLeftRight", itemUseTime);
     }
 
-    private void ResetUseLeftRight()
+    public void ResetUseLeftRight()
     {
         nowLeft = nowRight = false;
         anim.SetInteger("PlayerAction", 0);
-
     }
 
     private void RunAnimTrance()
@@ -414,6 +393,10 @@ public class PlayerController : MonoBehaviour
         else if (ctx.canceled)
         {
             usingRight = false;
+            if(nowRight)
+            {
+                PlayerItemController.instance.Release();
+            }
         }
     }
 
@@ -426,6 +409,10 @@ public class PlayerController : MonoBehaviour
         else if (ctx.canceled)
         {
             usingLeft = false;
+            if (nowLeft)
+            {
+                PlayerItemController.instance.Release(false);
+            }
         }
     }
 

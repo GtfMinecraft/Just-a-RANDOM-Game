@@ -22,7 +22,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     [Header("UI")]
     public Transform groupUI;
     public Transform storage;
-    public int slotCount;
     public GameObject slotPrefab;
     public Transform armor;
     public Transform description;
@@ -30,6 +29,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
     private Image[] groups = new Image[7];
     private InventorySlotUI[] inventorySlots;
+    private int slotCount;
 
     public int currentGroup { get; private set; }
     private ItemDatabase database;
@@ -95,7 +95,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             {
                 resources[itemID] = 1;
             }
-            //PlayerItemController.instance.SetDefaultItem(itemID);
+            PlayerItemController.instance.SetDefaultItem(itemID);
             itemWheel.UpdateItemWheelUI(itemID);
 
             if(invType == currentGroup)
@@ -160,26 +160,46 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        slotCount = data.inventoryData[0].itemIDs.Count; 
+        slotCount = data.inventoryData[0].itemIDs.Count;// future function to implement: dynamically adjust inventory space to add 1 row
+        for (int i = 0; i < slotCount; ++i)
+        {
+            Instantiate(slotPrefab, storage);
+        }
+
         for (int i = 0; i < inventoryList.Length; i++)
         {
+            //inventoryList[i].itemSlots = data.inventoryData[i].itemIDs.Zip(
+            //    data.inventoryData[i].currentStacks.Zip(data.inventoryData[i].elements, (f1, f2) => new {stacks = f1, elements = f2}), (f1, f2) =>
+            //    {
+            //        if (resources.ContainsKey(f1))
+            //        {
+            //            resources[f1] += f2.stacks;
+            //        }
+            //        else
+            //        {
+            //            resources[f1] = f2.stacks;
+            //        }
+
+            //        int[] elements = f2.elements.ToCharArray().Select(c => c - 48).ToArray();
+
+            //        return new Inventory.ItemSlot(f1, f2.stacks, elements);
+            //    }).ToList();
+
             inventoryList[i].itemSlots = data.inventoryData[i].itemIDs.Zip(
-                data.inventoryData[i].currentStacks.Zip(data.inventoryData[i].elements, (f1, f2) => new {stacks = f1, elements = f2}), (f1, f2) =>
+                data.inventoryData[i].currentStacks, (f1, f2) =>
                 {
                     if (resources.ContainsKey(f1))
                     {
-                        resources[f1] += f2.stacks;
+                        resources[f1] += f2;
                     }
                     else
                     {
-                        resources[f1] = f2.stacks;
+                        resources[f1] = f2;
                     }
-
-                    int[] elements = f2.elements.ToCharArray().Select(c => c - 48).ToArray();
-
-                    return new Inventory.ItemSlot(f1, f2.stacks, elements);
+                    return new Inventory.ItemSlot(f1, f2);
                 }).ToList();
         }
+
     }
 
     public void SaveData(GameData data)
@@ -189,7 +209,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         {
             data.inventoryData.Add(new GameData.InventoryData { 
                 itemIDs = invList.itemSlots.ConvertAll(o => o.ID),
-                currentStacks = invList.itemSlots.ConvertAll(((o) => o.currentStack)),
+                currentStacks = invList.itemSlots.ConvertAll(o => o.currentStack),
             });
         }
 

@@ -230,7 +230,7 @@ public class InventoryCanvasController : MonoBehaviour
     {
         if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Tool))
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.Storage, true, false, true);
+            InterfaceHandler.instance.OpenInterface(Interfaces.Storage, true, false, false);
             InventoryHandler.instance.UpdateInventoryUI();
             storage.enabled = true;
         }

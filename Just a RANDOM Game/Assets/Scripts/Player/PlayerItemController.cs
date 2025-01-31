@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
+using static UnityEditor.Progress;
 
 public class PlayerItemController : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class PlayerItemController : MonoBehaviour
 
     public ItemDatabase database;
 
-    private Animator animator;
+    public Animator anim;
     public InventoryTypes currentInventory { get; private set; }
 
     [HideInInspector]
@@ -17,8 +19,20 @@ public class PlayerItemController : MonoBehaviour
     public GameObject rightHandObj;
     public GameObject leftHandObj;
 
-    public int[] rightItems { get; private set; } = new int[6];// fill in basic tools
-    public int[] leftItems { get; private set; } = new int[6];
+    public float[] toolUseTime = { 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 2.5f };
+
+    public int[] rightItems { get; private set; } = { 0, 1, 2, 0, 0, 4, 0 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
+    public int[] leftItems { get; private set; } = { 0, 0, 0, 0, 0, 0, 0 };
+
+    public bool isFishing { get; private set; }
+    private FishingController fishingController;
+    private float fishTime;
+    private Vector3 bobber;
+    private RodTrigger rodTrigger;
+    private bool showFishingCanvas = false;
+
+    public bool isAiming { get; private set; }
+    public bool isEating { get; private set; }
 
     /*
      *  0 empty
@@ -44,7 +58,6 @@ public class PlayerItemController : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
         ChangeInventory((InventoryTypes)PlayerPrefs.GetInt("selectedTool", 0));
 
         //string rightItemsString = PlayerPrefs.GetString("rightItemsString", "");
@@ -61,6 +74,22 @@ public class PlayerItemController : MonoBehaviour
         //}
     }
 
+    private void Update()
+    {
+        if (isFishing)
+        {
+            if(fishTime > 0)
+            {
+                fishTime -= Time.deltaTime;
+            }
+            else if(!showFishingCanvas)
+            {
+                showFishingCanvas = true;
+                fishingController.ShowFishCanvas(bobber);
+            }
+        }
+    }
+
     public void ChangeInventory(InventoryTypes inv)
     {
         currentInventory = inv;
@@ -68,11 +97,8 @@ public class PlayerItemController : MonoBehaviour
         
         if(inv != InventoryTypes.Storage)
         {
-            UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
-            //UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
+            UpdateHandModel();
         }
-        //leftItem = null;
-        //UpdateHandModel(magicStone, leftHand);
     }
 
     //public void SwapHandItem(int itemID)
@@ -107,59 +133,145 @@ public class PlayerItemController : MonoBehaviour
     //    }
     //}
 
-    private void UpdateHandModel(GameObject itemModel, bool leftHand = false)
+    private void UpdateHandModel()
     {
-        if(!leftHand)
+        if(rightHandObj.transform.childCount != 0)
         {
-            if(rightHandObj.transform.childCount != 0)
-            {
-                Destroy(rightHandObj.transform.GetChild(0).gameObject);
-            }
-            if(itemModel != null)
-            {
-                Instantiate(itemModel, rightHandObj.transform);
-            }
+            Destroy(rightHandObj.transform.GetChild(0).gameObject);
         }
-        else if(leftHand)
+        Item item = database.GetItem[rightItems[(int)currentInventory]];
+        if (item.model != null)
         {
-            if (leftHandObj.transform.childCount != 0)
-            {
-                Destroy(leftHandObj.transform.GetChild(0).gameObject);
-            }
-            if(itemModel != null)
-            {
-                Instantiate(itemModel, leftHandObj.transform);
-            }
+            Instantiate(item.model, rightHandObj.transform);
+        }
+
+        if (leftHandObj.transform.childCount != 0)
+        {
+            Destroy(leftHandObj.transform.GetChild(0).gameObject);
+        }
+        item = database.GetItem[leftItems[(int)currentInventory]];
+        if(item.model != null)
+        {
+            Instantiate(item.model, leftHandObj.transform);
         }
     }
 
-    //public void SetDefaultItem(int itemID)
-    //{
-    //    Item item = database.GetItem[itemID];
+    public void SetDefaultItem(int itemID)
+    {
+        Item item = database.GetItem[itemID];
 
-    //    if ((item.itemType == ItemTypes.Bait || item.itemType == ItemTypes.Seed) && leftItems[(int)item.inventoryType] == 0)
-    //    {
-    //        leftItems[(int)item.inventoryType] = itemID;
-    //        UpdateHandModel(item.model, true);
-    //    }
-    //    else if(item.itemType == ItemTypes.Tool && rightItems[(int)item.inventoryType] == 0)
-    //    {
-    //        rightItems[(int)item.inventoryType] = itemID;
-    //        UpdateHandModel(item.model);
-    //    }
-    //    //set left / right item to this item if it is one of the necessary items
+        if ((item.itemType == ItemTypes.Crop || item.itemType == ItemTypes.Bow || item.itemType == ItemTypes.Food) && leftItems[(int)item.inventoryType] == 0)
+        {
+            leftItems[(int)item.inventoryType] = itemID;
+            UpdateHandModel();
+        }
+        else if ((item.itemType == ItemTypes.Sword || item.itemType == ItemTypes.Axe || item.itemType == ItemTypes.Pickaxe || 
+            item.itemType == ItemTypes.Rod || item.itemType == ItemTypes.Food) && rightItems[(int)item.inventoryType] == 0)
+        {
+            rightItems[(int)item.inventoryType] = itemID;
+            UpdateHandModel();
+        }
+        //set left / right item to this item if it is one of the necessary items
 
-    //    //basic tool, tool upgrade, aquire off-hand item
-    //}
+        //basic tool, tool upgrade, aquire off-hand item
+    }
 
     public void UseItem(bool isRight = true)
     {
         Item item;
-        item = database.GetItem[rightItems[(int)currentInventory]];
+        item = isRight ? database.GetItem[rightItems[(int)currentInventory]] : database.GetItem[leftItems[(int)currentInventory]];
         
-        if(item.itemType == ItemTypes.Rod)
+        if(item.itemType == ItemTypes.Sword)
         {
+            anim.SetInteger("ItemType", 1); //swing anim
+            Invoke("ResetAnim", toolUseTime[0] * (1 - item.attackSpeed / 100f));
+        }
+        else if(item.itemType == ItemTypes.Bow)
+        {
+            //aim
+        }
+        else if (item.itemType == ItemTypes.Axe)
+        {
+            //chop anim
+            Invoke("ResetAnim", toolUseTime[2] * (1 - item.attackSpeed / 100f));
+        }
+        else if (item.itemType == ItemTypes.Pickaxe)
+        {
+            //mine anim
+            Invoke("ResetAnim", toolUseTime[3] * (1 - item.attackSpeed / 100f));
+        }
+        else if (item.itemType == ItemTypes.Hoe)
+        {
+            //harvest anim
+            Invoke("ResetAnim", toolUseTime[4] * (1 - item.attackSpeed / 100f));
+        }
+        else if(item.itemType == ItemTypes.Rod)
+        {
+            if (!isFishing)
+            {
+                anim.SetInteger("ItemType", 6);
+                rodTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<RodTrigger>();
+                rodTrigger.detect = true;
+                fishTime = item.attackSpeed;
+                Invoke("StopFishing", toolUseTime[5]);
+            }
+            else
+            {
+                StopFishing();
+            }
+        }
+        else if (item.itemType == ItemTypes.Food)
+        {
+            //eat
+        }
+        else if(item.itemType == ItemTypes.Crop)
+        {
+            //plant
+            Invoke("ResetAnim", toolUseTime[7] * (1 - item.attackSpeed / 100f));
+        }
+        else
+        {
+            ResetAnim();
+        }
+    }
 
+    public void Release(bool isRight = true)
+    {
+        if (isEating || isAiming)
+        {
+            ResetAnim();
+        }
+    }
+
+    private void ResetAnim()
+    {
+        anim.SetInteger("ItemType", 0);
+        PlayerController.instance.ResetUseLeftRight();
+    }
+
+    public void StartFishing(FishingController controller, Vector3 bobberPos)
+    {
+        CancelInvoke("StopFishing");
+        bobber = bobberPos;
+        fishingController = controller;
+
+        fishTime = Random.Range(controller.fishHookTime[0] * (1 - fishTime / 100f), controller.fishHookTime[1] * (1 - fishTime / 100f));
+        isFishing = true;
+    }
+
+    public void StopFishing()
+    {
+        //reel in anim
+        Invoke("ResetAnim", toolUseTime[5]);
+
+        isFishing = false;
+        rodTrigger.detect = false;
+        showFishingCanvas = false;
+
+        if (fishingController != null)
+        {
+            fishingController.StopFishing();
+            fishingController = null;
         }
     }
 }

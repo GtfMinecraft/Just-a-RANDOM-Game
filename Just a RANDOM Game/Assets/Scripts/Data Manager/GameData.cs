@@ -16,7 +16,7 @@ public class GameData
 
     public GameData()
     {
-        inventoryData = Enumerable.Repeat(new InventoryData(), 7).ToList();
+        inventoryData = Enumerable.Repeat(new InventoryData(true), 7).ToList();
 
         mapData = new MapData();
 
@@ -25,9 +25,9 @@ public class GameData
             { "chunk", new("chunk") },
         };
 
-        botCraftData = new BotCraftData();
+        botCraftData = new BotCraftData(true);
     }
-
+    
     public class LevelData
     {
         public string levelInfo;
@@ -52,38 +52,36 @@ public class GameData
 
     public class MapData
     {
-        public bool[] unlockedChunks;
-        public List<GameObject> beacons;
+        public bool[] unlockedChunks = new bool[30];
+        public List<GameObject> beacons = new List<GameObject>();
         public GameObject selectedBeacon;
-
-        public MapData() 
-        { 
-            unlockedChunks = new bool[30];
-            beacons = new List<GameObject> {};
-        }
     }
 
     public class InventoryData
     {
-        public List<int> itemIDs;
-        public List<int> currentStacks;
-        public List<string> elements;
+        public List<int> itemIDs = new List<int>();
+        public List<int> currentStacks = new List<int>();
+        //public List<string> elements = new List<int>();
 
-        public InventoryData()
+        public InventoryData(bool initialize = false)
         {
-            itemIDs = Enumerable.Repeat(0, 10).ToList();
-            currentStacks = Enumerable.Repeat(0, 10).ToList();
-            elements = Enumerable.Repeat("00000", 10).ToList();
+            if (initialize)
+            {
+                itemIDs = Enumerable.Repeat(0, 10).ToList();
+                currentStacks = Enumerable.Repeat(0, 10).ToList();
+                //elements = Enumerable.Repeat("00000", 10).ToList();
+            }
         }
     }
 
     public class BotCraftData
     {
-        public List<int> unlockedCrafts;
+        public List<int> unlockedCrafts = new List<int>();
 
-        public BotCraftData()
+        public BotCraftData(bool initialize = false)
         {
-            unlockedCrafts = new List<int>{ 1, 3, 2, 4 };// fill in cooked stew, and fish
+            if(initialize)
+                unlockedCrafts = new List<int>{ 1, 3, 2, 4 };// fill in roasted carrots, and grilled salmon
         }
     }
 }
