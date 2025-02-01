@@ -22,6 +22,7 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
         originalParent = transform.parent;
         slotIndex = transform.parent.GetSiblingIndex();
         gameObject.SetActive(false);
+        itemHolderParent = InventoryCanvasController.instance.storage.transform;
     }
 
     public void OnPointerDown(PointerEventData eventData) 

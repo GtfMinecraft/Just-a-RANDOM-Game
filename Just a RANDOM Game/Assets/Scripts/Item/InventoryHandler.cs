@@ -95,8 +95,8 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             {
                 resources[itemID] = 1;
             }
-            PlayerItemController.instance.SetDefaultItem(itemID);
-            itemWheel.UpdateItemWheelUI(itemID);
+            PlayerItemController.instance.UpdateHandModel();
+            //itemWheel.UpdateItemWheelUI(itemID);
 
             if(invType == currentGroup)
             {
@@ -119,7 +119,8 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         int invType = (int)database.GetItem[itemID].inventoryType;
 
         inventoryList[invType].RemoveItem(itemID, count);
-        itemWheel.UpdateItemWheelUI(itemID);
+        PlayerItemController.instance.UpdateHandModel();
+        //itemWheel.UpdateItemWheelUI(itemID);
 
         if (invType == currentGroup)
         {

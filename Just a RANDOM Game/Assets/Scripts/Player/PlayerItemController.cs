@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using static UnityEditor.Progress;
@@ -13,8 +14,8 @@ public class PlayerItemController : MonoBehaviour
     public Animator anim;
     public InventoryTypes currentInventory { get; private set; }
 
-    [HideInInspector]
-    public bool canEat = false;
+    //[HideInInspector]
+    //public bool canEat = false;
 
     public GameObject rightHandObj;
     public GameObject leftHandObj;
@@ -23,6 +24,8 @@ public class PlayerItemController : MonoBehaviour
 
     public int[] rightItems { get; private set; } = { 0, 1, 2, 0, 0, 4, 0 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
     public int[] leftItems { get; private set; } = { 0, 0, 0, 0, 0, 0, 0 };
+
+    private UDictionaryIntInt resources;
 
     public bool isFishing { get; private set; }
     private FishingController fishingController;
@@ -58,6 +61,7 @@ public class PlayerItemController : MonoBehaviour
 
     private void Start()
     {
+        resources = InventoryHandler.instance.resources;
         ChangeInventory((InventoryTypes)PlayerPrefs.GetInt("selectedTool", 0));
 
         //string rightItemsString = PlayerPrefs.GetString("rightItemsString", "");
@@ -133,14 +137,14 @@ public class PlayerItemController : MonoBehaviour
     //    }
     //}
 
-    private void UpdateHandModel()
+    public void UpdateHandModel()
     {
         if(rightHandObj.transform.childCount != 0)
         {
             Destroy(rightHandObj.transform.GetChild(0).gameObject);
         }
         Item item = database.GetItem[rightItems[(int)currentInventory]];
-        if (item.model != null)
+        if (item.model != null && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
             Instantiate(item.model, rightHandObj.transform);
         }
@@ -150,31 +154,29 @@ public class PlayerItemController : MonoBehaviour
             Destroy(leftHandObj.transform.GetChild(0).gameObject);
         }
         item = database.GetItem[leftItems[(int)currentInventory]];
-        if(item.model != null)
+        if(item.model != null && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
             Instantiate(item.model, leftHandObj.transform);
         }
     }
 
-    public void SetDefaultItem(int itemID)
-    {
-        Item item = database.GetItem[itemID];
+    //public void SetDefaultItem(int itemID, bool isRight = true)
+    //{
+    //    Item item = database.GetItem[itemID];
 
-        if ((item.itemType == ItemTypes.Crop || item.itemType == ItemTypes.Bow || item.itemType == ItemTypes.Food) && leftItems[(int)item.inventoryType] == 0)
-        {
-            leftItems[(int)item.inventoryType] = itemID;
-            UpdateHandModel();
-        }
-        else if ((item.itemType == ItemTypes.Sword || item.itemType == ItemTypes.Axe || item.itemType == ItemTypes.Pickaxe || 
-            item.itemType == ItemTypes.Rod || item.itemType == ItemTypes.Food) && rightItems[(int)item.inventoryType] == 0)
-        {
-            rightItems[(int)item.inventoryType] = itemID;
-            UpdateHandModel();
-        }
-        //set left / right item to this item if it is one of the necessary items
-
-        //basic tool, tool upgrade, aquire off-hand item
-    }
+    //    if ((item.itemType == ItemTypes.Crop || item.itemType == ItemTypes.Bow || item.itemType == ItemTypes.Food) && leftItems[(int)item.inventoryType] == 0)
+    //    {
+    //        leftItems[(int)item.inventoryType] = itemID;
+    //        UpdateHandModel();
+    //    }
+    //    else if ((item.itemType == ItemTypes.Sword || item.itemType == ItemTypes.Axe || item.itemType == ItemTypes.Pickaxe || 
+    //        item.itemType == ItemTypes.Rod || item.itemType == ItemTypes.Food) && rightItems[(int)item.inventoryType] == 0)
+    //    {
+    //        rightItems[(int)item.inventoryType] = itemID;
+    //        UpdateHandModel();
+    //    }
+    //    //set left / right item according to ItemWheel's selection
+    //}
 
     public void UseItem(bool isRight = true)
     {
