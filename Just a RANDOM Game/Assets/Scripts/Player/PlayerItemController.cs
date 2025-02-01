@@ -182,7 +182,13 @@ public class PlayerItemController : MonoBehaviour
     {
         Item item;
         item = isRight ? database.GetItem[rightItems[(int)currentInventory]] : database.GetItem[leftItems[(int)currentInventory]];
-        
+
+        if (!resources.ContainsKey(item.ID) || resources[item.ID] == 0)
+        {
+            ResetAnim();
+            return;
+        }
+
         if(item.itemType == ItemTypes.Sword)
         {
             anim.SetInteger("ItemType", 1); //swing anim
