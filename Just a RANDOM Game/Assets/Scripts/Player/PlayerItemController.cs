@@ -166,9 +166,10 @@ public class PlayerItemController : MonoBehaviour
         Item item = database.GetItem[rightItems[(int)currentInventory]];
         if(rightHandObj.transform.childCount != 0 && (rightHeldItem != item.ID || !resources.ContainsKey(item.ID) || resources[item.ID] == 0))
         {
+            rightHeldItem = 0;
             Destroy(rightHandObj.transform.GetChild(0).gameObject);
         }
-        else if(rightHandObj.transform.childCount == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
+        if(rightHeldItem == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
             rightHeldItem = item.ID;
             Instantiate(item.model, rightHandObj.transform);
@@ -177,9 +178,10 @@ public class PlayerItemController : MonoBehaviour
         item = database.GetItem[leftItems[(int)currentInventory]];
         if (leftHandObj.transform.childCount != 0 && (leftHeldItem != item.ID || !resources.ContainsKey(item.ID) || resources[item.ID] == 0))
         {
+            leftHeldItem = 0;
             Destroy(leftHandObj.transform.GetChild(0).gameObject);
         }
-        else if (leftHandObj.transform.childCount == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
+        if (leftHeldItem == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
             leftHeldItem = item.ID;
             Instantiate(item.model, leftHandObj.transform);
@@ -209,7 +211,7 @@ public class PlayerItemController : MonoBehaviour
         Item item;
         item = isRight ? database.GetItem[rightItems[(int)currentInventory]] : database.GetItem[leftItems[(int)currentInventory]];
 
-        if (!resources.ContainsKey(item.ID) || resources[item.ID] == 0)
+        if ((isRight ? rightHeldItem : leftHeldItem) != item.ID || !resources.ContainsKey(item.ID) || resources[item.ID] == 0)
         {
             ResetAnim();
             return;
@@ -265,7 +267,10 @@ public class PlayerItemController : MonoBehaviour
         }
         else if(item.itemType == ItemTypes.Crop)
         {
-            //plant
+            //throw carrot anim
+
+            hoeRange = new Vector3 (2.5f, 1f, 2.5f);
+            StartFarming(item.ID);
             Invoke("ResetAnim", toolUseTime[7] * (1 - item.attackSpeed / 100f));
         }
         else
@@ -288,7 +293,7 @@ public class PlayerItemController : MonoBehaviour
         PlayerController.instance.ResetUseLeftRight();
     }
 
-    public void StartFarming()
+    public void StartFarming(int plant = 0)
     {
         CharacterController pos = GetComponent<CharacterController>();
         Transform playerObj = PlayerController.instance.playerObj;
@@ -299,7 +304,7 @@ public class PlayerItemController : MonoBehaviour
         {
             if (hit.GetComponent<FarmingController>() != null)
             {
-                hit.GetComponent<FarmingController>().Harvest();
+                hit.GetComponent<FarmingController>().Harvest(plant);
             }
         }
     }
