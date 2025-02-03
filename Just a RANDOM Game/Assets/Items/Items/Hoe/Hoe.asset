@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
-  m_Name: Axe
+  m_Name: Hoe
   m_EditorClassIdentifier: 
-  ID: 2
-  itemName: Renewed Axe
-  itemDescription: A broken axe with an eroded handle and dull edges
-  icon: {fileID: 21300000, guid: 9d74d2a526f47a741b0f8832f2e85bc4, type: 3}
+  ID: 3
+  itemName: Hoe
+  itemDescription: A hoe
+  icon: {fileID: 21300000, guid: 280d6cb5d0d45634db2c1bdef6821fb3, type: 3}
   model: {fileID: 5863745638388628282, guid: 02a0afde967a2084aa840f4af2a75709, type: 3}
-  inventoryType: 2
-  itemType: 3
+  inventoryType: 4
+  itemType: 5
   attackSpeed: 0
-  range: {x: 0, y: 0, z: 0}
+  range: {x: 2.5, y: 1, z: 2.5}
   maxStack: 1
   recipe:
     keys: 

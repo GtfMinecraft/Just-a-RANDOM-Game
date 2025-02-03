@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
         if (canControl)
 		{
             // interact
-            if (!nowRight && !nowLeft && isInteracting && canInteract)
+            if ((PlayerItemController.instance.isFishing || !nowRight && !nowLeft) && isInteracting && canInteract)
             {
                 Interact();
             }

@@ -22,10 +22,17 @@ public class PlayerItemController : MonoBehaviour
 
     public float[] toolUseTime = { 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 2.5f };
 
-    public int[] rightItems { get; private set; } = { 0, 1, 2, 0, 0, 4, 0 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
+    public int[] rightItems { get; private set; } = { 0, 1, 2, 0, 3, 4, 0 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
     public int[] leftItems { get; private set; } = { 0, 0, 0, 0, 0, 0, 0 };
 
+    private int leftHeldItem = 0;
+    private int rightHeldItem = 0;
+
     private UDictionaryIntInt resources;
+
+    public bool isFarming { get; private set; }
+    private HoeTrigger hoeTrigger;
+    private Vector3 hoeRange;
 
     public bool isFishing { get; private set; }
     private FishingController fishingController;
@@ -98,11 +105,25 @@ public class PlayerItemController : MonoBehaviour
     {
         currentInventory = inv;
         InventoryCanvasController.instance.ChangeToolInventory(currentInventory);
-        
-        if(inv != InventoryTypes.Storage)
+
+        if (isFarming)
         {
-            UpdateHandModel();
+            CancelInvoke("StopFarming");
+            StopFarming();
         }
+
+        if (isFishing)
+        {
+            CancelInvoke("StopFishing");
+            StopFishing();
+        }
+
+        CancelInvoke("ResetAnim");
+        ResetAnim();
+
+        //change tool anim
+
+        UpdateHandModel();
     }
 
     //public void SwapHandItem(int itemID)
@@ -139,23 +160,28 @@ public class PlayerItemController : MonoBehaviour
 
     public void UpdateHandModel()
     {
-        if(rightHandObj.transform.childCount != 0)
+        //if change is from item wheel, stop item anim first
+        //also, add left or right hand update
+
+        Item item = database.GetItem[rightItems[(int)currentInventory]];
+        if(rightHandObj.transform.childCount != 0 && (rightHeldItem != item.ID || !resources.ContainsKey(item.ID) || resources[item.ID] == 0))
         {
             Destroy(rightHandObj.transform.GetChild(0).gameObject);
         }
-        Item item = database.GetItem[rightItems[(int)currentInventory]];
-        if (item.model != null && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
+        else if(rightHandObj.transform.childCount == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
+            rightHeldItem = item.ID;
             Instantiate(item.model, rightHandObj.transform);
         }
 
-        if (leftHandObj.transform.childCount != 0)
+        item = database.GetItem[leftItems[(int)currentInventory]];
+        if (leftHandObj.transform.childCount != 0 && (leftHeldItem != item.ID || !resources.ContainsKey(item.ID) || resources[item.ID] == 0))
         {
             Destroy(leftHandObj.transform.GetChild(0).gameObject);
         }
-        item = database.GetItem[leftItems[(int)currentInventory]];
-        if(item.model != null && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
+        else if (leftHandObj.transform.childCount == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
+            leftHeldItem = item.ID;
             Instantiate(item.model, leftHandObj.transform);
         }
     }
@@ -210,7 +236,12 @@ public class PlayerItemController : MonoBehaviour
         }
         else if (item.itemType == ItemTypes.Hoe)
         {
-            //harvest anim
+            anim.SetInteger("ItemType", 5);
+
+            hoeRange = item.range;
+            hoeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<HoeTrigger>();
+            hoeTrigger.detect = true;
+
             Invoke("ResetAnim", toolUseTime[4] * (1 - item.attackSpeed / 100f));
         }
         else if(item.itemType == ItemTypes.Rod)
@@ -257,6 +288,28 @@ public class PlayerItemController : MonoBehaviour
         PlayerController.instance.ResetUseLeftRight();
     }
 
+    public void StartFarming()
+    {
+        CharacterController pos = GetComponent<CharacterController>();
+        Transform playerObj = PlayerController.instance.playerObj;
+        Collider[] hits;
+        hits = Physics.OverlapBox(transform.position + pos.center - new Vector3(0, pos.height / 2, 0) + hoeRange.z / 2 * playerObj.forward, hoeRange / 2, playerObj.rotation);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.GetComponent<FarmingController>() != null)
+            {
+                hit.GetComponent<FarmingController>().Harvest();
+            }
+        }
+    }
+
+    private void StopFarming()
+    {
+        hoeTrigger.detect = false;
+        ResetAnim();
+    }
+
     public void StartFishing(FishingController controller, Vector3 bobberPos)
     {
         CancelInvoke("StopFishing");
@@ -281,5 +334,23 @@ public class PlayerItemController : MonoBehaviour
             fishingController.StopFishing();
             fishingController = null;
         }
+    }
+
+    // visualizing hoe interaction area
+    private void OnDrawGizmosSelected()
+    {
+        Item item = database.GetItem[3];
+
+        CharacterController pos = GetComponent<CharacterController>();
+        Transform playerObj = transform.GetChild(0).transform;
+
+        // Calculate the center position of the box
+        Vector3 boxCenter = transform.position + pos.center - new Vector3(0, pos.height / 2, 0) + item.range.z / 2 * playerObj.forward;
+
+        // Draw the box using Gizmos.DrawWireCube (half the range since it's the full box size)
+        Gizmos.color = Color.green;  // You can change the color here
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, playerObj.rotation, Vector3.one); // Apply rotation of the player
+
+        Gizmos.DrawWireCube(Vector3.zero, item.range);
     }
 }

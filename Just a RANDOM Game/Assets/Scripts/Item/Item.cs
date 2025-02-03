@@ -9,12 +9,12 @@ public class Item : ScriptableObject
     public int ID = 0;
     public string itemName = "New Item";
     public string itemDescription = "New Description";
-    public int price = 0;
     public Sprite icon;
     public GameObject model;
     public InventoryTypes inventoryType = InventoryTypes.Storage;
     public ItemTypes itemType = ItemTypes.Basic;
     public float attackSpeed;
+    public Vector3 range = Vector3.zero;
     public int maxStack = 1;
     public UDictionaryIntInt recipe;
 }
