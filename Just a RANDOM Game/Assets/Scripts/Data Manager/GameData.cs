@@ -11,6 +11,8 @@ public class GameData
     public MapData mapData;
     public Dictionary<string, LevelData> levelData;
     public BotCraftData botCraftData;
+    public StatisticsData statisticsData;
+    public List<FarmlandData> farmlandData;
 
     //TODO: put all data that need to save in this class
 
@@ -26,6 +28,10 @@ public class GameData
         };
 
         botCraftData = new BotCraftData(true);
+
+        statisticsData = new StatisticsData();
+
+        farmlandData = new List<FarmlandData>();
     }
     
     public class LevelData
@@ -47,6 +53,18 @@ public class GameData
                     Debug.LogError("Undefined level when creating an instace of GameData.LevelData");
                     break;
             }
+        }
+    }
+
+    public class StatisticsData
+    {
+        public float inGameTime;
+        public int gameDays;
+
+        public StatisticsData()
+        {
+            inGameTime = 7f;
+            gameDays = 0;
         }
     }
 
@@ -72,6 +90,14 @@ public class GameData
                 //elements = Enumerable.Repeat("00000", 10).ToList();
             }
         }
+    }
+
+    public class FarmlandData
+    {
+        public int cropID;
+        public int stage;
+        public int gameDay;
+        public float inGameTime;
     }
 
     public class BotCraftData
