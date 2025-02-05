@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
-    public Camera playerCam;
-
 	[Header("Movement")]
     [SerializeField] private float groundAcceleration; // acceleration while grounded
 	[SerializeField] private float airAcceleration; // acceleration while not grounded

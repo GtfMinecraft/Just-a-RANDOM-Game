@@ -9,6 +9,18 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
     public float inGameTime;
     public int gameDays {  get; private set; }
 
+    [Header("Sun and Moon")]
+    public Light directionalLight;
+    public Transform moon;
+    public float moonDistance;
+    public float moonScale;
+    public float dayLightIntensity;
+    public float nightLightIntensity;
+    public Material daySkybox;
+    public Material nightSkybox;
+
+    private bool isNight = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -21,15 +33,47 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
         }
     }
 
+    void Start()
+    {
+        moon.localScale = Vector3.one * moonScale;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        inGameTime += Time.deltaTime;
+        inGameTime += Time.deltaTime / 60;
 
-        if (inGameTime >= 1440)
+        if (inGameTime >= 24)
         {
-            inGameTime -= 1440;
+            inGameTime -= 24;
             ++gameDays;
+        }
+
+        moon.rotation = Camera.main.transform.rotation * Quaternion.Euler(-90, 0, 0);
+        float xz = Mathf.Cos((inGameTime + 6) / 12 * Mathf.PI);
+        moon.position = new Vector3(xz / 2, Mathf.Sin((inGameTime + 6) / 12 * Mathf.PI), -xz * 1.732051f / 2) * moonDistance;
+
+        if((inGameTime < 6 || inGameTime > 18))
+        {
+            directionalLight.transform.rotation = Quaternion.Euler((inGameTime + 6) * 15, -30, 0);
+
+            if (!isNight)
+            {
+                directionalLight.intensity = nightLightIntensity;
+                isNight = true;
+                RenderSettings.skybox = nightSkybox;
+            }
+        }
+        else if(inGameTime >= 6 && inGameTime <= 18)
+        {
+            directionalLight.transform.rotation = Quaternion.Euler((inGameTime - 6) * 15, -30, 0);
+
+            if (isNight)
+            {
+                directionalLight.intensity = dayLightIntensity;
+                isNight = false;
+                RenderSettings.skybox = daySkybox;
+            }
         }
     }
 

@@ -12,25 +12,18 @@ public class FishingController : MonoBehaviour
     public float bufferRange;
     public float swipeSpeed;
 
-    private Camera playerCam;
-
     private Canvas canvas;
     private Slider slider;
     private float range;
     private float startPosition;
     private float elapsedTime = 0;
 
-    private void Start()
-    {
-        playerCam = PlayerController.instance.playerCam;
-    }
-
     // Update is called once per frame
     void Update()
     {
         if(canvas != null && slider != null)
         {
-            canvas.transform.rotation = Quaternion.LookRotation(-playerCam.transform.forward, playerCam.transform.up);
+            canvas.transform.rotation = Quaternion.LookRotation(-Camera.main.transform.forward, Camera.main.transform.up);
             elapsedTime += Time.deltaTime;
             slider.value = (Mathf.Sin(elapsedTime * swipeSpeed) + 1) / 2;
         }
@@ -40,7 +33,7 @@ public class FishingController : MonoBehaviour
     {
         //fish bubbling towards player vfx
         canvas = Instantiate(fishingCanvasPrefab, transform).GetComponent<Canvas>();
-        canvas.worldCamera = playerCam;
+        canvas.worldCamera = Camera.main;
         canvas.transform.position = bobberPos + Vector3.up * 2.5f;
         canvas.transform.localScale = Vector3.one * 0.015f;
         slider = canvas.transform.GetChild(0).GetComponent<Slider>();
