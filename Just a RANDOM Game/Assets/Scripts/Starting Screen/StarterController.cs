@@ -148,7 +148,7 @@ public class StarterController : MonoBehaviour
             logoBackground.color = logo.color = color;
         }
 
-        if(creditsBool && HHLogo.enabled && HHLogo.color.a < 1)
+        if(creditsBool && HHLogo.enabled && HHLogo.color.a < 0.8f)
         {
             var color = HHLogo.color;
             color.a += Time.deltaTime * logoFadeInSpeed * 1.2f;
