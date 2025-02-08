@@ -13,25 +13,22 @@ public class GameData
     public BotCraftData botCraftData;
     public StatisticsData statisticsData;
     public List<FarmlandData> farmlandData;
+    public ItemDropData itemDropData;
 
     //TODO: put all data that need to save in this class
 
     public GameData()
     {
         inventoryData = Enumerable.Repeat(new InventoryData(true), 7).ToList();
-
         mapData = new MapData();
-
         levelData = new Dictionary<string, LevelData>()
         {
             { "chunk", new("chunk") },
         };
-
         botCraftData = new BotCraftData(true);
-
         statisticsData = new StatisticsData();
-
         farmlandData = new List<FarmlandData>();
+        itemDropData = new ItemDropData();
     }
     
     public class LevelData
@@ -60,12 +57,26 @@ public class GameData
     {
         public float inGameTime;
         public int gameDays;
+        public bool[] unlockedChunks;
+        public ChunkTypes playerChunk;
+        public float[] playerPos;
 
         public StatisticsData()
         {
             inGameTime = 7f;
             gameDays = 0;
+            unlockedChunks = new bool[6] { true, false, false, false, false, false };
+            playerChunk = ChunkTypes.Logging;
+            //set player pos to starter house
         }
+    }
+
+    public class ItemDropData
+    {
+        public List<int> itemIDs;
+        public List<ChunkTypes> chunks;
+
+        //constructor for pre-existing items
     }
 
     public class MapData
