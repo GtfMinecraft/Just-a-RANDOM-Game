@@ -17,7 +17,7 @@ MonoBehaviour:
   itemDescription: A hoe
   icon: {fileID: 21300000, guid: 280d6cb5d0d45634db2c1bdef6821fb3, type: 3}
   model: {fileID: 3434650650749381152, guid: 0f593dc615edff942ba4a0cc448b448d, type: 3}
-  inventoryType: 4
+  inventoryType: 0
   itemType: 5
   attackSpeed: 0
   range: {x: 2.5, y: 1, z: 2.5}

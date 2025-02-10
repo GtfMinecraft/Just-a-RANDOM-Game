@@ -20,19 +20,21 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     public UDictionaryIntInt resources;
 
     [Header("UI")]
-    public Transform groupUI;
+    //public Transform groupUI;
     public Transform storage;
     public GameObject slotPrefab;
     public Transform armor;
-    public Transform description;
+    public Transform itemInfo;
     public ItemWheelUI itemWheel;
 
-    private Image[] groups = new Image[7];
+    //private Image[] groups = new Image[7];
     private InventorySlotUI[] inventorySlots;
     private int slotCount;
 
     public int currentGroup { get; private set; }
     private ItemDatabase database;
+
+    private int selectedIndex = -1;
 
     /*
      *  0 storage
@@ -60,19 +62,49 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     {
         database = PlayerItemController.instance.database;
         currentGroup = PlayerPrefs.GetInt("selectedGroup", 0);
+        currentGroup = 0;//for demo
 
-        groupUI.GetChild(currentGroup).GetComponent<Button>().Select();
+        //groupUI.GetChild(currentGroup).GetComponent<Button>().Select();
 
-        for(int i=0;i<groups.Length;i++)
-        {
-            groups[i] = groupUI.GetChild(i).GetComponent<Image>();
-        }
+        //for(int i=0;i<groups.Length;i++)
+        //{
+        //    groups[i] = groupUI.GetChild(i).GetComponent<Image>();
+        //}
 
         inventorySlots = new InventorySlotUI[storage.childCount];
         for(int i = 0; i < inventorySlots.Length; i++)
         {
             inventorySlots[i] = storage.GetChild(i).GetComponent<InventorySlotUI>();
         }
+
+        for(int i = 0; i < inventoryList[currentGroup].itemSlots.Count; i++)
+        {
+            if (inventoryList[currentGroup].itemSlots[i].ID != 0)
+            {
+                SelectItem(i);
+                break;
+            }
+        }
+    }
+
+    public void SelectItem(int index)
+    {
+        itemInfo.gameObject.SetActive(true);
+        selectedIndex = index;
+        Item item = database.GetItem[inventoryList[currentGroup].itemSlots[index].ID];
+
+        itemInfo.GetChild(0).GetComponent<TMP_Text>().text = item.itemDescription;
+        int numLines = item.itemDescription.Split('\n').Length;
+        string newlinePadding = "\n";
+        for(int i = 0;i < numLines; i++)
+        {
+            newlinePadding += "\n";
+        }
+        itemInfo.GetChild(1).GetComponent<TMP_Text>().text = newlinePadding + item.itemDescription;
+        itemInfo.GetChild(2).GetComponent<TMP_Text>().text = item.itemName;
+        itemInfo.GetChild(3).GetComponent<Image>().sprite = item.icon;
+
+        itemInfo.GetChild(4).position = inventorySlots[index].transform.position;
     }
 
     public bool AddItem(int itemID, bool addItem = true)
@@ -156,6 +188,12 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             inventorySlots[i].UpdateInventorySlot(currentGroup);
         }
 
+        if (selectedIndex == -1 || inventoryList[currentGroup].itemSlots[selectedIndex].ID == 0)
+        {
+            selectedIndex = -1;
+            itemInfo.gameObject.SetActive(false);
+        }
+
         // update armor ui
     }
 
@@ -164,10 +202,12 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         slotCount = data.inventoryData[0].itemIDs.Count;// future function to implement: dynamically adjust inventory space to add 1 row
         for (int i = 0; i < slotCount; ++i)
         {
-            Instantiate(slotPrefab, storage);
+            GameObject slot = Instantiate(slotPrefab, storage);
+            int remainder = i % 9;
+            slot.GetComponent<RectTransform>().anchoredPosition = new Vector2(97.7f + (remainder % 5) * 129.6f + (remainder <= 4 ? 0 : 64.8f), 946 - (i / 9) * 162.06f - (remainder <= 4 ? 0 : 81.03f));
         }
 
-        for (int i = 0; i < inventoryList.Length; i++)
+        for (int i = 0; i < data.inventoryData.Count; i++)
         {
             //inventoryList[i].itemSlots = data.inventoryData[i].itemIDs.Zip(
             //    data.inventoryData[i].currentStacks.Zip(data.inventoryData[i].elements, (f1, f2) => new {stacks = f1, elements = f2}), (f1, f2) =>
@@ -200,7 +240,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
                     return new Inventory.ItemSlot(f1, f2);
                 }).ToList();
         }
-
     }
 
     public void SaveData(GameData data)

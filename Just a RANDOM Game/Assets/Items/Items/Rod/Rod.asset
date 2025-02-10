@@ -15,12 +15,12 @@ MonoBehaviour:
   ID: 4
   itemName: New Item
   itemDescription: New Description
-  price: 0
   icon: {fileID: 0}
   model: {fileID: 2297453642340661118, guid: 65196f909563a5341a93913a03a1c5fc, type: 3}
-  inventoryType: 5
+  inventoryType: 0
   itemType: 6
   attackSpeed: 1
+  range: {x: 0, y: 0, z: 0}
   maxStack: 1
   recipe:
     keys: 

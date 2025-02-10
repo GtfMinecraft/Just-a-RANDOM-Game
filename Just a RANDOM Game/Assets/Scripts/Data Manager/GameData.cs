@@ -19,7 +19,7 @@ public class GameData
 
     public GameData()
     {
-        inventoryData = Enumerable.Repeat(new InventoryData(true), 7).ToList();
+        inventoryData = Enumerable.Repeat(new InventoryData(true), 1).ToList();
         mapData = new MapData();
         levelData = new Dictionary<string, LevelData>()
         {
@@ -96,8 +96,8 @@ public class GameData
         {
             if (initialize)
             {
-                itemIDs = Enumerable.Repeat(0, 10).ToList();
-                currentStacks = Enumerable.Repeat(0, 10).ToList();
+                itemIDs = Enumerable.Repeat(0, 50).ToList();
+                currentStacks = Enumerable.Repeat(0, 50).ToList();
                 //elements = Enumerable.Repeat("00000", 10).ToList();
             }
         }

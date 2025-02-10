@@ -49,6 +49,11 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
             ++gameDays;
         }
 
+        if (isNight && directionalLight.intensity > nightLightIntensity)
+            directionalLight.intensity -= Time.deltaTime / 80;
+        else if (!isNight && directionalLight.intensity < dayLightIntensity)
+            directionalLight.intensity += Time.deltaTime / 80;
+
         moon.rotation = Camera.main.transform.rotation * Quaternion.Euler(-90, 0, 0);
         float xz = Mathf.Cos((inGameTime + 6) / 12 * Mathf.PI);
         moon.position = new Vector3(xz / 2, Mathf.Sin((inGameTime + 6) / 12 * Mathf.PI), -xz * 1.732051f / 2) * moonDistance;
@@ -59,7 +64,6 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
 
             if (!isNight)
             {
-                directionalLight.intensity = nightLightIntensity;
                 isNight = true;
                 RenderSettings.skybox = nightSkybox;
             }
@@ -76,8 +80,6 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
             }
         }
     }
-
-    //cloud and directional light
 
     public void LoadData(GameData data)
     {

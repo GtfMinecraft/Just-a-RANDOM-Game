@@ -21,7 +21,7 @@ public class SlotUI : MonoBehaviour, IDropHandler
         database = PlayerItemController.instance.database;
         slotIndex = transform.GetSiblingIndex();
         icon = transform.GetChild(0).gameObject;
-        stack = icon.transform.GetChild(0).GetComponent<TMP_Text>();
+        stack = icon.transform.GetChild(1).GetComponent<TMP_Text>();
     }
 
     public virtual void OnDrop(PointerEventData eventData)
@@ -60,7 +60,6 @@ public class SlotUI : MonoBehaviour, IDropHandler
         {
             DropOntoEmptySlot();
         }
-        InventoryHandler.instance.UpdateInventoryUI();
     }
 
     private void DropOntoEmptySlot()
@@ -86,7 +85,7 @@ public class SlotUI : MonoBehaviour, IDropHandler
     {
         if(thisItemSlot.ID != 0)
         {
-            icon.GetComponent<Image>().sprite = database.GetItem[thisItemSlot.ID].icon;
+            icon.transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[thisItemSlot.ID].icon;
             if(thisItemSlot.currentStack > 1)
             {
                 stack.text = thisItemSlot.currentStack.ToString();

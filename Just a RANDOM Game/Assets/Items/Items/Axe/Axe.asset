@@ -17,7 +17,7 @@ MonoBehaviour:
   itemDescription: A broken axe with an eroded handle and dull edges
   icon: {fileID: 21300000, guid: 9d74d2a526f47a741b0f8832f2e85bc4, type: 3}
   model: {fileID: 5863745638388628282, guid: 02a0afde967a2084aa840f4af2a75709, type: 3}
-  inventoryType: 2
+  inventoryType: 0
   itemType: 3
   attackSpeed: 0
   range: {x: 0, y: 0, z: 0}

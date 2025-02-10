@@ -66,8 +66,8 @@ public class BotInterface : MonoBehaviour, IDataPersistence
         icon.GetComponent<EventTrigger>().triggers[0] = entry1;
 
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
-        entry2.eventID = EventTriggerType.PointerEnter;
-        entry2.callback.AddListener((eventData) => { ShowItemHover(icon.transform); });
+        entry2.eventID = EventTriggerType.PointerClick;
+        entry2.callback.AddListener((eventData) => { /* detect if craftable (use image color) + remove materials and add crafted item to inv + play bot anim */ });
         icon.GetComponent<EventTrigger>().triggers[1] = entry2;
     }
 
