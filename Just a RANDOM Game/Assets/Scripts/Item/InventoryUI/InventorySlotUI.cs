@@ -26,6 +26,12 @@ public class InventorySlotUI : SlotUI
             }
 
             HandleItemDrop(eventData);
+
+            if(eventData.pointerDrag.transform.parent.GetSiblingIndex() == InventoryHandler.instance.selectedIndex)
+                InventoryHandler.instance.SelectItem(slotIndex);
+            else if(slotIndex == InventoryHandler.instance.selectedIndex)
+                InventoryHandler.instance.SelectItem(eventData.pointerDrag.transform.parent.GetSiblingIndex());
+
             InventoryHandler.instance.UpdateInventoryUI();
         }
     }

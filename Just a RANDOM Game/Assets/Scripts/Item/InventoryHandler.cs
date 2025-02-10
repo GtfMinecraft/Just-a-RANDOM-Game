@@ -34,7 +34,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     public int currentGroup { get; private set; }
     private ItemDatabase database;
 
-    private int selectedIndex = -1;
+    public int selectedIndex { get; private set; } = -1;
 
     /*
      *  0 storage
