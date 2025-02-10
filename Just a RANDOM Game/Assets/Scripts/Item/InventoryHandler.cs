@@ -35,6 +35,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     private ItemDatabase database;
 
     public int selectedIndex { get; private set; } = -1;
+    private Transform crystalSelected;
 
     /*
      *  0 storage
@@ -63,6 +64,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         database = PlayerItemController.instance.database;
         currentGroup = PlayerPrefs.GetInt("selectedGroup", 0);
         currentGroup = 0;//for demo
+        crystalSelected = itemInfo.GetChild(4);
 
         //groupUI.GetChild(currentGroup).GetComponent<Button>().Select();
 
@@ -104,7 +106,9 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         itemInfo.GetChild(2).GetComponent<TMP_Text>().text = item.itemName;
         itemInfo.GetChild(3).GetComponent<Image>().sprite = item.icon;
 
-        itemInfo.GetChild(4).position = inventorySlots[index].transform.position;
+        crystalSelected.parent = inventorySlots[index].transform.GetChild(0);
+        crystalSelected.transform.SetAsLastSibling();
+        crystalSelected.transform.localPosition = Vector3.zero;
     }
 
     public bool AddItem(int itemID, bool addItem = true)
@@ -192,6 +196,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         {
             selectedIndex = -1;
             itemInfo.gameObject.SetActive(false);
+            crystalSelected.gameObject.SetActive(false);
         }
 
         // update armor ui
