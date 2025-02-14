@@ -18,8 +18,11 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
     public float nightLightIntensity;
     public Material daySkybox;
     public Material nightSkybox;
+    public Color dayLightColor;
+    public Color nightLightColor;
 
     private bool isNight = false;
+    private float lightChangeSpeed;
 
     private void Awake()
     {
@@ -36,6 +39,7 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
     void Start()
     {
         moon.localScale = Vector3.one * moonScale;
+        lightChangeSpeed = 60 / (dayLightIntensity - nightLightIntensity);
     }
 
     // Update is called once per frame
@@ -50,9 +54,9 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
         }
 
         if (isNight && directionalLight.intensity > nightLightIntensity)
-            directionalLight.intensity -= Time.deltaTime / 80;
+            directionalLight.intensity -= Time.deltaTime / lightChangeSpeed;
         else if (!isNight && directionalLight.intensity < dayLightIntensity)
-            directionalLight.intensity += Time.deltaTime / 80;
+            directionalLight.intensity += Time.deltaTime / lightChangeSpeed;
 
         moon.rotation = Camera.main.transform.rotation * Quaternion.Euler(-90, 0, 0);
         float xz = Mathf.Cos((inGameTime + 6) / 12 * Mathf.PI);
@@ -64,6 +68,7 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
 
             if (!isNight)
             {
+                directionalLight.color = nightLightColor;
                 isNight = true;
                 RenderSettings.skybox = nightSkybox;
             }
@@ -74,7 +79,7 @@ public class DayNightCycle : MonoBehaviour, IDataPersistence
 
             if (isNight)
             {
-                directionalLight.intensity = dayLightIntensity;
+                directionalLight.color = dayLightColor;
                 isNight = false;
                 RenderSettings.skybox = daySkybox;
             }

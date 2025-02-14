@@ -106,9 +106,8 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         itemInfo.GetChild(2).GetComponent<TMP_Text>().text = item.itemName;
         itemInfo.GetChild(3).GetComponent<Image>().sprite = item.icon;
 
-        crystalSelected.parent = inventorySlots[index].transform.GetChild(0);
+        crystalSelected.SetParent(inventorySlots[index].transform.GetChild(0), false);
         crystalSelected.transform.SetAsLastSibling();
-        crystalSelected.transform.localPosition = Vector3.zero;
     }
 
     public bool AddItem(int itemID, bool addItem = true)
