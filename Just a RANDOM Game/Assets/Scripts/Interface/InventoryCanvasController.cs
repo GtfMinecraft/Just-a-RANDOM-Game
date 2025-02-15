@@ -92,6 +92,9 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void ToolWheelHandler(InputAction.CallbackContext ctx)
     {
+        if (PlayerController.instance.forcedInteraction)
+            return;
+
         if (ctx.performed)
         {
             if(ctx.action.name != "ToolWheel" && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Item || InterfaceHandler.instance.currentInterface == Interfaces.Tool))
@@ -187,6 +190,9 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void ItemWheelHandler(InputAction.CallbackContext ctx)
     {
+        if (PlayerController.instance.forcedInteraction)
+            return;
+
         if (ctx.performed && currentInventory != InventoryTypes.Storage)
         {
             if(InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Tool)
@@ -228,9 +234,12 @@ public class InventoryCanvasController : MonoBehaviour
 
     public void PlayerInventoryHandler(InputAction.CallbackContext ctx)
     {
+        if (PlayerController.instance.forcedInteraction)
+            return;
+
         if (ctx.performed && (InterfaceHandler.instance.currentInterface == Interfaces.None || InterfaceHandler.instance.currentInterface == Interfaces.Tool))
         {
-            InterfaceHandler.instance.OpenInterface(Interfaces.Storage, true, false, true);
+            InterfaceHandler.instance.OpenInterface(Interfaces.Storage, true, false, false);
             InventoryHandler.instance.UpdateInventoryUI();
             storage.enabled = true;
         }

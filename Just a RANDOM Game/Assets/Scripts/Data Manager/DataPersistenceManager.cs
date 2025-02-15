@@ -80,8 +80,8 @@ public class DataPersistenceManager : MonoBehaviour
 
         //initialize
         PlayerPrefs.SetString("resourceReplenish", "000");
-        PlayerPrefs.SetString("rightItemsString", "");
-        PlayerPrefs.SetString("leftItemsString", "");
+        //PlayerPrefs.SetString("rightItemsString", "");
+        //PlayerPrefs.SetString("leftItemsString", "");
         PlayerPrefs.SetInt("selectedTool", 0);
         PlayerPrefs.SetInt("selectedGroup", 0);
     }

@@ -24,6 +24,7 @@ public class StarterController : MonoBehaviour
     public RawImage logoBig;
     public RawImage logoBackground;
     public RawImage credits;
+    public RawImage HHLogo;
     public GameObject pink;
     public GameObject blue;
     public Material mat;
@@ -33,6 +34,10 @@ public class StarterController : MonoBehaviour
     public float firstScene = 5f;
     public float secondScene = 5f;
     public float scaleSpeed = 0.5f;
+
+    [Header("Audio")]
+    public AudioSource sfx;
+    public AudioClip[] audioClip = new AudioClip[3];
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +53,7 @@ public class StarterController : MonoBehaviour
         logoBackground.enabled = true;
         spotlight.intensity = 0.01f;
         credits.enabled = false;
+        HHLogo.enabled = false;
         logo.enabled = true;
         back.color = Color.white;
         logoBig.transform.localScale = new Vector3(5.27f, 5.27f, 5.27f);
@@ -73,7 +79,11 @@ public class StarterController : MonoBehaviour
     {
         credits.enabled = true;
         creditsBool = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1);
+        sfx.Play();
+        yield return new WaitForSeconds(1);
+        HHLogo.enabled = true;
+        yield return new WaitForSeconds(3);
         creditsBool = false;
         yield return new WaitForSeconds(secondScene);
 
@@ -81,15 +91,21 @@ public class StarterController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         pink.SetActive(true);
         blue.SetActive(true);
+        sfx.clip = audioClip[0];
+        sfx.Play();
         StartCoroutine(MoveOverSeconds(pink, new Vector3(-580, -580, 0), 0.2f));
         yield return new WaitForSeconds(0.5f);
+        sfx.Play();
         StartCoroutine(MoveOverSeconds(blue, new Vector3(580, 580, 0), 0.2f));
         yield return new WaitForSeconds(0.5f);
         logoBig.enabled = true;
+        sfx.clip = audioClip[1];
+        sfx.Play();
         yield return new WaitForSeconds(0.5f);
         pressKey.enabled = true;
         yield return new WaitForSeconds(0.5f);
         copyright.enabled = true;
+        sfx.clip = audioClip[2];
         cam.GetComponent<GameStartup>().played = true;
         yield return new WaitForSeconds(1f);
         check = true;
@@ -132,6 +148,13 @@ public class StarterController : MonoBehaviour
             logoBackground.color = logo.color = color;
         }
 
+        if(creditsBool && HHLogo.enabled && HHLogo.color.a < 0.8f)
+        {
+            var color = HHLogo.color;
+            color.a += Time.deltaTime * logoFadeInSpeed * 1.2f;
+            HHLogo.color = color;
+        }
+
         if(creditsBool && credits.color.a < 0.08)
         {
             var color = credits.color;
@@ -147,7 +170,7 @@ public class StarterController : MonoBehaviour
 
         if (creditsBool && credits.material == mat && spotlight.intensity<2)
         {
-            spotlight.intensity += Time.deltaTime * logoFadeInSpeed/0.7f;
+            spotlight.intensity += Time.deltaTime * logoFadeInSpeed / 0.7f;
         }
 
         if (!creditsBool && credits.material == mat && spotlight.intensity > 0)
@@ -156,6 +179,7 @@ public class StarterController : MonoBehaviour
             var color = credits.color;
             color.a -= Time.deltaTime * fadeOutSpeed;
             credits.color = color;
+            HHLogo.color = color;
         }
 
         if (pressKeyBackground.enabled == true && pressKeyBackground.color.a < 1)

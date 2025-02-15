@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
+  m_Name: Rod
+  m_EditorClassIdentifier: 
+  ID: 4
+  itemName: New Item
+  itemDescription: New Description
+  icon: {fileID: 0}
+  model: {fileID: 2297453642340661118, guid: 65196f909563a5341a93913a03a1c5fc, type: 3}
+  inventoryType: 0
+  itemType: 6
+  attackSpeed: 1
+  range: {x: 0, y: 0, z: 0}
+  maxStack: 1
+  recipe:
+    keys: 
+    values: 

@@ -59,9 +59,17 @@ public class FileDataHandler
                     {
                         loadData.levelData = JsonConvert.DeserializeObject<Dictionary<string, GameData.LevelData>>(dataToLoad);
                     }
-                    else if(file == "BotCraftData")
+                    else if (file == "BotCraftData")
                     {
                         loadData.botCraftData = JsonConvert.DeserializeObject<GameData.BotCraftData>(dataToLoad);
+                    }
+                    else if (file == "StatisticsData")
+                    {
+                        loadData.statisticsData = JsonConvert.DeserializeObject<GameData.StatisticsData>(dataToLoad);
+                    }
+                    else if (file == "FarmlandData")
+                    {
+                        loadData.farmlandData = JsonConvert.DeserializeObject<List<GameData.FarmlandData>>(dataToLoad);
                     }
                     else
                     {
@@ -126,6 +134,24 @@ public class FileDataHandler
                         continue;
                     }
                     dataToSave = JsonConvert.SerializeObject(data.botCraftData);
+                }
+                else if (file == "StatisticsData")
+                {
+                    if (data.statisticsData == null)
+                    {
+                        Debug.LogError($"Data for {file} was not initialized");
+                        continue;
+                    }
+                    dataToSave = JsonConvert.SerializeObject(data.statisticsData);
+                }
+                else if (file == "FarmlandData")
+                {
+                    if (data.farmlandData == null)
+                    {
+                        Debug.LogError($"Data for {file} was not initialized");
+                        continue;
+                    }
+                    dataToSave = JsonConvert.SerializeObject(data.farmlandData);
                 }
                 else
                 {

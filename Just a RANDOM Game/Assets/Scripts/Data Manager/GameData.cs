@@ -11,23 +11,26 @@ public class GameData
     public MapData mapData;
     public Dictionary<string, LevelData> levelData;
     public BotCraftData botCraftData;
+    public StatisticsData statisticsData;
+    public List<FarmlandData> farmlandData;
+    public ItemDropData itemDropData;
 
     //TODO: put all data that need to save in this class
 
     public GameData()
     {
-        inventoryData = Enumerable.Repeat(new InventoryData(), 7).ToList();
-
+        inventoryData = Enumerable.Repeat(new InventoryData(true), 1).ToList();
         mapData = new MapData();
-
         levelData = new Dictionary<string, LevelData>()
         {
             { "chunk", new("chunk") },
         };
-
-        botCraftData = new BotCraftData();
+        botCraftData = new BotCraftData(true);
+        statisticsData = new StatisticsData();
+        farmlandData = new List<FarmlandData>();
+        itemDropData = new ItemDropData();
     }
-
+    
     public class LevelData
     {
         public string levelInfo;
@@ -50,40 +53,72 @@ public class GameData
         }
     }
 
+    public class StatisticsData
+    {
+        public float inGameTime;
+        public int gameDays;
+        public bool[] unlockedChunks;
+        public ChunkTypes playerChunk;
+        public float[] playerPos;
+
+        public StatisticsData()
+        {
+            inGameTime = 7f;
+            gameDays = 0;
+            unlockedChunks = new bool[6] { true, false, false, false, false, false };
+            playerChunk = ChunkTypes.Logging;
+            //set player pos to starter house
+        }
+    }
+
+    public class ItemDropData
+    {
+        public List<int> itemIDs;
+        public List<ChunkTypes> chunks;
+
+        //constructor for pre-existing items
+    }
+
     public class MapData
     {
-        public bool[] unlockedChunks;
-        public List<GameObject> beacons;
+        public bool[] unlockedChunks = new bool[30];
+        public List<GameObject> beacons = new List<GameObject>();
         public GameObject selectedBeacon;
-
-        public MapData() 
-        { 
-            unlockedChunks = new bool[30];
-            beacons = new List<GameObject> {};
-        }
     }
 
     public class InventoryData
     {
-        public List<int> itemIDs;
-        public List<int> currentStacks;
-        public List<string> elements;
+        public List<int> itemIDs = new List<int>();
+        public List<int> currentStacks = new List<int>();
+        //public List<string> elements = new List<int>();
 
-        public InventoryData()
+        public InventoryData(bool initialize = false)
         {
-            itemIDs = Enumerable.Repeat(0, 10).ToList();
-            currentStacks = Enumerable.Repeat(0, 10).ToList();
-            elements = Enumerable.Repeat("00000", 10).ToList();
+            if (initialize)
+            {
+                itemIDs = Enumerable.Repeat(0, 50).ToList();
+                currentStacks = Enumerable.Repeat(0, 50).ToList();
+                //elements = Enumerable.Repeat("00000", 10).ToList();
+            }
         }
+    }
+
+    public class FarmlandData
+    {
+        public int cropID;
+        public int stage;
+        public int gameDay;
+        public float inGameTime;
     }
 
     public class BotCraftData
     {
-        public List<int> unlockedCrafts;
+        public List<int> unlockedCrafts = new List<int>();
 
-        public BotCraftData()
+        public BotCraftData(bool initialize = false)
         {
-            unlockedCrafts = new List<int>();
+            if(initialize)
+                unlockedCrafts = new List<int>{ 1, 3, 2, 4 };// fill in roasted carrots, and grilled salmon
         }
     }
 }

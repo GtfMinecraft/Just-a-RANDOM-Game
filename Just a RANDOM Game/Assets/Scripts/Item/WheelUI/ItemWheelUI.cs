@@ -213,7 +213,7 @@ public class ItemWheelUI : WheelUI
         }
 
         int itemID = currentWheel.itemID[itemIndex];
-        PlayerItemController.instance.SwapHandItem(itemID);
+        //PlayerItemController.instance.SwapHandItem(itemID);
     }
 
     protected int SetSubsection(int section, int subsection)

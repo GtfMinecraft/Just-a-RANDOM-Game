@@ -14,13 +14,19 @@ public class Inventory : ScriptableObject
     {
         public int ID;
         public int currentStack;
-        public int[] elements = new int[5];
+        //public int[] elements = new int[5];
 
-        public ItemSlot(int id, int stack, int[] elements)
+        //public ItemSlot(int id, int stack, int[] elements)
+        //{
+        //    ID = id;
+        //    currentStack = stack;
+        //    this.elements = elements;
+        //}
+
+        public ItemSlot(int id, int stack)
         {
             ID = id;
             currentStack = stack;
-            this.elements = elements;
         }
 
         public void Clear()
@@ -29,28 +35,30 @@ public class Inventory : ScriptableObject
             currentStack = 0;
         }
 
-        public bool SetNewItem(int setItemID)
+        public void SetNewItem(int setItemID)
         {
             ID = setItemID;
             currentStack = 1;
-            return true;
         }
     }
 
-    public bool AddItem(int itemID)
+    public bool AddItem(int itemID, bool addItem = true)
     {
         for (int i = 0; i < itemSlots.Count; i++)
         {
             if (itemSlots[i].ID == itemID && itemSlots[i].currentStack < database.GetItem[itemSlots[i].ID].maxStack)
             {
-                itemSlots[i].currentStack++;
+                if(addItem)
+                    itemSlots[i].currentStack++;
                 return true;
             }
         }
         for (int i = 0; i < itemSlots.Count; i++)
         {
-            if (itemSlots[i].ID == 0 && itemSlots[i].SetNewItem(itemID))
+            if (itemSlots[i].ID == 0)
             {
+                if (addItem)
+                    itemSlots[i].SetNewItem(itemID);
                 return true;
             }
         }

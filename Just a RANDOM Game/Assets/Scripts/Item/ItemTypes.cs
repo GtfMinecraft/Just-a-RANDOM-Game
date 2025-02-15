@@ -1,11 +1,16 @@
 public enum ItemTypes
 {
     Basic,
-    Tool,
-    Armor,
+    Sword,
+    Bow,
+    Axe,
+    Pickaxe,
+    Hoe,
+    Rod,
     Food,
+    Armor,
     Potion,
+    Crop,
     Bait,
-    Seed,
     Material,
 };

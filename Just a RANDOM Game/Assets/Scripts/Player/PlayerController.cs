@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         bool canInteract = false;
 
         if (MovementIsEnable())
-		{
+        {
             UpdateVelocity();
 
             // handle movement
@@ -115,18 +115,18 @@ public class PlayerController : MonoBehaviour
         if (canControl)
 		{
             // interact
-            if (isInteracting && canInteract)
+            if ((PlayerItemController.instance.isFishing || !nowRight && !nowLeft) && isInteracting && canInteract)
             {
                 Interact();
             }
 
             // possibly implement double-wielding
-            if (usingRight && (playerAction == 0 || playerAction == 2 || playerAction == 4))
+            if (usingRight && (PlayerItemController.instance.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 4))
             {
                 UseItem(true);
             }
 
-            if (usingLeft && (playerAction == 0 || playerAction == 2 || playerAction == 3))
+            if (usingLeft && (PlayerItemController.instance.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 3))
             {
                 UseItem(false);
             }
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
         RunAnimTrance();
     }
 
-	private void UpdateVelocity()
+    private void UpdateVelocity()
 	{
         float speedMultiplier = isRunning ? runMultiplier : 1f;
 
@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
 
     public bool MovementIsEnable()
     {
-        return canMove && !nowLeft && !nowRight && !forcedInteraction;
+        return canMove && !forcedInteraction;
     }
 
     private void Interact()
@@ -253,47 +253,29 @@ public class PlayerController : MonoBehaviour
 
     private void UseItem(bool rightHand = true)
     {
-        //get itemUseTime from item and according to the type of use
-        float itemUseTime = 0.8f;
-
-        if (isGrounded)
+        if (isGrounded || Physics.Raycast(playerObj.position, Vector3.down, out _, midAirUseDistance))
         {
             if (rightHand)
             {
                 nowRight = true;
                 usingRight = false;
                 anim.SetInteger("PlayerAction", 3);
+                PlayerItemController.instance.UseItem();
             }
             else
             {
                 nowLeft = true;
                 usingLeft = false;
                 anim.SetInteger("PlayerAction", 4);
+                PlayerItemController.instance.UseItem(false);
             }
         }
-        else if (Physics.Raycast(playerObj.position, Vector3.down, out _, midAirUseDistance))
-        { // modify to mid air use
-            if (rightHand)
-            {
-                usingRight = false;
-                anim.SetInteger("PlayerAction", 3);
-            }
-            else
-            {
-                usingLeft = false;
-                anim.SetInteger("PlayerAction", 4);
-            }
-        }
-
-        CancelInvoke("ResetUseLeftRight");
-        Invoke("ResetUseLeftRight", itemUseTime);
     }
 
-    private void ResetUseLeftRight()
+    public void ResetUseLeftRight()
     {
         nowLeft = nowRight = false;
         anim.SetInteger("PlayerAction", 0);
-
     }
 
     private void RunAnimTrance()
@@ -409,6 +391,10 @@ public class PlayerController : MonoBehaviour
         else if (ctx.canceled)
         {
             usingRight = false;
+            if(nowRight)
+            {
+                PlayerItemController.instance.Release();
+            }
         }
     }
 
@@ -421,6 +407,10 @@ public class PlayerController : MonoBehaviour
         else if (ctx.canceled)
         {
             usingLeft = false;
+            if (nowLeft)
+            {
+                PlayerItemController.instance.Release(false);
+            }
         }
     }
 

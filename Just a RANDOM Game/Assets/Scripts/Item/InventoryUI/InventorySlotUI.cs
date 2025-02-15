@@ -8,6 +8,13 @@ using UnityEngine.UI;
 
 public class InventorySlotUI : SlotUI
 {
+    protected override void Start()
+    {
+        base.Start();
+        icon.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+        GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+    }
+
     public override void OnDrop(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -19,6 +26,13 @@ public class InventorySlotUI : SlotUI
             }
 
             HandleItemDrop(eventData);
+
+            if(eventData.pointerDrag.transform.parent.GetSiblingIndex() == InventoryHandler.instance.selectedIndex)
+                InventoryHandler.instance.SelectItem(slotIndex);
+            else if(slotIndex == InventoryHandler.instance.selectedIndex)
+                InventoryHandler.instance.SelectItem(eventData.pointerDrag.transform.parent.GetSiblingIndex());
+
+            InventoryHandler.instance.UpdateInventoryUI();
         }
     }
 

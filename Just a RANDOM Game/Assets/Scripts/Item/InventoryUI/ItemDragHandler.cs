@@ -22,6 +22,7 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
         originalParent = transform.parent;
         slotIndex = transform.parent.GetSiblingIndex();
         gameObject.SetActive(false);
+        itemHolderParent = InventoryCanvasController.instance.storage.transform;
     }
 
     public void OnPointerDown(PointerEventData eventData) 
@@ -51,6 +52,12 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             ReturnItem();
+
+            GameObject hoveredObject = eventData.pointerCurrentRaycast.gameObject;
+            if (hoveredObject == originalParent.gameObject)
+            {
+                InventoryHandler.instance.SelectItem(slotIndex);
+            }
         }
     }
 
@@ -60,10 +67,5 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
         transform.SetParent(originalParent);
         transform.localPosition = Vector3.zero;
         GetComponent<Image>().raycastTarget = true;
-    }
-
-    protected virtual void DropFromSlot()
-    {
-
     }
 }
