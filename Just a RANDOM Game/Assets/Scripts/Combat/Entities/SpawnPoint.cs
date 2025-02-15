@@ -10,8 +10,21 @@ public class SpawnPoint
     [SerializeField]
     private GameObject entityPrefab; // the entity this spanwpoint will spawn
 
+    public SpawnPoint(Transform spawnPointLocation, GameObject spawnEntityPrefab)
+    {
+        location = spawnPointLocation;
+        entityPrefab = spawnEntityPrefab;
+    }
+
+    // spawns the entity assigned to this spawnpoint and calls the entity's `OnSpawn()` method
     public void SpawnEntity()
     {
-        GameObject.Instantiate(entityPrefab, location);
+        if (entityPrefab == null)
+        {
+            Debug.Log($"No entity set to spawnpoint {gameObject.name}");
+            return;
+        }
+
+        GameObject.Instantiate(entityPrefab, location).OnSpawn();
     }
 }

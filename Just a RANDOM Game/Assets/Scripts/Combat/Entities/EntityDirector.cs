@@ -6,14 +6,14 @@ public class EntityDirector : MonoBehaviour
 {
     [SerializeField]
     private Entity entity;
-    private bool isActive; // an inactive entity is invisible, and does not interact with anything else
+    private bool isActive;
 
     private void Update()
     {
         // ignore if entity is not set or is inactive
         if (entity == null)
         {
-            Debug.Log($"EntityDirector attached to {gameObject.name} does not have a valid entity set");
+            Debug.Log($"EntityDirector attached to {gameObject.name} does not have a valid entity");
             return;
         }
         else if (isActive == false)

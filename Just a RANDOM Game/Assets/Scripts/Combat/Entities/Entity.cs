@@ -40,7 +40,7 @@ abstract public class Entity
 
     public virtual void TakeDamage(Damage instance)
     {
-        // reduce health by incoming damage
+        // reduce health
         ReduceTotalHealth(ApplyArmorReduction(instance).value);
 
         // apply status effects
@@ -74,6 +74,8 @@ abstract public class Entity
         // if the same type of status effect isnt found
         activeEffects.Add(instance);
     }
+
+    public virtual void OnSpawn() { }
 
     protected Damage ApplyArmorReduction(Damage instance)
     {
