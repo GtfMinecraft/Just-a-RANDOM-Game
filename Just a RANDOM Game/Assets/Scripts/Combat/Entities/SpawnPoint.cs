@@ -21,10 +21,10 @@ public class SpawnPoint
     {
         if (entityPrefab == null)
         {
-            Debug.Log($"No entity set to spawnpoint {gameObject.name}");
+            Debug.Log($"No entity set to spawnpoint");
             return;
         }
 
-        GameObject.Instantiate(entityPrefab, location).OnSpawn();
+        GameObject.Instantiate(entityPrefab, location);
     }
 }

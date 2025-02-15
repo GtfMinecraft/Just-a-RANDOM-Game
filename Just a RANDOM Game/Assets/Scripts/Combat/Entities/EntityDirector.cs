@@ -8,6 +8,11 @@ public class EntityDirector : MonoBehaviour
     private Entity entity;
     private bool isActive;
 
+    private void Start()
+    {
+        entity.OnSpawn();
+    }
+
     private void Update()
     {
         // ignore if entity is not set or is inactive
