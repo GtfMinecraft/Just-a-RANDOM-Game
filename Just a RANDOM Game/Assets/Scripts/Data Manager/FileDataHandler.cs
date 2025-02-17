@@ -51,10 +51,10 @@ public class FileDataHandler
                     {
                         loadData.inventoryData = JsonConvert.DeserializeObject<List<GameData.InventoryData>>(dataToLoad);
                     }
-                    else if (file == "MapData")
-                    {
-                        loadData.mapData = JsonConvert.DeserializeObject<GameData.MapData>(dataToLoad);
-                    }
+                    //else if (file == "MapData")
+                    //{
+                    //    loadData.mapData = JsonConvert.DeserializeObject<GameData.MapData>(dataToLoad);
+                    //}
                     else if (file == "LevelData")
                     {
                         loadData.levelData = JsonConvert.DeserializeObject<Dictionary<string, GameData.LevelData>>(dataToLoad);
@@ -70,6 +70,10 @@ public class FileDataHandler
                     else if (file == "FarmlandData")
                     {
                         loadData.farmlandData = JsonConvert.DeserializeObject<List<GameData.FarmlandData>>(dataToLoad);
+                    }
+                    else if (file == "ItemDropData")
+                    {
+                        loadData.itemDropData = JsonConvert.DeserializeObject<GameData.ItemDropData>(dataToLoad);
                     }
                     else
                     {
@@ -108,15 +112,15 @@ public class FileDataHandler
                     }
                     dataToSave = JsonConvert.SerializeObject(data.inventoryData);
                 }
-                else if (file == "MapData")
-                {
-                    if (data.mapData == null)
-                    {
-                        Debug.LogError($"Data for {file} was not initialized");
-                        continue;
-                    }
-                    dataToSave = JsonConvert.SerializeObject(data.mapData);
-                }
+                //else if (file == "MapData")
+                //{
+                //    if (data.mapData == null)
+                //    {
+                //        Debug.LogError($"Data for {file} was not initialized");
+                //        continue;
+                //    }
+                //    dataToSave = JsonConvert.SerializeObject(data.mapData);
+                //}
                 else if(file == "LevelData")
                 {
                     if (data.levelData == null)
@@ -152,6 +156,15 @@ public class FileDataHandler
                         continue;
                     }
                     dataToSave = JsonConvert.SerializeObject(data.farmlandData);
+                }
+                else if (file == "ItemDropData")
+                {
+                    if (data.itemDropData == null)
+                    {
+                        Debug.LogError($"Data for {file} was not initialized");
+                        continue;
+                    }
+                    dataToSave = JsonConvert.SerializeObject(data.itemDropData);
                 }
                 else
                 {

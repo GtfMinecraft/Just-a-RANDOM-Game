@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,7 @@ public class ItemInteractable : Interactable
         if (anim.GetInteger("PlayerAction") == 2)
             anim.SetInteger("PlayerAction", 0);
         InventoryHandler.instance.AddItem(itemID);
-        Destroy(gameObject);
+        itemID = 0;
+        ObjectPoolManager.DestroyPooled(gameObject);
     }
 }

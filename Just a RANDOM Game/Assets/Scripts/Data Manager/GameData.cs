@@ -8,7 +8,7 @@ using UnityEngine;
 public class GameData
 {
     public List<InventoryData> inventoryData;
-    public MapData mapData;
+    //public MapData mapData;
     public Dictionary<string, LevelData> levelData;
     public BotCraftData botCraftData;
     public StatisticsData statisticsData;
@@ -20,7 +20,7 @@ public class GameData
     public GameData()
     {
         inventoryData = Enumerable.Repeat(new InventoryData(true), 1).ToList();
-        mapData = new MapData();
+        //mapData = new MapData();
         levelData = new Dictionary<string, LevelData>()
         {
             { "chunk", new("chunk") },
@@ -73,20 +73,17 @@ public class GameData
 
     public class ItemDropData
     {
-        public List<int> itemIDs;
-        //public List<ChunkTypes> chunks;
-        public List<float[]> position;
-        public List<float[]> rotation;
+        public List<ItemDropHandler.ItemDrop> itemDrops = new();
 
         //constructor for pre-existing items
     }
 
-    public class MapData
-    {
-        public bool[] unlockedChunks = new bool[30];
-        public List<GameObject> beacons = new List<GameObject>();
-        public GameObject selectedBeacon;
-    }
+    //public class MapData
+    //{
+    //    public bool[] unlockedChunks = new bool[30];
+    //    public List<GameObject> beacons = new List<GameObject>();
+    //    public GameObject selectedBeacon;
+    //}
 
     public class InventoryData
     {

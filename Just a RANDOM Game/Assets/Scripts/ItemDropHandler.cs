@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public class ItemDropHandler : MonoBehaviour, IDataPersistence
 {
@@ -9,12 +10,17 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
 
     public Transform itemDropParent;
 
-    private List<int> itemIDs;
-    private List<ChunkTypes> chunks;
-    private List<Vector3> position;
-    private List<Vector3> rotation;
-
+    [Serializable]
+    public class ItemDrop
+    {
+        public int itemID;
+        public ChunkTypes chunk;
+        public Vector3 position;
+        public Quaternion rotation;
+    }
+    private List<ItemDrop> itemDrops;
     private List<GameObject> itemObjs;
+
     private ItemDatabase database;
 
     private void Awake()
@@ -37,44 +43,60 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
 
     public void UnloadChunk(ChunkTypes chunk)
     {
-        for (int i = 0; i < itemIDs.Count; i++)
+        for (int i = 0; i < itemDrops.Count; i++)
         {
-            if (itemObjs[i] != null)
-                ObjectPoolManager.DestroyPooled(itemObjs[i]);//gotta give each item their unique reference so that the itemObjs are distinguishable
+            if (itemDrops[i].chunk == chunk)
+            {
+                if (itemObjs[i] != null)
+                {
+                    ObjectPoolManager.DestroyPooled(itemObjs[i]);//gotta give each item their unique reference so that the itemObjs are distinguishable
+                    itemObjs[i] = null;
+                }
+                else
+                {
+                    itemDrops.RemoveAt(i);
+                    itemObjs.RemoveAt(i);
+                }
+            }
         }
     }
 
     public void LoadChunk(ChunkTypes chunk)
     {
-        for (int i = 0; i < itemIDs.Count; i++)
+        for (int i = 0; i < itemDrops.Count; i++)
         {
-            GameObject model = database.GetItem[itemIDs[i]].model;
-            itemObjs[i] = ObjectPoolManager.CreatePooled(model, position[i], Quaternion.Euler(rotation[i]));
+            if (itemDrops[i].chunk == chunk && itemObjs[i] == null)
+            {
+                SpawnDrop(i);
+            }
         }
     }
 
-    public void SpawnDrop(int itemID, Vector3 position)
+    public void SpawnNewDrop(int itemID, ChunkTypes chunk, Vector3 position, Quaternion rotation = default)
     {
-        //be sure to add ItemInteractable
-        //I think we can make every chunk (scene) have one and let PlayerItemController fetch according to name everytime?
-        //but when multiple scenes are loaded, they will conflict
-        //
-        //or just use one instance, but save each scene in deparate files using dictionary?
+        itemDrops.Add(new ItemDrop { itemID = itemID, chunk = chunk, position = position, rotation = rotation });
+        itemObjs.Add(null);
+        SpawnDrop(-1);
+    }
+
+    private void SpawnDrop(int index)
+    {
+        GameObject model = database.GetItem[itemDrops[index].itemID].model;
+        if (model.GetComponent<ItemInteractable>() == null)
+            model.AddComponent<ItemInteractable>();
+        itemObjs[index] = ObjectPoolManager.CreatePooled(model, itemDrops[index].position, itemDrops[index].rotation);
+        itemObjs[index].transform.SetParent(itemDropParent);
+        itemObjs[index].GetComponent<ItemInteractable>().itemID = itemDrops[index].itemID;
     }
 
     public void LoadData(GameData data)
     {
-        itemIDs = data.itemDropData.itemIDs;
-        position = data.itemDropData.position.Select(o => new Vector3(o[0], o[1], o[2])).ToList();
-        rotation = data.itemDropData.rotation.Select(o => new Vector3(o[0], o[1], o[2])).ToList();
-
-        itemObjs = new List<GameObject>(itemIDs.Count);
+        itemDrops = data.itemDropData.itemDrops;
+        itemObjs = new List<GameObject>(itemDrops.Count);
     }
 
     public void SaveData(GameData data)
     {
-        data.itemDropData.itemIDs = itemIDs;
-        data.itemDropData.position = position.Select(o => new float[] {o.x, o.y, o.z}).ToList();
-        data.itemDropData.rotation = rotation.Select(o => new float[] { o.x, o.y, o.z }).ToList();
+        data.itemDropData.itemDrops = itemDrops;
     }
 }

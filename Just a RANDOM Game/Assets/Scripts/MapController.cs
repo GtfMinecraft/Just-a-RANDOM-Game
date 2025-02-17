@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class MapController : MonoBehaviour, IDataPersistence
+public class MapController : MonoBehaviour//, IDataPersistence
 {
     public CanvasScaler canvasScaler;
     public float zoomSpeed = 0.1f;
@@ -191,17 +191,17 @@ public class MapController : MonoBehaviour, IDataPersistence
         }  
     }
 
-    public void LoadData(GameData data)
-    {
-        beacons = data.mapData.beacons;
-        highlightedBeacon = data.mapData.selectedBeacon;
-        unlockedChunks = data.mapData.unlockedChunks;
-    }
-    public void SaveData(GameData data)
-    {
-        data.mapData.beacons = beacons;
-        data.mapData.selectedBeacon = highlightedBeacon;
-        data.mapData.unlockedChunks = unlockedChunks;
-    }
+    //public void LoadData(GameData data)
+    //{
+    //    beacons = data.mapData.beacons;
+    //    highlightedBeacon = data.mapData.selectedBeacon;
+    //    unlockedChunks = data.mapData.unlockedChunks;
+    //}
+    //public void SaveData(GameData data)
+    //{
+    //    data.mapData.beacons = beacons;
+    //    data.mapData.selectedBeacon = highlightedBeacon;
+    //    data.mapData.unlockedChunks = unlockedChunks;
+    //}
 }
 
