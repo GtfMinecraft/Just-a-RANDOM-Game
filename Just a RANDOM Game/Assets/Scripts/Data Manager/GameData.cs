@@ -74,7 +74,9 @@ public class GameData
     public class ItemDropData
     {
         public List<int> itemIDs;
-        public List<ChunkTypes> chunks;
+        //public List<ChunkTypes> chunks;
+        public List<float[]> position;
+        public List<float[]> rotation;
 
         //constructor for pre-existing items
     }
