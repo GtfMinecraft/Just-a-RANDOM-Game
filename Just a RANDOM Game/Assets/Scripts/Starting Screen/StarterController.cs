@@ -89,13 +89,13 @@ public class StarterController : MonoBehaviour
 
         pressKeyBackground.enabled = true;
         yield return new WaitForSeconds(1.5f);
-        pink.SetActive(true);
-        blue.SetActive(true);
         sfx.clip = audioClip[0];
         sfx.Play();
+        pink.SetActive(true);
         StartCoroutine(MoveOverSeconds(pink, new Vector3(-580, -580, 0), 0.2f));
         yield return new WaitForSeconds(0.5f);
         sfx.Play();
+        blue.SetActive(true);
         StartCoroutine(MoveOverSeconds(blue, new Vector3(580, 580, 0), 0.2f));
         yield return new WaitForSeconds(0.5f);
         logoBig.enabled = true;
