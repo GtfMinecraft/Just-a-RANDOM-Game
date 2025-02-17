@@ -35,7 +35,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     private ItemDatabase database;
 
     public int selectedIndex { get; private set; } = -1;
-    private Transform crystalSelected;
+    public Transform crystalSelected;
 
     /*
      *  0 storage
@@ -64,7 +64,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         database = PlayerItemController.instance.database;
         currentGroup = PlayerPrefs.GetInt("selectedGroup", 0);
         currentGroup = 0;//for demo
-        crystalSelected = itemInfo.GetChild(4);
 
         //groupUI.GetChild(currentGroup).GetComponent<Button>().Select();
 
@@ -77,15 +76,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         for(int i = 0; i < inventorySlots.Length; i++)
         {
             inventorySlots[i] = storage.GetChild(i).GetComponent<InventorySlotUI>();
-        }
-
-        for(int i = 0; i < inventoryList[currentGroup].itemSlots.Count; i++)
-        {
-            if (inventoryList[currentGroup].itemSlots[i].ID != 0)
-            {
-                SelectItem(i);
-                break;
-            }
         }
     }
 
@@ -106,8 +96,8 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         itemInfo.GetChild(2).GetComponent<TMP_Text>().text = item.itemName;
         itemInfo.GetChild(3).GetComponent<Image>().sprite = item.icon;
 
-        crystalSelected.SetParent(inventorySlots[index].transform.GetChild(0), false);
-        crystalSelected.transform.SetAsLastSibling();
+        crystalSelected.gameObject.SetActive(true);
+        crystalSelected.position = inventorySlots[index].transform.position;
     }
 
     public bool AddItem(int itemID, bool addItem = true)
@@ -193,9 +183,21 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
         if (selectedIndex == -1 || inventoryList[currentGroup].itemSlots[selectedIndex].ID == 0)
         {
-            selectedIndex = -1;
-            itemInfo.gameObject.SetActive(false);
-            crystalSelected.gameObject.SetActive(false);
+            bool selected = false;
+            for (int i = 0; i < inventoryList[currentGroup].itemSlots.Count; i++)
+            {
+                if (inventoryList[currentGroup].itemSlots[i].ID != 0)
+                {
+                    SelectItem(i);
+                    selected = true;
+                    break;
+                }
+            }
+            if (!selected)
+            {
+                itemInfo.gameObject.SetActive(false);
+                crystalSelected.gameObject.SetActive(false);
+            }
         }
 
         // update armor ui

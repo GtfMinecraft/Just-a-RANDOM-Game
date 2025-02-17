@@ -65,6 +65,7 @@ public class ItemDragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler,
     {
         isDragging = false;
         transform.SetParent(originalParent);
+        transform.SetAsFirstSibling();
         transform.localPosition = Vector3.zero;
         GetComponent<Image>().raycastTarget = true;
     }

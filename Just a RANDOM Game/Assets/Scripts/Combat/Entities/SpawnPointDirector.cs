@@ -31,6 +31,8 @@ public class SpawnPointDirector : MonoBehaviour
     // Does not stop spawining if `amount` < 0
     public void SpawnEntityInterval(float intervalSeconds, int amount = -1)
     {
+        if (intervalSeconds < 0)
+            return;
         intervalStartTime = Time.time;
         spawnInterval = intervalSeconds;
         remainingSpawns = amount;

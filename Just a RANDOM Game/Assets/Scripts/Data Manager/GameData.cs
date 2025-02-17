@@ -67,7 +67,7 @@ public class GameData
             gameDays = 0;
             unlockedChunks = new bool[6] { true, false, false, false, false, false };
             playerChunk = ChunkTypes.Logging;
-            //set player pos to starter house
+            playerPos = new float[]{ 1, 2.75f, 0};
         }
     }
 

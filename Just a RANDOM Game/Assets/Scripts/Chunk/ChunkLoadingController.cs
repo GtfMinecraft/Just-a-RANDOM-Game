@@ -11,7 +11,6 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
     public bool[] loadedChunks { get; private set; } = new bool[6] { true, false, false, false, false, false };
 
     private Vector3 spawnPos;
-    private bool isSpawned = false;
 
     private void Awake()
     {
@@ -89,10 +88,9 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
 
     public void SpawnPlayer()
     {
-        //check if player is dead or not spawned
-        //Instantiate player at spawnPos 
-
-        isSpawned = true;
+        GameObject player = PlayerController.instance.gameObject;
+        player.transform.position = spawnPos;
+        player.AddComponent(typeof(EntityDirector)).GetComponent<EntityDirector>().SetEntity(new PlayerEntity(player));
     }
 
     public void LoadData(GameData data)

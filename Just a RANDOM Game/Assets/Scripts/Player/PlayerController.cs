@@ -100,7 +100,6 @@ public class PlayerController : MonoBehaviour
 	{
         isGrounded = playerCharacterController.isGrounded;
         int playerAction = anim.GetInteger("PlayerAction");
-        bool canInteract = false;
 
         if (MovementIsEnable())
         {
@@ -110,23 +109,34 @@ public class PlayerController : MonoBehaviour
             playerCharacterController.Move(currentVelocity * Time.deltaTime);
         }
 
-        canInteract = InteractablePrompt();
+        Interactable canInteract = InteractablePrompt();
 
         if (canControl)
-		{
+        {
+            PlayerItemController itemController = PlayerItemController.instance;
+
             // interact
-            if ((PlayerItemController.instance.isFishing || !nowRight && !nowLeft) && isInteracting && canInteract)
+            if ((itemController.isFishing || !nowRight && !nowLeft) && isInteracting && canInteract != null)
             {
-                Interact();
+                if (itemController.isFishing && canInteract.GetType() != typeof(ItemInteractable))
+                {
+                    itemController.CancelInvoke("StopFishing");
+                    itemController.StopFishing();
+
+                    itemController.CancelInvoke("ResetAnim");
+                    itemController.ResetAnim();
+                }
+                isInteracting = false;
+                canInteract.Interact();
             }
 
             // possibly implement double-wielding
-            if (usingRight && (PlayerItemController.instance.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 4))
+            if (usingRight && (itemController.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 4))
             {
                 UseItem(true);
             }
 
-            if (usingLeft && (PlayerItemController.instance.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 3))
+            if (usingLeft && (itemController.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 3))
             {
                 UseItem(false);
             }
@@ -211,24 +221,7 @@ public class PlayerController : MonoBehaviour
         return canMove && !forcedInteraction;
     }
 
-    private void Interact()
-    {
-        isInteracting = false;
-
-        Collider[] hits;
-        hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
-
-        foreach (Collider hit in hits)
-        {
-            if (hit.GetComponent<Interactable>() != null)
-            {
-                hit.GetComponent<Interactable>().Interact();
-                break;
-            }
-        }
-    }
-
-    private bool InteractablePrompt()
+    private Interactable InteractablePrompt()
     {
         InteractablePromptController controller = InteractablePromptController.instance;
 
@@ -242,13 +235,13 @@ public class PlayerController : MonoBehaviour
                 if (hit.GetComponent<Interactable>() != null)
                 {
                     controller.OpenPrompt(hit.GetComponent<Interactable>());
-                    return true;
+                    return hit.GetComponent<Interactable>();
                 }
             }
         }
 
         controller.DisableCanvas();
-        return false;
+        return null;
     }
 
     private void UseItem(bool rightHand = true)

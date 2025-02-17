@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class EntityDirector : MonoBehaviour
 {
-    [SerializeField]
-    private Entity entity;
-    private bool isActive;
+    public Entity entity { get; private set; }
+    public bool isActive;
 
     private void Start()
     {

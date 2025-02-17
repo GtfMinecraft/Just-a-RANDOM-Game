@@ -12,7 +12,6 @@ public class LevelDirector : MonoBehaviour, IDataPersistence
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject loadingScreenPrefab;
     [SerializeField] private GameObject levelLoaderPrefab;
-    [SerializeField] private GameObject player;
     [SerializeField] private Transform levelLoadingParent;
 
     private LevelInfo level;
@@ -26,9 +25,6 @@ public class LevelDirector : MonoBehaviour, IDataPersistence
         // make an instance of `LevelLoader` that generates loading screen and loads assets
         levelLoader = Instantiate(levelLoaderPrefab).GetComponent<LevelLoader>();
         levelLoader.director = this;
-
-        // initialize player entity
-        player.AddComponent(typeof(EntityDirector)).GetComponent<EntityDirector>().SetEntity(new PlayerEntity(player));
     }
 
     public void GenerateLevel()

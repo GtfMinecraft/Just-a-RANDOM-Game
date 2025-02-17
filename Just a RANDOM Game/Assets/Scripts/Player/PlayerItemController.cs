@@ -287,7 +287,7 @@ public class PlayerItemController : MonoBehaviour
         }
     }
 
-    private void ResetAnim()
+    public void ResetAnim()
     {
         anim.SetInteger("ItemType", 0);
         PlayerController.instance.ResetUseLeftRight();

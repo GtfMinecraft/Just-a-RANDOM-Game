@@ -6,13 +6,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlotUI : SlotUI
+public class InventorySlotUI : SlotUI, IPointerEnterHandler, IPointerExitHandler
 {
+    private Image hoverTint;
+
     protected override void Start()
     {
         base.Start();
         icon.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
         GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+
+        hoverTint = transform.GetChild(1).GetComponent<Image>();
     }
 
     public override void OnDrop(PointerEventData eventData)
@@ -42,5 +46,15 @@ public class InventorySlotUI : SlotUI
         icon.GetComponent<InventoryDragHandler>().UpdateItemSlot(thisItemSlot);
 
         RefreshItemIcons();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hoverTint.enabled = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hoverTint.enabled = false;
     }
 }

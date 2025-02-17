@@ -10,7 +10,6 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
 
     private List<int> itemIDs;
     private List<ChunkTypes> chunks;
-    private List<Vector3> positions;
 
     private List<GameObject> itemObjs;
 
@@ -49,8 +48,8 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         {
             if (chunks[i] == chunk)
             {
-                GameObject itemObj = Instantiate(itemObjs[i], itemDropParent);
-                itemObjs[i] = itemObj;
+                //GameObject itemObj = ObjectPoolManager.CreatePooled(itemObjs[i], itemDropParent, rotation);
+                //itemObjs[i] = itemObj;
             }
         }
     }
