@@ -69,11 +69,12 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
 
     public void SpawnNewDrop(int itemID, ChunkTypes chunk, Vector3 position, Quaternion rotation = default)
     {
+        Vector3 rot = rotation.eulerAngles;
         itemDrops.Add(new ItemDrop {
             itemID = itemID,
             chunk = chunk,
             position = new float[] { position.x, position.y, position.z },
-            rotation = new float[] { rotation.x, rotation.y, rotation.z }
+            rotation = new float[] { rot.x, rot.y, rot.z }
         });
         itemObjs.Add(null);
         SpawnDrop(itemDrops.Count - 1);
@@ -87,7 +88,6 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         itemObjs[index] = ObjectPoolManager.CreatePooled(model, position, rotation);
         itemObjs[index].transform.SetParent(itemDropParent);
         itemObjs[index].GetComponent<ItemInteractable>().enabled = true;
-        itemObjs[index].GetComponent<Collider>().enabled = true;
         itemObjs[index].GetComponent<Rigidbody>().isKinematic = false;
     }
 
@@ -109,6 +109,16 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
 
     public void SaveData(GameData data)
     {
+        for (int i = 0; i < itemDrops.Count; i++)
+        {
+            if (itemObjs[i] != null)
+            {
+                Vector3 pos = itemObjs[i].transform.position;
+                Vector3 rot = itemObjs[i].transform.rotation.eulerAngles;
+                itemDrops[i].position = new float[] { pos.x, pos.y, pos.z };
+                itemDrops[i].rotation = new float[] { rot.x, rot.y, rot.z };
+            }
+        }
         data.itemDropData.itemDrops = itemDrops;
     }
 }
