@@ -8,7 +8,7 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
 
     public bool[] unlockedChunks { get; private set; } = new bool[6] { true, false, false, false, false, false };
     public ChunkTypes currentChunk = ChunkTypes.Logging;
-    public bool[] loadedChunks { get; private set; } = new bool[6] { true, false, false, false, false, false };
+    public bool[] loadedChunks { get; private set; } = new bool[6];
 
     private Vector3 spawnPos;
 
@@ -27,6 +27,7 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
     void Start()
     {
         SpawnPlayer();
+        ChangeLoadedChunks(currentChunk);
     }
 
     public void UnlockChunk(ChunkTypes chunk)

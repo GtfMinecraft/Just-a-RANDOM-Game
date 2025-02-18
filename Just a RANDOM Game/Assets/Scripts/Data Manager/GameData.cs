@@ -28,7 +28,7 @@ public class GameData
         botCraftData = new BotCraftData(true);
         statisticsData = new StatisticsData();
         farmlandData = new List<FarmlandData>();
-        itemDropData = new ItemDropData();
+        itemDropData = new ItemDropData(true);
     }
     
     public class LevelData
@@ -73,9 +73,43 @@ public class GameData
 
     public class ItemDropData
     {
-        public List<ItemDropHandler.ItemDrop> itemDrops = new();
+        public List<ItemDropHandler.ItemDrop> itemDrops;
 
-        //constructor for pre-existing items
+        public ItemDropData(bool initialize = false)
+        {
+            if (initialize)
+                itemDrops = new List<ItemDropHandler.ItemDrop>
+            {
+                new ItemDropHandler.ItemDrop
+                {
+                    itemID = 1,
+                    chunk = ChunkTypes.Logging,
+                    position = new float[] { -0.1551096f, 1.22f, 3.44382f },
+                    rotation = new float[] { 0, 0, 0 }
+                },
+                new ItemDropHandler.ItemDrop
+                {
+                    itemID = 2,
+                    chunk = ChunkTypes.Logging,
+                    position = new float[] { 1.60489f, 1.22f, 3.44382f },
+                    rotation = new float[] { 0, 0, 0 }
+                },
+                new ItemDropHandler.ItemDrop
+                {
+                    itemID = 3,
+                    chunk = ChunkTypes.Logging,
+                    position = new float[] { 3.62489f, 1.22f, 3.44382f },
+                    rotation = new float[] { 0, 0, 0 }
+                },
+                new ItemDropHandler.ItemDrop
+                {
+                    itemID = 4,
+                    chunk = ChunkTypes.Logging,
+                    position = new float[] { 5.52489f, 1.22f, 3.44382f },
+                    rotation = new float[] { 0, 0, 0 }
+                },
+            };
+        }
     }
 
     //public class MapData

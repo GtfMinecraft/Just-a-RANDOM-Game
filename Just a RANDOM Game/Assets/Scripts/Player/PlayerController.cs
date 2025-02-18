@@ -232,10 +232,11 @@ public class PlayerController : MonoBehaviour
 
             foreach (Collider hit in hits)
             {
-                if (hit.GetComponent<Interactable>() != null)
+                Interactable interactable = hit.GetComponent<Interactable>();
+                if (interactable != null && interactable.enabled)
                 {
-                    controller.OpenPrompt(hit.GetComponent<Interactable>());
-                    return hit.GetComponent<Interactable>();
+                    controller.OpenPrompt(interactable);
+                    return interactable;
                 }
             }
         }

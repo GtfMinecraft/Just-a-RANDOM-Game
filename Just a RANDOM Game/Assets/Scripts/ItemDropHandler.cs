@@ -15,8 +15,8 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
     {
         public int itemID;
         public ChunkTypes chunk;
-        public Vector3 position;
-        public Quaternion rotation;
+        public float[] position;
+        public float[] rotation;
     }
     private List<ItemDrop> itemDrops;
     private List<GameObject> itemObjs;
@@ -52,11 +52,6 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
                     ObjectPoolManager.DestroyPooled(itemObjs[i]);//gotta give each item their unique reference so that the itemObjs are distinguishable
                     itemObjs[i] = null;
                 }
-                else
-                {
-                    itemDrops.RemoveAt(i);
-                    itemObjs.RemoveAt(i);
-                }
             }
         }
     }
@@ -74,25 +69,41 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
 
     public void SpawnNewDrop(int itemID, ChunkTypes chunk, Vector3 position, Quaternion rotation = default)
     {
-        itemDrops.Add(new ItemDrop { itemID = itemID, chunk = chunk, position = position, rotation = rotation });
+        itemDrops.Add(new ItemDrop {
+            itemID = itemID,
+            chunk = chunk,
+            position = new float[] { position.x, position.y, position.z },
+            rotation = new float[] { rotation.x, rotation.y, rotation.z }
+        });
         itemObjs.Add(null);
-        SpawnDrop(-1);
+        SpawnDrop(itemDrops.Count - 1);
     }
 
     private void SpawnDrop(int index)
     {
         GameObject model = database.GetItem[itemDrops[index].itemID].model;
-        if (model.GetComponent<ItemInteractable>() == null)
-            model.AddComponent<ItemInteractable>();
-        itemObjs[index] = ObjectPoolManager.CreatePooled(model, itemDrops[index].position, itemDrops[index].rotation);
+        Vector3 position = new Vector3(itemDrops[index].position[0], itemDrops[index].position[1], itemDrops[index].position[2]);
+        Quaternion rotation = Quaternion.Euler(itemDrops[index].rotation[0], itemDrops[index].rotation[1], itemDrops[index].rotation[2]);
+        itemObjs[index] = ObjectPoolManager.CreatePooled(model, position, rotation);
         itemObjs[index].transform.SetParent(itemDropParent);
-        itemObjs[index].GetComponent<ItemInteractable>().itemID = itemDrops[index].itemID;
+        itemObjs[index].GetComponent<ItemInteractable>().enabled = true;
+        itemObjs[index].GetComponent<Collider>().enabled = true;
+    }
+
+    public void RemoveItem(GameObject itemObj)
+    {
+        int index = itemObjs.IndexOf(itemObj);
+        if (index != -1)
+        {
+            itemDrops.RemoveAt(index);
+            itemObjs.RemoveAt(index);
+        }
     }
 
     public void LoadData(GameData data)
     {
         itemDrops = data.itemDropData.itemDrops;
-        itemObjs = new List<GameObject>(itemDrops.Count);
+        itemObjs = Enumerable.Repeat<GameObject>(null, itemDrops.Count).ToList();
     }
 
     public void SaveData(GameData data)
