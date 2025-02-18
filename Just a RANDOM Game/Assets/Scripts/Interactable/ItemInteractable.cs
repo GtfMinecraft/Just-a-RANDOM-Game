@@ -35,8 +35,6 @@ public class ItemInteractable : Interactable
             anim.SetInteger("PlayerAction", 0);
         InventoryHandler.instance.AddItem(itemID);
         ItemDropHandler.instance.RemoveItem(gameObject);
-        enabled = false;
-        GetComponent<Collider>().enabled = false;
         ObjectPoolManager.DestroyPooled(gameObject);
     }
 }

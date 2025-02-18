@@ -88,6 +88,7 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         itemObjs[index].transform.SetParent(itemDropParent);
         itemObjs[index].GetComponent<ItemInteractable>().enabled = true;
         itemObjs[index].GetComponent<Collider>().enabled = true;
+        itemObjs[index].GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public void RemoveItem(GameObject itemObj)
