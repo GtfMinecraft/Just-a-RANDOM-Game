@@ -65,7 +65,7 @@ public class FishingController : MonoBehaviour
                 if (itemWeight < 0)
                 {
                     //disable fish bubbling vfx
-                    Debug.Log("success");//instantiate item through the drop controller and play add into inventory anim if auto pickup
+                    ItemDropHandler.instance.SpawnNewDrop(entry.Key, ChunkTypes.Fishing, canvas.transform.position - Vector3.up * 2.5f, false);
                     break;
                 }
             }

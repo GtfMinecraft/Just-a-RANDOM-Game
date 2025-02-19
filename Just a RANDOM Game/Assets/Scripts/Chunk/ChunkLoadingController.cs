@@ -11,6 +11,7 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
     public bool[] loadedChunks { get; private set; } = new bool[6];
 
     private Vector3 spawnPos;
+    private Quaternion spawnRot;
 
     private void Awake()
     {
@@ -89,9 +90,10 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
 
     public void SpawnPlayer()
     {
-        GameObject player = PlayerController.instance.gameObject;
+        PlayerController player = PlayerController.instance;
         player.transform.position = spawnPos;
-        player.AddComponent(typeof(EntityDirector)).GetComponent<EntityDirector>().SetEntity(new PlayerEntity(player));
+        player.playerObj.rotation = spawnRot;
+        player.gameObject.AddComponent(typeof(EntityDirector)).GetComponent<EntityDirector>().SetEntity(new PlayerEntity(player.gameObject));
     }
 
     public void LoadData(GameData data)
@@ -99,7 +101,9 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
         unlockedChunks = data.statisticsData.unlockedChunks;
         currentChunk = data.statisticsData.playerChunk;
         float[] pos = data.statisticsData.playerPos;
+        float[] rot = data.statisticsData.playerRot;
         spawnPos = new Vector3(pos[0], pos[1], pos[2]);
+        spawnRot = Quaternion.Euler(rot[0], rot[1], rot[2]);
     }
 
     public void SaveData(GameData data)
@@ -108,5 +112,7 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
         data.statisticsData.playerChunk = currentChunk;
         Vector3 pos = PlayerController.instance.transform.position;
         data.statisticsData.playerPos = new float[] { pos.x, pos.y, pos.z };
+        Vector3 rot = PlayerController.instance.playerObj.rotation.eulerAngles;
+        data.statisticsData.playerRot = new float[] { rot.x, rot.y, rot.z };
     }
 }

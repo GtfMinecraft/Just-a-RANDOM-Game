@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System;
 
 public class ItemDropHandler : MonoBehaviour, IDataPersistence
 {
     public static ItemDropHandler instance;
 
     public Transform itemDropParent;
+    public float[] dropForce = new float[2];
+    public float maxForce;
 
-    [Serializable]
+    [System.Serializable]
     public class ItemDrop
     {
         public int itemID;
@@ -67,17 +68,36 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void SpawnNewDrop(int itemID, ChunkTypes chunk, Vector3 position, Quaternion rotation = default)
+    public void SpawnNewDrop(int itemID, ChunkTypes chunk, Vector3 position, bool random = true, bool towards = true)
     {
-        Vector3 rot = rotation.eulerAngles;
         itemDrops.Add(new ItemDrop {
             itemID = itemID,
             chunk = chunk,
             position = new float[] { position.x, position.y, position.z },
-            rotation = new float[] { rot.x, rot.y, rot.z }
+            rotation = new float[3]
         });
         itemObjs.Add(null);
         SpawnDrop(itemDrops.Count - 1);
+
+        Vector3 force;
+        if (random)
+        {
+            force = Random.onUnitSphere * Random.Range(dropForce[0], dropForce[1]);
+            force.y = Mathf.Abs(force.y);
+        }
+        else
+        {
+            force = (PlayerController.instance.transform.position - position) * Random.Range(dropForce[0], dropForce[1]);
+            if (!towards)
+            {
+                force.x = -force.x;
+                force.z = -force.z;
+            }
+            force = Vector3.ClampMagnitude(force, maxForce);
+        }
+        itemObjs[^1].GetComponent<Rigidbody>().AddForce(force);
+
+        //wait a bit and play add into inventory anim if auto pickup
     }
 
     private void SpawnDrop(int index)

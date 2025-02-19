@@ -60,6 +60,7 @@ public class GameData
         public bool[] unlockedChunks;
         public ChunkTypes playerChunk;
         public float[] playerPos;
+        public float[] playerRot;
 
         public StatisticsData()
         {
@@ -68,6 +69,7 @@ public class GameData
             unlockedChunks = new bool[6] { true, false, false, false, false, false };
             playerChunk = ChunkTypes.Logging;
             playerPos = new float[]{ 1, 2.75f, 0};
+            playerRot = new float[3];
         }
     }
 

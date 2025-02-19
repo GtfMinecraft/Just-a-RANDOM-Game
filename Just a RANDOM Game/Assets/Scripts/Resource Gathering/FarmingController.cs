@@ -46,8 +46,8 @@ public class FarmingController : MonoBehaviour, IDataPersistence
 
     private float RandomGaussian(float mean, float stddev)
     {
-        float u1 = Random.Range(1, 0);
-        float u2 = Random.Range(1, 0);
+        float u1 = Random.Range(0 - Mathf.Epsilon, 1f);
+        float u2 = Random.Range(0 - Mathf.Epsilon, 1f);
         float randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);
         return mean + stddev * randStdNormal;
     }
@@ -75,9 +75,11 @@ public class FarmingController : MonoBehaviour, IDataPersistence
         {
             if (stage == 2)
             {
-                //drop 2 to 3? 40% to 60%
+                if(Random.value >= 0.6f)
+                    ItemDropHandler.instance.SpawnNewDrop(plantID, ChunkTypes.Farming, transform.position);
+                ItemDropHandler.instance.SpawnNewDrop(plantID, ChunkTypes.Farming, transform.position);
             }
-            //drop 1
+            ItemDropHandler.instance.SpawnNewDrop(plantID, ChunkTypes.Farming, transform.position);
             cropID = 0;
             Destroy(cropObj);
         }

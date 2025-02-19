@@ -31757,6 +31757,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDropParent: {fileID: 431401139}
+  dropForce:
+  - 120
+  - 150
+  maxForce: 200
 --- !u!4 &431401139
 Transform:
   m_ObjectHideFlags: 0
