@@ -51,10 +51,12 @@ public class InventorySlotUI : SlotUI, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         hoverTint.enabled = true;
+        InventoryHandler.instance.hoveredSlot = slotIndex;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         hoverTint.enabled = false;
+        InventoryHandler.instance.hoveredSlot = -1;
     }
 }

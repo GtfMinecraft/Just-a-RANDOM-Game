@@ -50,7 +50,7 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
             {
                 if (itemObjs[i] != null)
                 {
-                    ObjectPoolManager.DestroyPooled(itemObjs[i]);//gotta give each item their unique reference so that the itemObjs are distinguishable
+                    ObjectPoolManager.DestroyPooled(itemObjs[i]);
                     itemObjs[i] = null;
                 }
             }

@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour
     {
         InteractablePromptController controller = InteractablePromptController.instance;
 
-        if (!forcedInteraction)
+        if (!forcedInteraction && canControl)
         {
             Collider[] hits;
             hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);

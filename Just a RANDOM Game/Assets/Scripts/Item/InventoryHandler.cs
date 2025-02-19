@@ -27,9 +27,14 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     public Transform itemInfo;
     public ItemWheelUI itemWheel;
 
+    public float dropItemSpeed;
+    [HideInInspector]
+    public int hoveredSlot = -1;
+
     //private Image[] groups = new Image[7];
     private InventorySlotUI[] inventorySlots;
     private int slotCount;
+    private bool dropAll = false;
 
     public int currentGroup { get; private set; }
     private ItemDatabase database;
@@ -132,7 +137,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         return false;
     }
 
-    public bool RemoveItem(int itemID, int count)
+    public bool RemoveItem(int itemID, int count = 1, int slotIndex = -1)
     {
         if (resources[itemID] < count)
         {
@@ -143,7 +148,10 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
         int invType = (int)database.GetItem[itemID].inventoryType;
 
-        inventoryList[invType].RemoveItem(itemID, count);
+        if (slotIndex != -1)
+            inventoryList[invType].RemoveItem(itemID, count);
+        else
+            inventoryList[invType].itemSlots[slotIndex].currentStack -= count;
         PlayerItemController.instance.UpdateHandModel();
         //itemWheel.UpdateItemWheelUI(itemID);
 
@@ -183,24 +191,50 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
         if (selectedIndex == -1 || inventoryList[currentGroup].itemSlots[selectedIndex].ID == 0)
         {
-            bool selected = false;
-            for (int i = 0; i < inventoryList[currentGroup].itemSlots.Count; i++)
-            {
-                if (inventoryList[currentGroup].itemSlots[i].ID != 0)
-                {
-                    SelectItem(i);
-                    selected = true;
-                    break;
-                }
-            }
-            if (!selected)
-            {
-                itemInfo.gameObject.SetActive(false);
-                crystalSelected.gameObject.SetActive(false);
-            }
+            selectedIndex = -1;
+            itemInfo.gameObject.SetActive(false);
+            crystalSelected.gameObject.SetActive(false);
         }
 
         // update armor ui
+    }
+
+    public void DropItemHandler(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && hoveredSlot != -1)
+        {
+            if (ctx.action.name == "Drop Item")
+            {
+                DropItem();
+                InvokeRepeating("DropItem", 0.4f, dropItemSpeed);
+            }
+            else
+            {
+                CancelInvoke("DropItem");
+                dropAll = true;
+                DropItem();
+            }
+        }
+        else if (ctx.canceled)
+        {
+            if(ctx.action.name == "Drop Item")
+                CancelInvoke("DropItem");
+            dropAll = false;
+        }
+    }
+
+    private void DropItem()
+    {
+        if (hoveredSlot == -1 || inventoryList[currentGroup].itemSlots[hoveredSlot].currentStack == 0)
+            return;
+
+        int itemID = inventoryList[currentGroup].itemSlots[hoveredSlot].ID;
+        int count = dropAll ? inventoryList[currentGroup].itemSlots[hoveredSlot].currentStack : 1;
+        RemoveItem(itemID, count, hoveredSlot);
+        //vfx
+        Vector3 position = PlayerController.instance.transform.position + PlayerController.instance.playerObj.forward;
+        for(int i = 0; i < count; i++)
+            ItemDropHandler.instance.SpawnNewDrop(itemID, ChunkLoadingController.instance.currentChunk, position, false, false);
     }
 
     public void LoadData(GameData data)

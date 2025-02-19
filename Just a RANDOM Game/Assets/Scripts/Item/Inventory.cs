@@ -71,11 +71,16 @@ public class Inventory : ScriptableObject
         {
             if (itemSlots[i].ID == itemID)
             {
-                count -= itemSlots[i].currentStack;
-                if (count <= 0) return;
+                if (itemSlots[i].currentStack > count)
+                {
+                    itemSlots[i].currentStack -= count;
+                    return;
+                }
                 else
                 {
-                    itemSlots[i].ID = 0;
+                    count -= itemSlots[i].currentStack;
+                    itemSlots[i].ID = itemSlots[i].currentStack = 0;
+                    if (count == 0) return;
                 }
             }
         }
