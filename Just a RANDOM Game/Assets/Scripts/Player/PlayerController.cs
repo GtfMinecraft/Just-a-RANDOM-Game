@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
             playerCharacterController.Move(currentVelocity * Time.deltaTime);
         }
 
-        Interactable canInteract = InteractablePrompt();
+        List<Interactable> canInteract = InteractablePrompt();
 
         if (canControl)
         {
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
             // interact
             if ((itemController.isFishing || !nowRight && !nowLeft) && isInteracting && canInteract != null)
             {
-                if (itemController.isFishing && canInteract.GetType() != typeof(ItemInteractable))
+                if (itemController.isFishing && canInteract[0].GetType() != typeof(ItemInteractable))
                 {
                     itemController.CancelInvoke("StopFishing");
                     itemController.StopFishing();
@@ -127,7 +127,8 @@ public class PlayerController : MonoBehaviour
                     itemController.ResetAnim();
                 }
                 isInteracting = false;
-                canInteract.Interact();
+                for (int i = 0; i < canInteract.Count; i++)
+                    canInteract[i].Interact();
             }
 
             // possibly implement double-wielding
@@ -221,7 +222,7 @@ public class PlayerController : MonoBehaviour
         return canMove && !forcedInteraction;
     }
 
-    private Interactable InteractablePrompt()
+    private List<Interactable> InteractablePrompt()
     {
         InteractablePromptController controller = InteractablePromptController.instance;
 
@@ -230,15 +231,28 @@ public class PlayerController : MonoBehaviour
             Collider[] hits;
             hits = Physics.OverlapBox(playerObj.position + boxCastSize.z / 2 * playerObj.forward, boxCastSize / 2, playerObj.rotation);
 
+            List<Interactable> interactions = new List<Interactable>();
             foreach (Collider hit in hits)
             {
                 Interactable interactable = hit.GetComponent<Interactable>();
                 if (interactable != null && interactable.enabled)
                 {
-                    controller.OpenPrompt(interactable);
-                    return interactable;
+                    if (interactions.Count == 0)
+                    {
+                        controller.OpenPrompt(interactable);
+                        interactions.Add(hit.GetComponent<Interactable>());
+                        if (interactable.GetType() != typeof(ItemInteractable))
+                            return interactions;
+                    }
+                    else if (interactable.GetType() == typeof(ItemInteractable))
+                    {
+                        interactions.Add(hit.GetComponent<Interactable>());
+                    }
                 }
             }
+
+            if (interactions.Count != 0)
+                return interactions;
         }
 
         controller.DisableCanvas();
