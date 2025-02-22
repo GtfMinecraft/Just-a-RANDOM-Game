@@ -67,7 +67,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
 
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
         entry2.eventID = EventTriggerType.PointerClick;
-        entry2.callback.AddListener((eventData) => { /* detect if craftable (use image color) + remove materials and add crafted item to inv + play bot anim */ });
+        entry2.callback.AddListener((eventData) => { Swake(icon.transform); });
         icon.GetComponent<EventTrigger>().triggers[1] = entry2;
     }
 
@@ -79,6 +79,24 @@ public class BotInterface : MonoBehaviour, IDataPersistence
         itemHover.position = sender.position;
         itemHover.GetChild(0).GetComponent<TMP_Text>().text = database.GetItem[itemID].itemDescription;
         itemHover.gameObject.SetActive(true);
+    }
+
+    public void Swake(Transform sender)
+    {
+        if (craftBackground.GetChild(sender.GetSiblingIndex()).GetChild(0).GetComponent<Image>().color == Color.white)
+        {
+            Item item = database.GetItem[unlockedCrafts[sender.GetSiblingIndex()]];
+            UDictionaryIntInt recipe = item.recipe;
+
+            foreach (KeyValuePair<int, int> entry in recipe)
+            {
+                InventoryHandler.instance.RemoveItem(entry.Key, entry.Value);
+            }
+            //play item anim to bot and play bot anim according to item then go back to player
+
+            //need to adjust item spawn position
+            ItemDropHandler.instance.SpawnNewDrop(item.ID, ChunkLoadingController.instance.currentChunk, transform.position, false);
+        }
     }
 
     public void HideItemHover()
