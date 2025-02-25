@@ -12,7 +12,6 @@ public class StoryModeBanner : StartingBanner
     {
         //TODO: swipe left to the save files -> fade black
         //TODO: set DataPersistenceManager saveFileIndex
-        DataPersistenceManager.instance.NewGame();
         SceneManager.LoadScene("Game");
     }
 }
