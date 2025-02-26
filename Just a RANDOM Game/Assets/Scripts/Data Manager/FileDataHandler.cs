@@ -55,10 +55,10 @@ public class FileDataHandler
                     //{
                     //    loadData.mapData = JsonConvert.DeserializeObject<GameData.MapData>(dataToLoad);
                     //}
-                    else if (file == "LevelData")
-                    {
-                        loadData.levelData = JsonConvert.DeserializeObject<Dictionary<string, GameData.LevelData>>(dataToLoad);
-                    }
+                    //else if (file == "LevelData")
+                    //{
+                    //    loadData.levelData = JsonConvert.DeserializeObject<Dictionary<string, GameData.LevelData>>(dataToLoad);
+                    //}
                     else if (file == "BotCraftData")
                     {
                         loadData.botCraftData = JsonConvert.DeserializeObject<GameData.BotCraftData>(dataToLoad);
@@ -121,15 +121,15 @@ public class FileDataHandler
                 //    }
                 //    dataToSave = JsonConvert.SerializeObject(data.mapData);
                 //}
-                else if(file == "LevelData")
-                {
-                    if (data.levelData == null)
-                    {
-                        Debug.LogError($"Data for {file} was not initialized");
-                        continue;
-                    }
-                    dataToSave = JsonConvert.SerializeObject(data.levelData);
-                }
+                //else if(file == "LevelData")
+                //{
+                //    if (data.levelData == null)
+                //    {
+                //        Debug.LogError($"Data for {file} was not initialized");
+                //        continue;
+                //    }
+                //    dataToSave = JsonConvert.SerializeObject(data.levelData);
+                //}
                 else if(file == "BotCraftData")
                 {
                     if (data.botCraftData == null)

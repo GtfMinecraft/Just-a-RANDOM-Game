@@ -48,7 +48,6 @@ MonoBehaviour:
   initializeDataIfNull: 1
   fileName:
   - InventoryData
-  - LevelData
   - BotCraftData
   - StatisticsData
   - FarmlandData

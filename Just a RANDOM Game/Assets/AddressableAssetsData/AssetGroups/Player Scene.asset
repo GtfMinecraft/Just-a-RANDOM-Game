@@ -10,20 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Player Scene
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Player Scene
   m_Data:
     m_SerializedData: []
   m_GUID: a0b4ce9f244e42d45acd991c51ff011b
   m_SerializeEntries:
-  - m_GUID: e673eb6336a4dba41b7a5c96050d7274
-    m_Address: chunkWallPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: df30bf9af5ce1e74d9e99ee141ad5311
-    m_Address: defaultLoggingChunkEnvrionmentPrefab
+  - m_GUID: 9fc0d4010bbf28b4594072e72b8655ab
+    m_Address: PlayerScene
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

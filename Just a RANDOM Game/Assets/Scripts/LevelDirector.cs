@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using Newtonsoft.Json;
 
-public class LevelDirector : MonoBehaviour, IDataPersistence
+public class LevelDirector : MonoBehaviour//, IDataPersistence
 {
     public string levelName;
     [SerializeField] private GameObject chunkPrefab;
@@ -49,14 +49,14 @@ public class LevelDirector : MonoBehaviour, IDataPersistence
     //    File.WriteAllText(Path.Combine(Application.persistentDataPath, levelName + ".dat"), JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
     //}
 
-    public void LoadData(GameData data)
-    {
-        level = JsonConvert.DeserializeObject<LevelInfo>(data.levelData[levelName].levelInfo, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-        levelLoader.startLoading = true;
-    }
+    //public void LoadData(GameData data)
+    //{
+    //    level = JsonConvert.DeserializeObject<LevelInfo>(data.levelData[levelName].levelInfo, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+    //    levelLoader.startLoading = true;
+    //}
 
-    public void SaveData(GameData data)
-    {
-        data.levelData[levelName].levelInfo = JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-    }
+    //public void SaveData(GameData data)
+    //{
+    //    data.levelData[levelName].levelInfo = JsonConvert.SerializeObject(level, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+    //}
 }

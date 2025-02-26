@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
 
-public class LevelLoader : MonoBehaviour, IDataPersistence
+public class LevelLoader : MonoBehaviour//, IDataPersistence
 {
     [SerializeField] private int maxConcurrentLoad;
     //[SerializeField] private string assetListName;
@@ -88,13 +88,13 @@ public class LevelLoader : MonoBehaviour, IDataPersistence
         }
 	}
 
-    public void LoadData(GameData data)
-    {
-        assetList = JsonConvert.DeserializeObject<List<string>>(data.levelData[director.levelName].assetList);
-    }
+    //public void LoadData(GameData data)
+    //{
+    //    assetList = JsonConvert.DeserializeObject<List<string>>(data.levelData[director.levelName].assetList);
+    //}
 
-    public void SaveData(GameData data)
-    {
-        data.levelData[director.levelName].assetList = JsonConvert.SerializeObject(assetList);
-    }
+    //public void SaveData(GameData data)
+    //{
+    //    data.levelData[director.levelName].assetList = JsonConvert.SerializeObject(assetList);
+    //}
 }
