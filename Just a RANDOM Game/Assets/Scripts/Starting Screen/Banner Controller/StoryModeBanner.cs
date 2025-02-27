@@ -16,7 +16,8 @@ public class StoryModeBanner : StartingBanner
 
     private AsyncOperationHandle<SceneInstance> gameScene;
     private bool finishLoading = false;
-    private bool activateOnce = false;
+    private bool activateOnce = true;
+    AsyncOperation activation;
     private float time = 0;
 
     private void Start()
@@ -30,10 +31,10 @@ public class StoryModeBanner : StartingBanner
         if (loading.enabled)
         {
             time += Time.deltaTime;
-            if(time >= loadingDotSpeed)
+            if (time >= loadingDotSpeed)
             {
                 time = 0;
-                if (loading.text == "Loading...")
+                if (loading.text == "Loading..." || loading.text == "")
                     loading.text = "Loading";
                 else
                     loading.text += '.';
@@ -42,7 +43,13 @@ public class StoryModeBanner : StartingBanner
             if (finishLoading && activateOnce)
             {
                 activateOnce = false;
-                gameScene.Result.ActivateAsync();
+                activation = gameScene.Result.ActivateAsync();
+            }
+
+            if (activation.isDone)
+            {
+                SceneManager.SetActiveScene(gameScene.Result.Scene);
+                SceneManager.UnloadSceneAsync("Starting");
             }
         }
     }
@@ -52,7 +59,7 @@ public class StoryModeBanner : StartingBanner
         //var mapsScene = Addressables.LoadSceneAsync("Maps", LoadSceneMode.Additive);
         //await mapsScene.Task;
 
-        gameScene = Addressables.LoadSceneAsync("PlayerScene", LoadSceneMode.Single, false);
+        gameScene = Addressables.LoadSceneAsync("PlayerScene", LoadSceneMode.Additive, false);
         await gameScene.Task;
 
         finishLoading = true;

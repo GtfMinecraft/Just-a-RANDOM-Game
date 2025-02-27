@@ -179,6 +179,9 @@ public class StarterController : MonoBehaviour
             var color = credits.color;
             color.a -= Time.deltaTime * fadeOutSpeed;
             credits.color = color;
+
+            color = HHLogo.color;
+            color.a -= Time.deltaTime * fadeOutSpeed;
             HHLogo.color = color;
         }
 
