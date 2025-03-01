@@ -27,6 +27,8 @@ public class PlayerItemController : MonoBehaviour
 
     private UDictionaryIntInt resources;
 
+    public Vector3 torchPlacement;
+
     public bool isFarming { get; private set; }
     private HoeTrigger hoeTrigger;
     private Vector3 hoeRange;
@@ -170,6 +172,7 @@ public class PlayerItemController : MonoBehaviour
         {
             rightHeldItem = item.ID;
             Instantiate(item.model, rightHandObj.transform);
+            //use light orb + glowing contour to instantiate
         }
 
         item = database.GetItem[leftItems[(int)currentInventory]];
@@ -182,6 +185,23 @@ public class PlayerItemController : MonoBehaviour
         {
             leftHeldItem = item.ID;
             Instantiate(item.model, leftHandObj.transform);
+            //use light orb + glowing contour to instantiate
+        }
+    }
+
+    private void RemoveHandItem(bool isRight = true)
+    {
+        if (isRight)
+        {
+            rightHeldItem = 0;
+            if(rightHandObj.transform.childCount != 0)
+                Destroy(rightHandObj.transform.GetChild(0).gameObject);
+        }
+        else
+        {
+            leftHeldItem = 0;
+            if(leftHandObj.transform.childCount != 0)
+                Destroy(leftHandObj.transform.GetChild(0).gameObject);
         }
     }
 
@@ -269,6 +289,22 @@ public class PlayerItemController : MonoBehaviour
             hoeRange = new Vector3 (2.5f, 1f, 2.5f);
             StartFarming(item.ID);
             Invoke("ResetAnim", toolUseTime[7] * (1 - item.attackSpeed / 100f));
+        }
+        else if(item.itemType == ItemTypes.Torch)
+        {
+            RaycastHit wallToPlace;
+            if(Physics.Raycast(PlayerController.instance.playerObj.position, torchPlacement, out wallToPlace, torchPlacement.magnitude, 7))
+            {
+                //torch place anim (reach out, place, & delete hand torch, summon new torch from ring if there are more torches)
+                //use Invoke & CancelInvoke when changed
+                //InventoryHandler.instance.RemoveItem(torchID);
+                RemoveHandItem(false);
+                //summon torch prefab at wallToPlace.transform.position facing off the wall's tangent
+                Quaternion rot = Quaternion.Euler(wallToPlace.normal);
+
+                //play hold new torch anim through UpdateHandModel();
+            }
+
         }
         else
         {

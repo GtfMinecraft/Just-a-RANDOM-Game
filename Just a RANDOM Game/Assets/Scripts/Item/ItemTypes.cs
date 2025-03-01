@@ -12,5 +12,6 @@ public enum ItemTypes
     Potion,
     Crop,
     Bait,
+    Torch,
     Material,
 };

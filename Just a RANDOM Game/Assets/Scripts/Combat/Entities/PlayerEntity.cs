@@ -4,56 +4,19 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
-    [SerializeField]
-    private Transform respawnLocation;
-
-    public PlayerEntity(
-        GameObject playerModel,
-        float playerSpeed = 10f,
-        float playerDamage = 20f,
-        float playerMaxHealth = 100f,
-        float playerMaxShield = 0f,
-        float playerArmor = 0f
-    )
-        : base(
-            "Player",
-            playerModel,
-            playerSpeed,
-            playerDamage,
-            playerMaxHealth,
-            playerMaxShield,
-            playerArmor
-        )
+    public override void TakeDamage(Damage damage)
     {
-        base.respawnPoint = respawnPoint;
-        base.respawnCooldown = float.PositiveInfinity;
-    }
+        base.TakeDamage(damage);
 
-    public override void TakeDamage(Damage instance)
-    {
-        // reduce health
-        ReduceTotalHealth(ApplyArmorReduction(instance).value);
-
-        // apply status effects
-        foreach (StatusEffect effect in instance.effects)
-            activeEffects.Add(effect);
-
-
-        if (health < 0f)
-        {
-            Debug.Log($"You were killed by {instance.source.name}");
-            Kill();
-        }
-
-        // TODO: play OnDamage animation
+        // TODO: play OnDamage animation, belt
     }
 
     public override void Kill()
     {
         // TODO: death animation, death screen
 
-        base.respawnPoint.SpawnEntity();
-        GameObject.Destroy(base.model);
+        transform.SetPositionAndRotation(spawnPoints[0].position, spawnPoints[0].rotation);
+        //wake up anim
     }
 
     public override void OnSpawn()

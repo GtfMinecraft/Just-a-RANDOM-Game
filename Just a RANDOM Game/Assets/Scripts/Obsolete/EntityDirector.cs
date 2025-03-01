@@ -39,7 +39,7 @@ public class EntityDirector : MonoBehaviour
     // When the entity dies, respawn it at `spawnPoint` after `delaySeconds` seconds
     public void SetRespawn(SpawnPointDirector spawnPoint, float delaySeconds = 0)
     {
-        entity.respawnPoint = spawnPoint;
-        entity.respawnCooldown = delaySeconds;
+        //entity.respawnPoint = spawnPoint;
+        //entity.respawnCooldown = delaySeconds;
     }
 }

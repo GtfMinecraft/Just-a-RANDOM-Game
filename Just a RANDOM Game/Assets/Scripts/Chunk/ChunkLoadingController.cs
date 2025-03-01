@@ -93,7 +93,6 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
         PlayerController player = PlayerController.instance;
         player.transform.position = spawnPos;
         player.playerObj.rotation = spawnRot;
-        player.gameObject.AddComponent(typeof(EntityDirector)).GetComponent<EntityDirector>().SetEntity(new PlayerEntity(player.gameObject));
     }
 
     public void LoadData(GameData data)

@@ -261,7 +261,7 @@ public class PlayerController : MonoBehaviour
 
     private void UseItem(bool rightHand = true)
     {
-        if (isGrounded || Physics.Raycast(playerObj.position, Vector3.down, out _, midAirUseDistance))
+        if (isGrounded || Physics.Raycast(playerObj.position, Vector3.down, midAirUseDistance))
         {
             if (rightHand)
             {
