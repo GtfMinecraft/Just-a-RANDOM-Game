@@ -14,6 +14,7 @@ public class GameData
     public StatisticsData statisticsData;
     public List<FarmlandData> farmlandData;
     public ItemDropData itemDropData;
+    public Dictionary<string, EntityData> entityData;
 
     //TODO: put all data that need to save in this class
 
@@ -29,6 +30,7 @@ public class GameData
         statisticsData = new StatisticsData();
         farmlandData = new List<FarmlandData>();
         itemDropData = new ItemDropData(true);
+        entityData = new Dictionary<string, EntityData>(); 
     }
     
     //public class LevelData
@@ -71,6 +73,18 @@ public class GameData
             playerPos = new float[]{ 1, 2.75f, 0};
             playerRot = new float[3];
         }
+    }
+
+    public class EntityData
+    {
+        public float[] position = new float[3];
+        public float[] rotation = new float[3];
+        public float health;
+        public float speedMultiplier;
+        public float damageMultiplier;
+        public float armor;
+        public float respawnTimer;
+        public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>();
     }
 
     public class ItemDropData

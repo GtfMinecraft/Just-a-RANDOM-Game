@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
+    public float armor; // one piece (including shield) adds 6 defense
+
+    protected override void Update()
+    {
+        base.Update();
+    }
+
     public override void TakeDamage(Damage damage)
     {
+        damage.value *= (1 - armor / (100 + armor));
         base.TakeDamage(damage);
 
         // TODO: play OnDamage animation, belt
@@ -19,8 +27,15 @@ public class PlayerEntity : Entity
         //wake up anim
     }
 
-    public override void OnSpawn()
+    public override void LoadData(GameData data)
     {
-        // TODO: play wake up cutscene
+        base.LoadData(data);
+        armor = data.entityData[entityName].armor;
+    }
+
+    public override void SaveData(GameData data)
+    {
+        base.SaveData(data);
+        data.entityData[entityName].armor = armor;
     }
 }

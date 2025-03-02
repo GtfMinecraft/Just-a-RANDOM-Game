@@ -167,6 +167,7 @@ public class PlayerItemController : MonoBehaviour
         {
             rightHeldItem = 0;
             Destroy(rightHandObj.transform.GetChild(0).gameObject);
+            //glowing contour
         }
         if(rightHeldItem == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {
@@ -180,6 +181,7 @@ public class PlayerItemController : MonoBehaviour
         {
             leftHeldItem = 0;
             Destroy(leftHandObj.transform.GetChild(0).gameObject);
+            //glowing contour
         }
         if (leftHeldItem == 0 && resources.ContainsKey(item.ID) && resources[item.ID] != 0)
         {

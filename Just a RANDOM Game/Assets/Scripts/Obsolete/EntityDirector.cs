@@ -9,7 +9,7 @@ public class EntityDirector : MonoBehaviour
 
     private void Start()
     {
-        entity.OnSpawn();
+        //entity.OnSpawn();
     }
 
     private void Update()

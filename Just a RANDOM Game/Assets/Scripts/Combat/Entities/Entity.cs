@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
 
 // an entity is an object used for combat purposes
 // entities have health and can be inflicted damage and status effects
-abstract public class Entity : MonoBehaviour
+abstract public class Entity : MonoBehaviour, IDataPersistence
 {
-    public readonly float maxHealth;
+    public string entityName;
+    public GameObject model;
+    public float maxHealth;
     public float health;
-    public readonly float baseSpeed;
+    public float baseSpeed;
     public float speedMultiplier;
-    public readonly float baseDamage;
+    public float baseDamage;
     public float damageMultiplier;
-    public float armor; // one piece adds 6 defense
     public List<Transform> spawnPoints;
-    public float[] respawnCooldownInterval = new float[2]; // time interval before entity is respawned, -1 if doesn't respawn
+    public float[] respawnCooldown = new float[2]; // time interval before entity is respawned, -1 if doesn't respawn
     public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>();
+
+    private GameObject entityObj;
+    private bool isSpawn = false;
+    private float respawnTimer = 0;
 
     //public GameObject model; // the GameObject that owns this entity
     //public float maxHealth; // max health of this entity
@@ -49,12 +55,44 @@ abstract public class Entity : MonoBehaviour
     //    name = entityName;
     //}
 
+    protected virtual void Start()
+    {
+        if(respawnTimer <= 0)
+        {
+            entityObj = ObjectPoolManager.CreatePooled(entityObj, transform.position, transform.rotation);
+            entityObj.transform.SetParent(transform);
+            isSpawn = true;
+        }
+    }
+
+    protected virtual void Update()
+    {
+        if (!isSpawn)
+        {
+            if (respawnTimer > 0)
+            {
+                respawnTimer -= Time.deltaTime;
+            }
+            else
+            {
+                Respawn();
+            }
+        }
+        else
+        {
+            foreach (StatusEffect effect in activeEffects)
+            {
+                effect.IncreaseTimer(Time.deltaTime);
+            }
+        }
+    }
+
     public virtual void TakeDamage(Damage damage)
     {
-        health -= damage.value * (1 - armor / (100 + armor));
+        health -= damage.value;
 
         foreach (StatusEffect effect in damage.effects)
-            activeEffects.Add(effect);
+            ApplyStatusEffect(effect);
 
         if (health <= 0f)
             Kill();
@@ -64,27 +102,68 @@ abstract public class Entity : MonoBehaviour
 
     public virtual void Kill()
     {
-        //spawnPoints.SpawnEntityInterval(respawnCooldown, 1);
-        ObjectPoolManager.DestroyPooled(gameObject);
+        isSpawn = false;
+
+        respawnTimer = Random.Range(respawnCooldown[0], respawnCooldown[1]);
+        ObjectPoolManager.DestroyPooled(entityObj);
     }
 
-    //public virtual void ApplyStatusEffect(StatusEffect instance)
-    //{
-    //    foreach (StatusEffect effect in activeEffects)
-    //    {
-    //        if (effect.GetType() == instance.GetType())
-    //        {
-    //            effect.source = instance.source;
-    //            effect.stack++;
-    //            return;
-    //        }
-    //    }
+    public virtual void Respawn()
+    {
+        isSpawn = true;
 
-    //    // if the same type of status effect isnt found
-    //    activeEffects.Add(instance);
-    //}
+        health = maxHealth;
+        speedMultiplier = 1;
+        damageMultiplier = 1;
+        activeEffects = new SortedSet<StatusEffect>();
 
-    public virtual void OnSpawn() { }
+        entityObj = ObjectPoolManager.CreatePooled(entityObj, transform.position, transform.rotation);
+        entityObj.transform.SetParent(transform);
+    }
+
+    public virtual void ApplyStatusEffect(StatusEffect instance)
+    {
+        foreach (StatusEffect effect in activeEffects)
+        {
+            if (effect.GetType() == instance.GetType())
+            {
+                effect.AddStack(instance.stack);
+                return;
+            }
+        }
+
+        // if the same type of status effect isnt found
+        activeEffects.Add(instance);
+    }
+
+    public virtual void LoadData(GameData data)
+    {
+        GameData.EntityData entityData = data.entityData[entityName];
+
+        health = entityData.health;
+        transform.position = new Vector3(entityData.position[0], entityData.position[1], entityData.position[2]);
+        transform.rotation = Quaternion.Euler(entityData.rotation[0], entityData.rotation[1], entityData.rotation[2]);
+        activeEffects = entityData.activeEffects;
+        speedMultiplier = entityData.speedMultiplier;
+        damageMultiplier = entityData.damageMultiplier;
+        respawnTimer = entityData.respawnTimer;
+    }
+
+    public virtual void SaveData(GameData data)
+    {
+        GameData.EntityData entityData = new GameData.EntityData();
+        Vector3 rot = transform.rotation.eulerAngles;
+
+        entityData.health = health;
+        entityData.position = new float[] { transform.position.x, transform.position.y, transform.position.z };
+        entityData.rotation = new float[] { rot.x, rot.y, rot.z };
+        entityData.activeEffects = activeEffects;
+        entityData.speedMultiplier = speedMultiplier;
+        entityData.damageMultiplier = damageMultiplier;
+        entityData.respawnTimer = respawnTimer;
+
+        data.entityData[entityName] = entityData;
+    }
 
     //protected Damage ApplyArmorReduction(Damage instance)
     //{
