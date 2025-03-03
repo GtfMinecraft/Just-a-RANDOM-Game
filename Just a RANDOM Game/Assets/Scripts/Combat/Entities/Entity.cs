@@ -19,9 +19,9 @@ abstract public class Entity : MonoBehaviour, IDataPersistence
     public float[] respawnCooldown = new float[2]; // time interval before entity is respawned, -1 if doesn't respawn
     public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>();
 
-    private GameObject entityObj;
-    private bool isSpawn = false;
-    private float respawnTimer = 0;
+    protected GameObject entityObj;
+    protected bool isSpawn = false;
+    protected float respawnTimer = 0;
 
     //public GameObject model; // the GameObject that owns this entity
     //public float maxHealth; // max health of this entity
@@ -138,6 +138,9 @@ abstract public class Entity : MonoBehaviour, IDataPersistence
 
     public virtual void LoadData(GameData data)
     {
+        if (!data.entityData.ContainsKey(entityName))
+            return;
+
         GameData.EntityData entityData = data.entityData[entityName];
 
         health = entityData.health;

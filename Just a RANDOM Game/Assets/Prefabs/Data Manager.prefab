@@ -52,6 +52,7 @@ MonoBehaviour:
   - StatisticsData
   - FarmlandData
   - ItemDropData
+  - EntityData
   useEncryption: 0
   saveFileIndex: 0
 --- !u!114 &3935964787613245646

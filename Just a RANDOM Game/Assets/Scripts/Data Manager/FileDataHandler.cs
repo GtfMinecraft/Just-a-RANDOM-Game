@@ -75,6 +75,10 @@ public class FileDataHandler
                     {
                         loadData.itemDropData = JsonConvert.DeserializeObject<GameData.ItemDropData>(dataToLoad);
                     }
+                    else if(file == "EntityData")
+                    {
+                        loadData.entityData = JsonConvert.DeserializeObject<Dictionary<string, GameData.EntityData>>(dataToLoad);
+                    }
                     else
                     {
                         Debug.LogError($"Loading action undefined for {file} when loading data from file");
@@ -165,6 +169,15 @@ public class FileDataHandler
                         continue;
                     }
                     dataToSave = JsonConvert.SerializeObject(data.itemDropData);
+                }
+                else if (file == "EntityData")
+                {
+                    if (data.entityData == null)
+                    {
+                        Debug.LogError($"Data for {file} was not initialized");
+                        continue;
+                    }
+                    dataToSave = JsonConvert.SerializeObject(data.entityData);
                 }
                 else
                 {

@@ -6,6 +6,11 @@ public class PlayerEntity : Entity
 {
     public float armor; // one piece (including shield) adds 6 defense
 
+    protected override void Start()
+    {
+        isSpawn = true;
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -30,7 +35,8 @@ public class PlayerEntity : Entity
     public override void LoadData(GameData data)
     {
         base.LoadData(data);
-        armor = data.entityData[entityName].armor;
+        if (data.entityData.ContainsKey(entityName))
+            armor = data.entityData[entityName].armor;
     }
 
     public override void SaveData(GameData data)
