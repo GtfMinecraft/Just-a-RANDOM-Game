@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ThirdPersonCam;
 
 public class PlayerItemController : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class PlayerItemController : MonoBehaviour
     public float[] toolUseTime = { 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 2.5f };
 
     public int[] rightItems { get; private set; } = { 0, 1, 2, 0, 3, 4, 0 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
-    public int[] leftItems { get; private set; } = { 0, 0, 0, 0, 0, 0, 0 };
+    public int[] leftItems { get; private set; } = { 0, 6, 0, 0, 0, 0, 0 };
 
     private int leftHeldItem = 0;
     private int rightHeldItem = 0;
@@ -243,7 +244,8 @@ public class PlayerItemController : MonoBehaviour
         }
         else if(item.itemType == ItemTypes.Bow)
         {
-            //aim
+            anim.SetInteger("ItemType", 2);
+            StartAiming();
         }
         else if (item.itemType == ItemTypes.Axe)
         {
@@ -316,9 +318,13 @@ public class PlayerItemController : MonoBehaviour
 
     public void Release(bool isRight = true)
     {
-        if (isEating || isAiming)
+        if (isEating)
         {
             ResetAnim();
+        }
+        else if (isAiming)
+        {
+            StopAiming();
         }
     }
 
@@ -326,6 +332,21 @@ public class PlayerItemController : MonoBehaviour
     {
         anim.SetInteger("ItemType", 0);
         PlayerController.instance.ResetUseLeftRight();
+        //bow anim + vfx
+    }
+
+    private void StartAiming()
+    {
+        isAiming = true;
+        Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Combat);
+    }
+
+    private void StopAiming()
+    {
+        Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
+
+        isAiming = false;
+        ResetAnim();
     }
 
     public void StartFarming(int plant = 0)

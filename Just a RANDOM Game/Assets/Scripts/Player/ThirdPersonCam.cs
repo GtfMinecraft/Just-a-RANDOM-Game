@@ -79,7 +79,7 @@ public class ThirdPersonCam : MonoBehaviour
         }
     }
 
-    private void SwitchCameraStyle(CameraStyle newStyle)
+    public void SwitchCameraStyle(CameraStyle newStyle)
     {
         combatCam.SetActive(false);
         thirdPersonCam.SetActive(false);
