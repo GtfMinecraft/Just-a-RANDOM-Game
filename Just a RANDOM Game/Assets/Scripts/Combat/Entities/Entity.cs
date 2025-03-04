@@ -17,7 +17,7 @@ abstract public class Entity : MonoBehaviour, IDataPersistence
     public float damageMultiplier;
     public List<Transform> spawnPoints;
     public float[] respawnCooldown = new float[2]; // time interval before entity is respawned, -1 if doesn't respawn
-    public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>();
+    public List<StatusEffect> activeEffects = new List<StatusEffect>();
 
     protected GameObject entityObj;
     protected bool isSpawn = false;
@@ -115,7 +115,7 @@ abstract public class Entity : MonoBehaviour, IDataPersistence
         health = maxHealth;
         speedMultiplier = 1;
         damageMultiplier = 1;
-        activeEffects = new SortedSet<StatusEffect>();
+        activeEffects = new List<StatusEffect>();
 
         entityObj = ObjectPoolManager.CreatePooled(entityObj, transform.position, transform.rotation);
         entityObj.transform.SetParent(transform);

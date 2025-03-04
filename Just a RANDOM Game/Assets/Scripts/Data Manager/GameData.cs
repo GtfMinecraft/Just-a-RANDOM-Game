@@ -84,7 +84,7 @@ public class GameData
         public float damageMultiplier;
         public float armor;
         public float respawnTimer;
-        public SortedSet<StatusEffect> activeEffects = new SortedSet<StatusEffect>();
+        public List<StatusEffect> activeEffects = new List<StatusEffect>();
     }
 
     public class ItemDropData

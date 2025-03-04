@@ -73,7 +73,7 @@ public class RodTrigger : MonoBehaviour
         transform.parent = null;
     }
 
-    void OnTriggerStay(Collider hit)
+    void OnTriggerEnter(Collider hit)
     {
         if(detect && hit.GetComponent<FishingController>() != null)
         {

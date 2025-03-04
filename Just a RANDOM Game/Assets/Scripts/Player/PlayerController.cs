@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
 	[Header("Movement")]
     [SerializeField] private float groundAcceleration; // acceleration while grounded
 	[SerializeField] private float airAcceleration; // acceleration while not grounded
-	[SerializeField] private float maxSpeed; // maximum speed of player
 	[SerializeField] private float jumpSpeed; // initial speed of the jump
     [SerializeField] private bool dashInAir;
 	[SerializeField] private float dashSpeed; // *** speed and cooldown have to be in sync with anim
@@ -122,8 +121,6 @@ public class PlayerController : MonoBehaviour
                 {
                     itemController.CancelInvoke("StopFishing");
                     itemController.StopFishing();
-
-                    itemController.CancelInvoke("ResetAnim");
                     itemController.ResetAnim();
                 }
                 isInteracting = false;
@@ -149,8 +146,9 @@ public class PlayerController : MonoBehaviour
     private void UpdateVelocity()
 	{
         float speedMultiplier = isRunning ? runMultiplier : 1f;
+        float maxSpeed = GetComponent<PlayerEntity>().baseSpeed * GetComponent<PlayerEntity>().speedMultiplier;
 
-		if (!nowDashing)
+        if (!nowDashing)
 		{
 			targetVelocity = Quaternion.AngleAxis(orientation.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed * speedMultiplier;
 			horizontalVelocity = new Vector3(playerCharacterController.velocity.x, 0, playerCharacterController.velocity.z);
@@ -280,10 +278,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ResetUseLeftRight()
+    public void ResetUseLeftRight(bool isRight)
     {
-        nowLeft = nowRight = false;
-        anim.SetInteger("PlayerAction", 0);
+        if (isRight && nowRight)
+        {
+            nowRight = false;
+            anim.SetInteger("PlayerAction", 0);
+        }
+        else if(!isRight && nowLeft)
+        {
+            nowLeft = false;
+            anim.SetInteger("PlayerAction", 0);
+        }
     }
 
     private void RunAnimTrance()

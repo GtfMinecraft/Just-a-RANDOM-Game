@@ -28,6 +28,8 @@ public class PlayerItemController : MonoBehaviour
 
     private UDictionaryIntInt resources;
 
+    public float aimSpeed = 0.3f;
+    public float eatSpeed = 0.3f;
     public Vector3 torchPlacement;
 
     public bool isFarming { get; private set; }
@@ -42,7 +44,11 @@ public class PlayerItemController : MonoBehaviour
     private bool showFishingCanvas = false;
 
     public bool isAiming { get; private set; }
+    private bool isRightAim;
     public bool isEating { get; private set; }
+    private bool isRightEat;
+
+    private float[] resetAnimTime = new float[2];
 
     /*
      *  0 empty
@@ -108,8 +114,7 @@ public class PlayerItemController : MonoBehaviour
 
         if (isFarming)
         {
-            CancelInvoke("StopFarming");
-            StopFarming();
+            hoeTrigger.detect = false;
         }
 
         if (isFishing)
@@ -119,6 +124,7 @@ public class PlayerItemController : MonoBehaviour
         }
 
         CancelInvoke("ResetAnim");
+        ResetAnim();
         ResetAnim();
 
         //change tool anim
@@ -192,22 +198,6 @@ public class PlayerItemController : MonoBehaviour
         }
     }
 
-    private void RemoveHandItem(bool isRight = true)
-    {
-        if (isRight)
-        {
-            rightHeldItem = 0;
-            if(rightHandObj.transform.childCount != 0)
-                Destroy(rightHandObj.transform.GetChild(0).gameObject);
-        }
-        else
-        {
-            leftHeldItem = 0;
-            if(leftHandObj.transform.childCount != 0)
-                Destroy(leftHandObj.transform.GetChild(0).gameObject);
-        }
-    }
-
     //public void SetDefaultItem(int itemID, bool isRight = true)
     //{
     //    Item item = database.GetItem[itemID];
@@ -240,22 +230,32 @@ public class PlayerItemController : MonoBehaviour
         if(item.itemType == ItemTypes.Sword)
         {
             anim.SetInteger("ItemType", 1); //swing anim
-            Invoke("ResetAnim", toolUseTime[0] * (1 - item.attackSpeed / 100f));
+
+            float useTime = toolUseTime[0] * (1 - item.attackSpeed / 100f);
+            resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
+            Invoke("ResetAnim", useTime);
         }
         else if(item.itemType == ItemTypes.Bow)
         {
             anim.SetInteger("ItemType", 2);
+            isRightAim = isRight;
             StartAiming();
         }
         else if (item.itemType == ItemTypes.Axe)
         {
             //chop anim
-            Invoke("ResetAnim", toolUseTime[2] * (1 - item.attackSpeed / 100f));
+
+            float useTime = toolUseTime[2] * (1 - item.attackSpeed / 100f);
+            resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
+            Invoke("ResetAnim", useTime);
         }
         else if (item.itemType == ItemTypes.Pickaxe)
         {
             //mine anim
-            Invoke("ResetAnim", toolUseTime[3] * (1 - item.attackSpeed / 100f));
+
+            float useTime = toolUseTime[3] * (1 - item.attackSpeed / 100f);
+            resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
+            Invoke("ResetAnim", useTime);
         }
         else if (item.itemType == ItemTypes.Hoe)
         {
@@ -265,7 +265,9 @@ public class PlayerItemController : MonoBehaviour
             hoeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<HoeTrigger>();
             hoeTrigger.detect = true;
 
-            Invoke("ResetAnim", toolUseTime[4] * (1 - item.attackSpeed / 100f));
+            float useTime = toolUseTime[4] * (1 - item.attackSpeed / 100f);
+            resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
+            Invoke("ResetAnim", useTime);
         }
         else if(item.itemType == ItemTypes.Rod)
         {
@@ -279,12 +281,15 @@ public class PlayerItemController : MonoBehaviour
             }
             else
             {
+                resetAnimTime[isRight ? 0 : 1] = toolUseTime[5];
+                Invoke("ResetAnim", toolUseTime[5]);
                 StopFishing();
             }
         }
         else if (item.itemType == ItemTypes.Food)
         {
             //eat
+            isRightEat = isRight;
         }
         else if(item.itemType == ItemTypes.Crop)
         {
@@ -292,7 +297,9 @@ public class PlayerItemController : MonoBehaviour
 
             hoeRange = new Vector3 (2.5f, 1f, 2.5f);
             StartFarming(item.ID);
-            Invoke("ResetAnim", toolUseTime[7] * (1 - item.attackSpeed / 100f));
+            float useTime = toolUseTime[7] * (1 - item.attackSpeed / 100f);
+            resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
+            Invoke("ResetAnim", useTime);
         }
         else if(item.itemType == ItemTypes.Torch)
         {
@@ -302,50 +309,64 @@ public class PlayerItemController : MonoBehaviour
                 //torch place anim (reach out, place, & delete hand torch, summon new torch from ring if there are more torches)
                 //use Invoke & CancelInvoke when changed
                 //InventoryHandler.instance.RemoveItem(torchID);
-                RemoveHandItem(false);
+                //move torch to ItemDropHandler
+                if (isRight) rightHeldItem = 0;
+                else leftHeldItem = 0;
                 //summon torch prefab at wallToPlace.transform.position facing off the wall's tangent
                 Quaternion rot = Quaternion.Euler(wallToPlace.normal);
 
                 //play hold new torch anim through UpdateHandModel();
             }
-
-        }
-        else
-        {
-            ResetAnim();
         }
     }
 
-    public void Release(bool isRight = true)
+    public void Release(bool isRight = true, bool esc = false)
     {
-        if (isEating)
+        if (isEating && isRightEat == isRight)
         {
+            resetAnimTime[isRightEat ? 0 : 1] = Time.time;
             ResetAnim();
         }
-        else if (isAiming)
+        else if (isAiming && isRightAim == isRight)
         {
-            StopAiming();
+            if(!esc)
+                ShootArrow();
+            else
+                StopAiming();
         }
     }
 
     public void ResetAnim()
     {
+        bool isRight = resetAnimTime[0] >= Time.time && resetAnimTime[0] <= resetAnimTime[1];
+
+        resetAnimTime[isRight ? 0 : 1] = Time.time - 1;
+
         anim.SetInteger("ItemType", 0);
-        PlayerController.instance.ResetUseLeftRight();
-        //bow anim + vfx
+        PlayerController.instance.ResetUseLeftRight(isRight);
     }
 
     private void StartAiming()
     {
+        //bow anim + vfx
         isAiming = true;
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Combat);
+        GetComponent<PlayerEntity>().speedMultiplier *= aimSpeed;
+    }
+
+    private void ShootArrow()
+    {
+        //summon arrow
+        StopAiming();
     }
 
     private void StopAiming()
     {
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
+        GetComponent<PlayerEntity>().speedMultiplier /= aimSpeed;
 
         isAiming = false;
+        resetAnimTime[isRightAim ? 0 : 1] = Time.time;
         ResetAnim();
     }
 
@@ -365,12 +386,6 @@ public class PlayerItemController : MonoBehaviour
         }
     }
 
-    private void StopFarming()
-    {
-        hoeTrigger.detect = false;
-        ResetAnim();
-    }
-
     public void StartFishing(FishingController controller, Vector3 bobberPos)
     {
         CancelInvoke("StopFishing");
@@ -384,8 +399,6 @@ public class PlayerItemController : MonoBehaviour
     public void StopFishing()
     {
         //reel in anim
-        Invoke("ResetAnim", toolUseTime[5]);
-
         isFishing = false;
         rodTrigger.detect = false;
         showFishingCanvas = false;

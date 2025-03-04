@@ -43,5 +43,11 @@ public class PlayerEntity : Entity
     {
         base.SaveData(data);
         data.entityData[entityName].armor = armor;
+
+        PlayerItemController itemController = PlayerItemController.instance;
+        if (itemController.isAiming)
+            data.entityData[entityName].speedMultiplier /= itemController.aimSpeed;
+        if (itemController.isEating)
+            data.entityData[entityName].speedMultiplier /= itemController.eatSpeed;
     }
 }

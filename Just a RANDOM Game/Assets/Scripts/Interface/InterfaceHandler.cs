@@ -36,6 +36,9 @@ public class InterfaceHandler : MonoBehaviour
 
     public void CloseAllInterface()
     {
+        PlayerItemController.instance.Release(true, true);
+        PlayerItemController.instance.Release(false, true);
+
         inventoryCanvas.CloseAllInventory();
         //trading.CloseTradingInterface();
         EscCanvas.enabled = false;
