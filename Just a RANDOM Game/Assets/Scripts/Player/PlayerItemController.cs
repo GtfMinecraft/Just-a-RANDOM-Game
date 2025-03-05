@@ -42,6 +42,8 @@ public class PlayerItemController : MonoBehaviour
     private Vector3 bobber;
     private RodTrigger rodTrigger;
     private bool showFishingCanvas = false;
+    private bool isRightFish;
+    public Coroutine fishCoroutine { get; private set; }
 
     public bool isAiming { get; private set; }
     private bool isRightAim;
@@ -111,6 +113,11 @@ public class PlayerItemController : MonoBehaviour
     {
         currentInventory = inv;
         InventoryCanvasController.instance.ChangeToolInventory(currentInventory);
+
+        if (isAiming)
+        {
+            StopAiming();
+        }
 
         if (isFarming)
         {
@@ -277,12 +284,11 @@ public class PlayerItemController : MonoBehaviour
                 rodTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<RodTrigger>();
                 rodTrigger.detect = true;
                 fishTime = item.attackSpeed;
-                Invoke("StopFishing", toolUseTime[5]);
+                isRightFish = isRight;
+                fishCoroutine = StartCoroutine(StopFishing(toolUseTime[5]));
             }
             else
             {
-                resetAnimTime[isRight ? 0 : 1] = toolUseTime[5];
-                Invoke("ResetAnim", toolUseTime[5]);
                 StopFishing();
             }
         }
@@ -339,6 +345,8 @@ public class PlayerItemController : MonoBehaviour
     public void ResetAnim()
     {
         bool isRight = resetAnimTime[0] >= Time.time && resetAnimTime[0] <= resetAnimTime[1];
+        if (!isRight && resetAnimTime[1] < Time.time)
+            return;
 
         resetAnimTime[isRight ? 0 : 1] = Time.time - 1;
 
@@ -360,7 +368,7 @@ public class PlayerItemController : MonoBehaviour
         StopAiming();
     }
 
-    private void StopAiming()
+    public void StopAiming()
     {
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
         GetComponent<PlayerEntity>().speedMultiplier /= aimSpeed;
@@ -388,7 +396,7 @@ public class PlayerItemController : MonoBehaviour
 
     public void StartFishing(FishingController controller, Vector3 bobberPos)
     {
-        CancelInvoke("StopFishing");
+        StopCoroutine(fishCoroutine);
         bobber = bobberPos;
         fishingController = controller;
 
@@ -396,7 +404,7 @@ public class PlayerItemController : MonoBehaviour
         isFishing = true;
     }
 
-    public void StopFishing()
+    public IEnumerator StopFishing(float delay = 0)
     {
         //reel in anim
         isFishing = false;
@@ -408,6 +416,10 @@ public class PlayerItemController : MonoBehaviour
             fishingController.StopFishing();
             fishingController = null;
         }
+
+        yield return new WaitForSeconds(delay);
+        resetAnimTime[isRightFish ? 0 : 1] = Time.time;
+        Invoke("ResetAnim", toolUseTime[5]);
     }
 
     // visualizing hoe interaction area

@@ -74,21 +74,30 @@ public class ThirdPersonCam : MonoBehaviour
                 Vector3 dirToCombatLookAt = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
                 orientation.forward = dirToCombatLookAt.normalized;
 
-                playerObj.forward = dirToCombatLookAt.normalized;
+                playerObj.forward = Vector3.Slerp(playerObj.forward, dirToCombatLookAt.normalized, Time.deltaTime * rotationSpeed);
             }
         }
     }
 
     public void SwitchCameraStyle(CameraStyle newStyle)
     {
-        combatCam.SetActive(false);
-        thirdPersonCam.SetActive(false);
-        topDownCam.SetActive(false);
+        StartCoroutine(ActivateNewCamera(newStyle));
+    }
 
-        if (newStyle == CameraStyle.Basic) thirdPersonCam.SetActive(true);
-        if (newStyle == CameraStyle.Combat) combatCam.SetActive(true);
-        if (newStyle == CameraStyle.Topdown) topDownCam.SetActive(true);
+    private IEnumerator ActivateNewCamera(CameraStyle newStyle)
+    {
+        yield return new WaitForEndOfFrame();
+        if (currentStyle != newStyle)
+        {
+            if (currentStyle == CameraStyle.Basic) thirdPersonCam.SetActive(false);
+            if (currentStyle == CameraStyle.Combat) combatCam.SetActive(false);
+            if (currentStyle == CameraStyle.Topdown) topDownCam.SetActive(false);
 
-        currentStyle = newStyle;
+            if (newStyle == CameraStyle.Basic) thirdPersonCam.SetActive(true);
+            if (newStyle == CameraStyle.Combat) combatCam.SetActive(true);
+            if (newStyle == CameraStyle.Topdown) topDownCam.SetActive(true);
+
+            currentStyle = newStyle;
+        }
     }
 }

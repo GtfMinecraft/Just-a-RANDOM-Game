@@ -115,12 +115,18 @@ public class PlayerController : MonoBehaviour
             PlayerItemController itemController = PlayerItemController.instance;
 
             // interact
-            if ((itemController.isFishing || !nowRight && !nowLeft) && isInteracting && canInteract != null)
+            if (isInteracting && canInteract != null)
             {
-                if (itemController.isFishing && canInteract[0].GetType() != typeof(ItemInteractable))
+                if ((nowRight || nowLeft) && canInteract[0].GetType() != typeof(ItemInteractable))
                 {
-                    itemController.CancelInvoke("StopFishing");
-                    itemController.StopFishing();
+                    if (itemController.isAiming)
+                        itemController.StopAiming();
+                    if (itemController.isFishing)
+                        itemController.StopFishing();
+                    if (itemController.isEating)
+                        //itemController.StopEating();
+                    itemController.CancelInvoke("ResetAnim");
+                    itemController.ResetAnim();
                     itemController.ResetAnim();
                 }
                 isInteracting = false;
