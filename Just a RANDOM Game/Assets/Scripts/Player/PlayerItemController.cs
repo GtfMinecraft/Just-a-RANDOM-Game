@@ -127,7 +127,7 @@ public class PlayerItemController : MonoBehaviour
         if (isFishing)
         {
             CancelInvoke("StopFishing");
-            StopFishing();
+            StartCoroutine(StopFishing());
         }
 
         CancelInvoke("ResetAnim");
@@ -230,6 +230,7 @@ public class PlayerItemController : MonoBehaviour
 
         if ((isRight ? rightHeldItem : leftHeldItem) != item.ID || !resources.ContainsKey(item.ID) || resources[item.ID] == 0)
         {
+            resetAnimTime[isRight ? 0 : 1] = Time.time;
             ResetAnim();
             return;
         }
@@ -292,7 +293,7 @@ public class PlayerItemController : MonoBehaviour
             }
             else
             {
-                StopFishing();
+                StartCoroutine(StopFishing());
             }
         }
         else if (item.itemType == ItemTypes.Food)
@@ -366,7 +367,8 @@ public class PlayerItemController : MonoBehaviour
 
     private void ShootArrow()
     {
-        //summon arrow
+        Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
+        //arrowDirection.normalized * database.GetItem[isRightAim ? rightHeldItem : leftHeldItem].attackSpeed;
         StopAiming();
     }
 
@@ -408,6 +410,10 @@ public class PlayerItemController : MonoBehaviour
 
     public IEnumerator StopFishing(float delay = 0)
     {
+        yield return new WaitForSeconds(delay);
+        resetAnimTime[isRightFish ? 0 : 1] = Time.time;
+        Invoke("ResetAnim", toolUseTime[5]);
+
         //reel in anim
         isFishing = false;
         rodTrigger.detect = false;
@@ -418,10 +424,6 @@ public class PlayerItemController : MonoBehaviour
             fishingController.StopFishing();
             fishingController = null;
         }
-
-        yield return new WaitForSeconds(delay);
-        resetAnimTime[isRightFish ? 0 : 1] = Time.time;
-        Invoke("ResetAnim", toolUseTime[5]);
     }
 
     // visualizing hoe interaction area

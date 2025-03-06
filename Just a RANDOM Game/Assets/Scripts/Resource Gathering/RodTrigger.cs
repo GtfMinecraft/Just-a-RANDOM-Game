@@ -63,7 +63,7 @@ public class RodTrigger : MonoBehaviour
             anim.Play("Reeling");
             transform.parent = parent;
             transform.SetAsFirstSibling();
-            PlayerItemController.instance.StopFishing();
+            StartCoroutine(PlayerItemController.instance.StopFishing());
         }
     }
 
