@@ -135,12 +135,12 @@ public class PlayerController : MonoBehaviour
             }
 
             // possibly implement double-wielding
-            if (usingRight && (itemController.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 4))
+            if (usingRight && (itemController.isFishing || playerAction == 0 || playerAction == 4))
             {
                 UseItem(true);
             }
 
-            if (usingLeft && (itemController.isFishing || playerAction == 0 || playerAction == 2 || playerAction == 3))
+            if (usingLeft && (itemController.isFishing || playerAction == 0 || playerAction == 3))
             {
                 UseItem(false);
             }

@@ -28,16 +28,13 @@ public class ItemInteractable : Interactable
         }
     }
 
-    private void OnInteractionStart()
+    protected override void OnInteractionStart()
     {
-        anim.SetInteger("PlayerAction", 2);
         Invoke("OnInteractionEnd", interactTime);
     }
 
-    private void OnInteractionEnd()
+    protected override void OnInteractionEnd()
     {
-        if (anim.GetInteger("PlayerAction") == 2)
-            anim.SetInteger("PlayerAction", 0);
         InventoryHandler.instance.AddItem(itemID);
         ItemDropHandler.instance.RemoveItem(gameObject);
         isPicked = false;
