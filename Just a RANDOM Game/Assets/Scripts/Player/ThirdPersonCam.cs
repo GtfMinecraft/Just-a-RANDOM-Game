@@ -81,23 +81,14 @@ public class ThirdPersonCam : MonoBehaviour
 
     public void SwitchCameraStyle(CameraStyle newStyle)
     {
-        StartCoroutine(ActivateNewCamera(newStyle));
-    }
+        combatCam.SetActive(false);
+        thirdPersonCam.SetActive(false);
+        topDownCam.SetActive(false);
 
-    private IEnumerator ActivateNewCamera(CameraStyle newStyle)
-    {
-        yield return new WaitForEndOfFrame();
-        if (currentStyle != newStyle)
-        {
-            if (currentStyle == CameraStyle.Basic) thirdPersonCam.SetActive(false);
-            if (currentStyle == CameraStyle.Combat) combatCam.SetActive(false);
-            if (currentStyle == CameraStyle.Topdown) topDownCam.SetActive(false);
+        if (newStyle == CameraStyle.Basic) thirdPersonCam.SetActive(true);
+        if (newStyle == CameraStyle.Combat) combatCam.SetActive(true);
+        if (newStyle == CameraStyle.Topdown) topDownCam.SetActive(true);
 
-            if (newStyle == CameraStyle.Basic) thirdPersonCam.SetActive(true);
-            if (newStyle == CameraStyle.Combat) combatCam.SetActive(true);
-            if (newStyle == CameraStyle.Topdown) topDownCam.SetActive(true);
-
-            currentStyle = newStyle;
-        }
+        currentStyle = newStyle;
     }
 }

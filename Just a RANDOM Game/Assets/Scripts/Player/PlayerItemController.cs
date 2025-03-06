@@ -50,7 +50,7 @@ public class PlayerItemController : MonoBehaviour
     public bool isEating { get; private set; }
     private bool isRightEat;
 
-    private float[] resetAnimTime = new float[2];
+    private float[] resetAnimTime = new float[2] { -1, -1 };
 
     /*
      *  0 empty
@@ -244,9 +244,12 @@ public class PlayerItemController : MonoBehaviour
         }
         else if(item.itemType == ItemTypes.Bow)
         {
-            anim.SetInteger("ItemType", 2);
-            isRightAim = isRight;
-            StartAiming();
+            if (!isAiming)
+            {
+                anim.SetInteger("ItemType", 2);
+                isRightAim = isRight;
+                StartAiming();
+            }
         }
         else if (item.itemType == ItemTypes.Axe)
         {
@@ -344,11 +347,10 @@ public class PlayerItemController : MonoBehaviour
 
     public void ResetAnim()
     {
-        bool isRight = resetAnimTime[0] >= Time.time && resetAnimTime[0] <= resetAnimTime[1];
-        if (!isRight && resetAnimTime[1] < Time.time)
+        bool isRight = resetAnimTime[0] != -1 && (resetAnimTime[0] <= resetAnimTime[1] || resetAnimTime[1] == -1);
+        if (!isRight && resetAnimTime[1] == -1)
             return;
-
-        resetAnimTime[isRight ? 0 : 1] = Time.time - 1;
+        resetAnimTime[isRight ? 0 : 1] = -1;
 
         anim.SetInteger("ItemType", 0);
         PlayerController.instance.ResetUseLeftRight(isRight);
