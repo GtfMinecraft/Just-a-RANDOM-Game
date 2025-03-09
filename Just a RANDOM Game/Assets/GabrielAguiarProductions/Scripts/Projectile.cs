@@ -24,6 +24,7 @@ public class Projectile : MonoBehaviour
     private Rigidbody rb;
     public bool fired { get; private set; } = false;
     private bool stopped;
+    private GameObject parentObj;
 
     private void Start()
     {
@@ -82,11 +83,23 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        transform.SetParent(other.transform);
-        if (other.gameObject.GetComponent<Entity>() != null)
+        if (fired)
         {
-            other.gameObject.GetComponent<Entity>().TakeDamage(damage);
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            transform.SetParent(other.transform);
+            parentObj = other.gameObject;
+            if (other.gameObject.GetComponent<Entity>() != null)
+            {
+                other.gameObject.GetComponent<Entity>().TakeDamage(damage);
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        if(transform.parent != null && transform.parent.gameObject == parentObj)
+        {
+            ObjectPoolManager.DestroyPooled(gameObject);
         }
     }
 
