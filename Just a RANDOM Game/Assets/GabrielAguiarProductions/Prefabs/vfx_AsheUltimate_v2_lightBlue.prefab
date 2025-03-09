@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4068072697041841734}
   - component: {fileID: 2163269881918139500}
   - component: {fileID: 8421473946806633328}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: vfxgraph_Ashe_v1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 4261007140503204693}
   - component: {fileID: 8879711953199427562}
   - component: {fileID: 3219718856709382630}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3364529744243830433}
   - component: {fileID: 8414459585976368807}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Trail_Add (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 61726166858150962}
   - component: {fileID: 1357986510068514381}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Trail_Add
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,7 +550,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7831961891189721683}
   - component: {fileID: 7994250760122124407}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Trail_AB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +688,7 @@ GameObject:
   - component: {fileID: 4649491034515230520}
   - component: {fileID: 6153865583350390607}
   - component: {fileID: -5067675515348519238}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: vfx_AsheUltimate_v2_lightBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}

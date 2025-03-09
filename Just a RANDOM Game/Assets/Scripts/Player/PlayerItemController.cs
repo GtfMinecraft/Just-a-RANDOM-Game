@@ -376,9 +376,12 @@ public class PlayerItemController : MonoBehaviour
 
     private void SummonArrow()
     {
-        Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
-        arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
-        arrow.transform.SetParent(PlayerController.instance.playerObj);
+        if (isAiming)
+        {
+            Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
+            arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
+            arrow.transform.SetParent(PlayerController.instance.playerObj);
+        }
     }
 
     private void ShootArrow()
@@ -389,6 +392,7 @@ public class PlayerItemController : MonoBehaviour
             arrow.GetComponent<Projectile>().Fire();
             arrow.GetComponent<Rigidbody>().velocity = arrow.transform.forward * database.GetItem[isRightAim ? rightHeldItem : leftHeldItem].attackSpeed;
             arrow.GetComponent<Projectile>().damage = new Damage(database.GetItem[isRightAim ? rightItems[1] : leftItems[1]].damage);
+            arrow = null;
         }
         StopAiming();
     }
@@ -397,10 +401,9 @@ public class PlayerItemController : MonoBehaviour
     {
         CancelInvoke("SummonArrow");
 
-        if (arrow != null)
+        if (arrow != null && !arrow.GetComponent<Projectile>().fired)
         {
-            if (!arrow.GetComponent<Projectile>().fired)
-                ObjectPoolManager.DestroyPooled(arrow);
+            ObjectPoolManager.DestroyPooled(arrow);
             arrow = null;
         }
 
