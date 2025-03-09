@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Rod
   m_EditorClassIdentifier: 
   ID: 4
-  itemName: New Item
-  itemDescription: New Description
-  icon: {fileID: 0}
+  itemName: Fishing Rod
+  itemDescription: Simple rod for catching fish. Patience is its only requirement.
+  icon: {fileID: 21300000, guid: d91fe02bfa65c9f47a3f82b0900b7842, type: 3}
   model: {fileID: 2297453642340661118, guid: 65196f909563a5341a93913a03a1c5fc, type: 3}
   inventoryType: 0
   itemType: 6

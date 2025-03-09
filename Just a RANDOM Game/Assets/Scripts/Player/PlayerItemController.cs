@@ -20,8 +20,8 @@ public class PlayerItemController : MonoBehaviour
 
     public float[] toolUseTime = { 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 2.5f };
 
-    public int[] rightItems { get; private set; } = { 0, 1, 2, 0, 3, 4, 0 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
-    public int[] leftItems { get; private set; } = { 0, 6, 0, 0, 0, 0, 0 };
+    public int[] rightItems { get; private set; } = { 0, 1, 3, 4, 7, 8, 9 };// fill in basic tools, and set initial inventory to Storage, then switch to axe after starting cutscene
+    public int[] leftItems { get; private set; } = { 0, 2, 0, 6, 22, 0, 10 };
 
     private int leftHeldItem = 0;
     private int rightHeldItem = 0;
@@ -91,6 +91,9 @@ public class PlayerItemController : MonoBehaviour
         //    UpdateHandModel(database.GetItem[rightItems[(int)currentInventory]].model);
         //    UpdateHandModel(database.GetItem[leftItems[(int)currentInventory]].model, true);
         //}
+
+        if (resources.ContainsKey(5) && resources[5] != 0)
+            rightItems[3] = 5;
     }
 
     private void Update()

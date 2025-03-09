@@ -1,6 +1,6 @@
 public enum ItemTypes
 {
-    Basic,
+    None,
     Sword,
     Bow,
     Axe,
@@ -8,10 +8,14 @@ public enum ItemTypes
     Hoe,
     Rod,
     Food,
-    Armor,
+    Helmet,
+    Cuirass,
+    Leggings,
+    Boots,
     Potion,
     Crop,
     Bait,
     Torch,
     Material,
+    Special,
 };
