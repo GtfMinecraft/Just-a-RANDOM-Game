@@ -13,6 +13,7 @@ public class Item : ScriptableObject
     public GameObject model;
     public InventoryTypes inventoryType = InventoryTypes.Storage;
     public ItemTypes itemType = ItemTypes.None;
+    public float damage;
     public float attackSpeed;
     public Vector3 range = Vector3.zero;
     public int maxStack = 1;

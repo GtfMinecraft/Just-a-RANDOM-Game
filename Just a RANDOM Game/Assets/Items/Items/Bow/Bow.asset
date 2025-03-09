@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
-  ID: 6
+  ID: 2
   itemName: Hunting Bow
   itemDescription: A compact, nimble bow. Quick to draw but lacks the punch of heavier
     bows.
@@ -20,6 +20,7 @@ MonoBehaviour:
   model: {fileID: 5863745638388628282, guid: 02a0afde967a2084aa840f4af2a75709, type: 3}
   inventoryType: 0
   itemType: 2
+  damage: 30
   attackSpeed: 30
   range: {x: 0, y: 0, z: 0}
   maxStack: 1

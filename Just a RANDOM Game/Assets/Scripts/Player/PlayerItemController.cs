@@ -29,6 +29,9 @@ public class PlayerItemController : MonoBehaviour
     private UDictionaryIntInt resources;
 
     public float aimSpeed = 0.3f;
+    public float aimTime = 0.5f;
+    public GameObject arrowPrefab;
+    private GameObject arrow;
     public float eatSpeed = 0.3f;
     public Vector3 torchPlacement;
 
@@ -364,25 +367,54 @@ public class PlayerItemController : MonoBehaviour
     {
         //bow anim + vfx
         isAiming = true;
+        CancelInvoke("ResetCamera");
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Combat);
         GetComponent<PlayerEntity>().speedMultiplier *= aimSpeed;
+
+        Invoke("SummonArrow", aimTime);
+    }
+
+    private void SummonArrow()
+    {
+        Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
+        arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
+        arrow.transform.SetParent(PlayerController.instance.playerObj);
     }
 
     private void ShootArrow()
     {
-        Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
-        //arrowDirection.normalized * database.GetItem[isRightAim ? rightHeldItem : leftHeldItem].attackSpeed;
+        if(arrow != null)
+        {
+            arrow.transform.SetParent(null);
+            arrow.GetComponent<Projectile>().Fire();
+            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.forward * database.GetItem[isRightAim ? rightHeldItem : leftHeldItem].attackSpeed;
+            arrow.GetComponent<Projectile>().damage = new Damage(database.GetItem[isRightAim ? rightItems[1] : leftItems[1]].damage);
+        }
         StopAiming();
     }
 
     public void StopAiming()
     {
-        Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
-        GetComponent<PlayerEntity>().speedMultiplier /= aimSpeed;
+        CancelInvoke("SummonArrow");
+
+        if (arrow != null)
+        {
+            if (!arrow.GetComponent<Projectile>().fired)
+                ObjectPoolManager.DestroyPooled(arrow);
+            arrow = null;
+        }
 
         isAiming = false;
-        resetAnimTime[isRightAim ? 0 : 1] = Time.time;
-        ResetAnim();
+        GetComponent<PlayerEntity>().speedMultiplier /= aimSpeed;
+
+        resetAnimTime[isRightAim ? 0 : 1] = Time.time + aimTime;
+        Invoke("ResetAnim", aimTime);
+        Invoke("ResetCamera", aimTime);
+    }
+
+    private void ResetCamera()
+    {
+        Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
     }
 
     public void StartFarming(int plant = 0)
