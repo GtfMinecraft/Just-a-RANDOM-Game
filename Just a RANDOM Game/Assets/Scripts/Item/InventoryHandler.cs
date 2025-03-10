@@ -234,7 +234,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         //vfx
         Vector3 position = PlayerController.instance.transform.position + PlayerController.instance.playerObj.forward;
         for(int i = 0; i < count; i++)
-            ItemDropHandler.instance.SpawnNewDrop(itemID, ChunkLoadingController.instance.currentChunk, position, false, false);
+            ItemDropHandler.instance.SpawnNewDrop(itemID, position, false, false);
     }
 
     public void LoadData(GameData data)

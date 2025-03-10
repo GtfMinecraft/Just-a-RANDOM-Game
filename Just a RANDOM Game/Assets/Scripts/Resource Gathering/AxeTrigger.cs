@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoeTrigger : MonoBehaviour
+public class AxeTrigger : MonoBehaviour
 {
     [HideInInspector]
     public bool detect = false;
-    public Vector3 range;
+    public float damage;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(detect && collision.gameObject.GetComponent<FarmingController>() != null)
+        if (detect && collision.gameObject.GetComponent<TreeEntity>() != null)
         {
             detect = false;
-            PlayerItemController.instance.StartFarming(range);
+            collision.gameObject.GetComponent<TreeEntity>().health -= damage;
         }
     }
 

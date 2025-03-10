@@ -68,11 +68,11 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void SpawnNewDrop(int itemID, ChunkTypes chunk, Vector3 position, bool random = true, bool towards = true)
+    public void SpawnNewDrop(int itemID, Vector3 position, bool random = true, bool towards = true)
     {
         itemDrops.Add(new ItemDrop {
             itemID = itemID,
-            chunk = chunk,
+            chunk = ChunkLoadingController.instance.currentChunk,
             position = new float[] { position.x, position.y, position.z },
             rotation = new float[3]
         });

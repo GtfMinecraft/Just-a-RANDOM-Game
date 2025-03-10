@@ -95,7 +95,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
             //play item anim to bot and play bot anim according to item then go back to player
 
             //need to adjust item spawn position
-            ItemDropHandler.instance.SpawnNewDrop(item.ID, ChunkLoadingController.instance.currentChunk, transform.position, false);
+            ItemDropHandler.instance.SpawnNewDrop(item.ID, transform.position, false);
         }
     }
 

@@ -65,7 +65,7 @@ public class FishingController : MonoBehaviour
                 if (itemWeight < 0)
                 {
                     //disable fish bubbling vfx
-                    ItemDropHandler.instance.SpawnNewDrop(entry.Key, ChunkTypes.Fishing, canvas.transform.position - Vector3.up * 2.5f, false);
+                    ItemDropHandler.instance.SpawnNewDrop(entry.Key, canvas.transform.position - Vector3.up * 2.5f, false);
                     break;
                 }
             }

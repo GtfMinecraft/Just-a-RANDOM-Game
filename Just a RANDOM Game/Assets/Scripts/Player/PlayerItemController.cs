@@ -35,10 +35,6 @@ public class PlayerItemController : MonoBehaviour
     public float eatSpeed = 0.3f;
     public Vector3 torchPlacement;
 
-    public bool isFarming { get; private set; }
-    private HoeTrigger hoeTrigger;
-    private Vector3 hoeRange;
-
     public bool isFishing { get; private set; }
     private FishingController fishingController;
     private float fishTime;
@@ -123,11 +119,6 @@ public class PlayerItemController : MonoBehaviour
         if (isAiming)
         {
             StopAiming();
-        }
-
-        if (isFarming)
-        {
-            hoeTrigger.detect = false;
         }
 
         if (isFishing)
@@ -262,29 +253,38 @@ public class PlayerItemController : MonoBehaviour
         {
             //chop anim
 
+            AxeTrigger axeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<AxeTrigger>();
+            axeTrigger.detect = true;
+
             float useTime = toolUseTime[2] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
+            axeTrigger.Invoke("StopDetecting", useTime);
         }
         else if (item.itemType == ItemTypes.Pickaxe)
         {
             //mine anim
 
+            PickaxeTrigger pickaxeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<PickaxeTrigger>();
+            pickaxeTrigger.detect = true;
+
             float useTime = toolUseTime[3] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
+            pickaxeTrigger.Invoke("StopDetecting", useTime);
         }
         else if (item.itemType == ItemTypes.Hoe)
         {
             anim.SetInteger("ItemType", 5);
 
-            hoeRange = item.range;
-            hoeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<HoeTrigger>();
+            HoeTrigger hoeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<HoeTrigger>();
             hoeTrigger.detect = true;
+            hoeTrigger.range = item.range;
 
             float useTime = toolUseTime[4] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
+            hoeTrigger.Invoke("StopDetecting", useTime);
         }
         else if(item.itemType == ItemTypes.Rod)
         {
@@ -305,16 +305,19 @@ public class PlayerItemController : MonoBehaviour
         else if (item.itemType == ItemTypes.Food)
         {
             //eat
-            anim.SetInteger("ItemType", 6);
-            Invoke("Eat", toolUseTime[6]);
-            isRightEat = isRight;
+            if (!isEating)
+            {
+                anim.SetInteger("ItemType", 6);
+                Invoke("Eat", toolUseTime[6]);
+                isRightEat = isRight;
+                GetComponent<PlayerEntity>().speedMultiplier *= eatSpeed;
+            }
         }
         else if(item.itemType == ItemTypes.Crop)
         {
             //throw carrot anim
 
-            hoeRange = new Vector3 (2.5f, 1f, 2.5f);
-            StartFarming(item.ID);
+            StartFarming(item.range, item.ID);
             float useTime = toolUseTime[7] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
@@ -334,6 +337,7 @@ public class PlayerItemController : MonoBehaviour
                 Quaternion rot = Quaternion.Euler(wallToPlace.normal);
 
                 //play hold new torch anim through UpdateHandModel();
+                //save torch position and rotation
             }
         }
     }
@@ -429,11 +433,12 @@ public class PlayerItemController : MonoBehaviour
     private void StopEating()
     {
         CancelInvoke("Eat");
+        GetComponent<PlayerEntity>().speedMultiplier /= eatSpeed;
         resetAnimTime[isRightEat ? 0 : 1] = Time.time;
         ResetAnim();
     }
 
-    public void StartFarming(int plant = 0)
+    public void StartFarming(Vector3 hoeRange, int plant = 0)
     {
         CharacterController pos = GetComponent<CharacterController>();
         Transform playerObj = PlayerController.instance.playerObj;

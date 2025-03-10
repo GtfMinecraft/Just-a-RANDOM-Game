@@ -76,10 +76,10 @@ public class FarmingController : MonoBehaviour, IDataPersistence
             if (stage == 2)
             {
                 if(Random.value >= 0.6f)
-                    ItemDropHandler.instance.SpawnNewDrop(plantID, ChunkTypes.Farming, transform.position);
-                ItemDropHandler.instance.SpawnNewDrop(plantID, ChunkTypes.Farming, transform.position);
+                    ItemDropHandler.instance.SpawnNewDrop(plantID, transform.position);
+                ItemDropHandler.instance.SpawnNewDrop(plantID, transform.position);
             }
-            ItemDropHandler.instance.SpawnNewDrop(plantID, ChunkTypes.Farming, transform.position);
+            ItemDropHandler.instance.SpawnNewDrop(plantID, transform.position);
             cropID = 0;
             Destroy(cropObj);
         }
