@@ -83,6 +83,8 @@ public class GameData
         public float speedMultiplier;
         public float damageMultiplier;
         public float armor;
+        public float satiation;
+        public float stamina;
         public float respawnTimer;
         public List<StatusEffect> activeEffects = new List<StatusEffect>();
     }

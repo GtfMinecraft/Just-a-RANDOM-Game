@@ -305,6 +305,8 @@ public class PlayerItemController : MonoBehaviour
         else if (item.itemType == ItemTypes.Food)
         {
             //eat
+            anim.SetInteger("ItemType", 6);
+            Invoke("Eat", toolUseTime[6]);
             isRightEat = isRight;
         }
         else if(item.itemType == ItemTypes.Crop)
@@ -340,8 +342,10 @@ public class PlayerItemController : MonoBehaviour
     {
         if (isEating && isRightEat == isRight)
         {
-            resetAnimTime[isRightEat ? 0 : 1] = Time.time;
-            ResetAnim();
+            if (!esc)
+                Eat();
+            else
+                StopEating();
         }
         else if (isAiming && isRightAim == isRight)
         {
@@ -415,6 +419,18 @@ public class PlayerItemController : MonoBehaviour
     private void ResetCamera()
     {
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
+    }
+
+    private void Eat()
+    {
+        GetComponent<PlayerEntity>().satiation += database.GetItem[isRightEat?rightItems[6]:leftItems[6]].damage;
+        StopEating();
+    }
+    private void StopEating()
+    {
+        CancelInvoke("Eat");
+        resetAnimTime[isRightEat ? 0 : 1] = Time.time;
+        ResetAnim();
     }
 
     public void StartFarming(int plant = 0)
