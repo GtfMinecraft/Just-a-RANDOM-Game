@@ -376,12 +376,9 @@ public class PlayerItemController : MonoBehaviour
 
     private void SummonArrow()
     {
-        if (isAiming)
-        {
-            Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
-            arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
-            arrow.transform.SetParent(PlayerController.instance.playerObj);
-        }
+        Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
+        arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
+        arrow.transform.SetParent(PlayerController.instance.playerObj);
     }
 
     private void ShootArrow()

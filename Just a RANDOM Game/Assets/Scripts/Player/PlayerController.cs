@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
         LeftHand,
     }
     private AnimTrance animTrance = AnimTrance.None;
+    private bool tranceLeftRight = false;
 
     [Header("Bot")]
     public GameObject bot;
@@ -273,6 +274,11 @@ public class PlayerController : MonoBehaviour
                 usingRight = false;
                 anim.SetInteger("PlayerAction", 3);
                 PlayerItemController.instance.UseItem();
+                if (tranceLeftRight)
+                {
+                    tranceLeftRight = false;
+                    PlayerItemController.instance.Release();
+                }
             }
             else
             {
@@ -280,6 +286,11 @@ public class PlayerController : MonoBehaviour
                 usingLeft = false;
                 anim.SetInteger("PlayerAction", 4);
                 PlayerItemController.instance.UseItem(false);
+                if (tranceLeftRight)
+                {
+                    tranceLeftRight = false;
+                    PlayerItemController.instance.Release(false);
+                }
             }
         }
     }
@@ -311,9 +322,11 @@ public class PlayerController : MonoBehaviour
                     isInteracting = true;
                     break;
                 case AnimTrance.LeftHand:
+                    tranceLeftRight = true;
                     usingLeft = true;
                     break;
                 case AnimTrance.RightHand:
+                    tranceLeftRight = true;
                     usingRight = true;
                     break;
             }
