@@ -21,8 +21,6 @@ public class BotInterface : MonoBehaviour, IDataPersistence
     private List<int> unlockedCrafts;
     private int[] replenishIndexes;
 
-    private Transform materialParent;
-
     // Start is called before the first frame update
     private void Start()
     {
@@ -31,8 +29,6 @@ public class BotInterface : MonoBehaviour, IDataPersistence
 
         GetComponent<Canvas>().enabled = false;
         itemHover.gameObject.SetActive(false);
-
-        materialParent = itemHover.GetChild(1);
 
         InstantiateCraft();
     }
@@ -67,7 +63,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
 
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
         entry2.eventID = EventTriggerType.PointerClick;
-        entry2.callback.AddListener((eventData) => { Swake(icon.transform); });
+        entry2.callback.AddListener((eventData) => { CraftItem(icon.transform); });
         icon.GetComponent<EventTrigger>().triggers[1] = entry2;
     }
 
@@ -76,14 +72,17 @@ public class BotInterface : MonoBehaviour, IDataPersistence
         int itemID = unlockedCrafts[sender.GetSiblingIndex()];
         InstantiateMaterial(itemID);
 
+        Item item = database.GetItem[itemID];
+
         itemHover.position = sender.position;
-        itemHover.GetChild(0).GetComponent<TMP_Text>().text = database.GetItem[itemID].itemDescription;
+        itemHover.GetChild(0).GetComponent<TMP_Text>().text = item.name;
+        itemHover.GetChild(1).GetComponent<TMP_Text>().text = item.itemDescription;
         itemHover.gameObject.SetActive(true);
     }
 
-    public void Swake(Transform sender)
+    public void CraftItem(Transform sender)
     {
-        if (craftBackground.GetChild(sender.GetSiblingIndex()).GetChild(0).GetComponent<Image>().color == Color.white)
+        if (sender.GetChild(0).GetComponent<Image>().color == Color.white)
         {
             Item item = database.GetItem[unlockedCrafts[sender.GetSiblingIndex()]];
             UDictionaryIntInt recipe = item.recipe;
@@ -95,7 +94,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
             //play item anim to bot and play bot anim according to item then go back to player
 
             //need to adjust item spawn position
-            ItemDropHandler.instance.SpawnNewDrop(item.ID, transform.position, false);
+            ItemDropHandler.instance.SpawnNewDrop(item.ID, transform.parent.position, false);
         }
     }
 
@@ -108,14 +107,14 @@ public class BotInterface : MonoBehaviour, IDataPersistence
     {
         UDictionaryIntInt recipe = database.GetItem[itemID].recipe;
 
-        for (int i = 0; i < itemHover.GetChild(1).childCount; i++)
-            Destroy(itemHover.GetChild(1).GetChild(i).gameObject);
+        for (int i = 0; i < itemHover.GetChild(2).childCount; i++)
+            Destroy(itemHover.GetChild(2).GetChild(i).gameObject);
 
         foreach (KeyValuePair<int, int> entry in recipe)
         {
-            GameObject icon = Instantiate(materialIconPrefab, materialParent);
-            icon.transform.GetChild(0).GetComponent<Image>().sprite = database.GetItem[entry.Key].icon;
-            icon.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = entry.Value.ToString();
+            GameObject icon = Instantiate(materialIconPrefab, itemHover.GetChild(2));
+            icon.transform.GetComponent<Image>().sprite = database.GetItem[entry.Key].icon;
+            icon.transform.GetChild(0).GetComponent<TMP_Text>().text = entry.Value.ToString();
         }
     }
 
@@ -136,6 +135,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
                 }
             }
 
+            craftBackground.GetChild(i).GetComponent<Image>().color = craftable ? Color.white : faintCraftIcon;
             craftBackground.GetChild(i).GetChild(0).GetComponent<Image>().color = craftable ? Color.white : faintCraftIcon;
         }
     }

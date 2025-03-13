@@ -81,6 +81,16 @@ public class PlayerEntity : Entity
     {
         // TODO: death animation, death screen
 
+        Invoke("Respawn", 1f);
+    }
+
+    public override void Respawn()
+    {
+        health = maxHealth;
+        satiation = 100;
+        stamina = 100;
+        activeEffects = new List<StatusEffect>();
+
         transform.SetPositionAndRotation(spawnPoints[0].position, spawnPoints[0].rotation);
         //wake up anim
     }
