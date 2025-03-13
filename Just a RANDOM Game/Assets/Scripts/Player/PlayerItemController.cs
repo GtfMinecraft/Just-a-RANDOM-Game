@@ -235,10 +235,16 @@ public class PlayerItemController : MonoBehaviour
         if(item.itemType == ItemTypes.Sword)
         {
             anim.SetInteger("ItemType", 1); //swing anim
+            //set another anim integer randomly for three types of attacks
+
+            SwordTrigger swordTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SwordTrigger>();
+            swordTrigger.damage = item.damage;
+            swordTrigger.detect = true;
 
             float useTime = toolUseTime[0] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
+            swordTrigger.Invoke("StopDetecting", useTime);
         }
         else if(item.itemType == ItemTypes.Bow)
         {
@@ -251,9 +257,10 @@ public class PlayerItemController : MonoBehaviour
         }
         else if (item.itemType == ItemTypes.Axe)
         {
-            //chop anim
+            anim.SetInteger("ItemType", 3); //chop anim
 
             AxeTrigger axeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<AxeTrigger>();
+            axeTrigger.damage = item.damage;
             axeTrigger.detect = true;
 
             float useTime = toolUseTime[2] * (1 - item.attackSpeed / 100f);
@@ -263,9 +270,10 @@ public class PlayerItemController : MonoBehaviour
         }
         else if (item.itemType == ItemTypes.Pickaxe)
         {
-            //mine anim
+            anim.SetInteger("ItemType", 4); //mine anim
 
             PickaxeTrigger pickaxeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<PickaxeTrigger>();
+            pickaxeTrigger.damage = item.damage;
             pickaxeTrigger.detect = true;
 
             float useTime = toolUseTime[3] * (1 - item.attackSpeed / 100f);
@@ -275,7 +283,7 @@ public class PlayerItemController : MonoBehaviour
         }
         else if (item.itemType == ItemTypes.Hoe)
         {
-            anim.SetInteger("ItemType", 5);
+            anim.SetInteger("ItemType", 4);
 
             HoeTrigger hoeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<HoeTrigger>();
             hoeTrigger.detect = true;
@@ -290,7 +298,7 @@ public class PlayerItemController : MonoBehaviour
         {
             if (!isFishing)
             {
-                anim.SetInteger("ItemType", 6);
+                anim.SetInteger("ItemType", 5);
                 rodTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<RodTrigger>();
                 rodTrigger.detect = true;
                 fishTime = item.attackSpeed;
@@ -315,7 +323,7 @@ public class PlayerItemController : MonoBehaviour
         }
         else if(item.itemType == ItemTypes.Crop)
         {
-            //throw carrot anim
+            anim.SetInteger("ItemType", 7); //throw carrot anim
 
             StartFarming(item.range, item.ID);
             float useTime = toolUseTime[7] * (1 - item.attackSpeed / 100f);

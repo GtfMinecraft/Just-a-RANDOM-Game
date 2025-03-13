@@ -15,6 +15,8 @@ public class PlayerEntity : Entity
     public float hungerDamage = 10;
     public float hungerDamageInterval = 3;
 
+    public override bool IsMob => true;
+
     private float lastStaminaUseTime;
     private bool isRegeneratingStamina;
     private float hungerDamageTimer = 0;

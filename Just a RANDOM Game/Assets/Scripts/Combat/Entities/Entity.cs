@@ -19,6 +19,8 @@ abstract public class Entity : MonoBehaviour, IDataPersistence
     public float[] respawnCooldown = new float[2]; // time interval before entity is respawned, -1 if doesn't respawn
     public List<StatusEffect> activeEffects = new List<StatusEffect>();
 
+    public virtual bool IsMob => false;
+
     protected GameObject entityObj;
     protected bool isSpawn = false;
     protected float respawnTimer = 0;
