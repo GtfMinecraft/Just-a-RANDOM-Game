@@ -379,10 +379,56 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -6809614964845886985, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1054023833996209922}
+    - targetCorrespondingSourceObject: {fileID: -6809614964845886985, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3642020477441618325}
   m_SourcePrefab: {fileID: 100100000, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
 --- !u!4 &6654918255818884206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
   m_PrefabInstance: {fileID: 6616277794725143429}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8840248160330244722 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6809614964845886985, guid: c740275a09d625b4a9131a58e9ace609, type: 3}
+  m_PrefabInstance: {fileID: 6616277794725143429}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1054023833996209922
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840248160330244722}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.001799545, y: 0.0049142903, z: 0.0004319021}
+  m_Center: {x: -0.0021, y: -0.0000735574, z: -0.00079678715}
+--- !u!114 &3642020477441618325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840248160330244722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261092418f6838a4d9e9e5dfb59ecdae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detect: 0
+  damage: 0

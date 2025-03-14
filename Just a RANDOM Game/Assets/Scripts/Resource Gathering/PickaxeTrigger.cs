@@ -6,6 +6,7 @@ public class PickaxeTrigger : MonoBehaviour
 {
     [HideInInspector]
     public bool detect = false;
+    [HideInInspector]
     public float damage;
 
     private void OnCollisionEnter(Collision collision)
