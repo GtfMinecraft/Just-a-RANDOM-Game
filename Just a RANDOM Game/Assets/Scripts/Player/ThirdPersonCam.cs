@@ -30,7 +30,7 @@ public class ThirdPersonCam : MonoBehaviour
     private CinemachineCore.AxisInputDelegate origianlInput = CinemachineCore.GetInputAxis;
     private bool changed = false;
 
-    private float switchTime = 0;
+    public float switchTime { get; private set; } = 0;
     private Vector3 previousOrientation;
 
     private void Update()
@@ -52,9 +52,9 @@ public class ThirdPersonCam : MonoBehaviour
         if (player.GetComponent<PlayerController>().MovementIsEnable())
         {
             // switch styles
-            if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCameraStyle(CameraStyle.Basic);
-            if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCameraStyle(CameraStyle.Combat);
-            if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchCameraStyle(CameraStyle.Topdown);
+            if (Input.GetKeyDown(KeyCode.Alpha8)) SwitchCameraStyle(CameraStyle.Basic);
+            if (Input.GetKeyDown(KeyCode.Alpha9)) SwitchCameraStyle(CameraStyle.Combat);
+            if (Input.GetKeyDown(KeyCode.Alpha0)) SwitchCameraStyle(CameraStyle.Topdown);
 
             // roate player object
             if (currentStyle == CameraStyle.Basic || currentStyle == CameraStyle.Topdown)

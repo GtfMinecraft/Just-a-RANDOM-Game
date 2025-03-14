@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour
         fired = false;
         rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
-        transform.GetChild(1).gameObject.SetActive(false);
+        StartStopSpin(false);
     }
 
     private void Update()
@@ -47,6 +47,8 @@ public class Projectile : MonoBehaviour
     {
         fired = true;
         transform.GetChild(1).gameObject.SetActive(true);
+        transform.GetChild(2).gameObject.SetActive(true);
+        transform.GetChild(3).gameObject.SetActive(true);
 
         if (followGround)
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
@@ -60,7 +62,20 @@ public class Projectile : MonoBehaviour
         if (objectsToErode != null)
             StartCoroutine(ErodeObjects());
 
+        StartStopSpin(true);
         ObjectPoolManager.DestroyPooled(gameObject, destroyDelay);
+    }
+
+    private void StartStopSpin(bool start)
+    {
+        transform.GetChild(1).gameObject.SetActive(start);
+        transform.GetChild(2).gameObject.SetActive(start);
+        transform.GetChild(3).gameObject.SetActive(start);
+
+        VisualEffect arrowVFX = transform.GetChild(0).GetComponent<VisualEffect>();
+        arrowVFX.SetFloat("ArrowSpinVelocity", start ? 1.33f : 0);
+        arrowVFX.SetFloat("StretchedParticlesRate", start ? 18 : 0);
+        arrowVFX.SetFloat("SmokeRate", start ? 32 : 0);
     }
 
     private void FixedUpdate()
@@ -85,6 +100,7 @@ public class Projectile : MonoBehaviour
     {
         if (fired)
         {
+            StartStopSpin(false);
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.SetParent(other.transform);
             parentObj = other.gameObject;

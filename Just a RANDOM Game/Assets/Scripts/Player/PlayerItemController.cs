@@ -387,7 +387,8 @@ public class PlayerItemController : MonoBehaviour
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Combat);
         GetComponent<PlayerEntity>().speedMultiplier *= aimSpeed;
 
-        Invoke("SummonArrow", aimTime);
+        float switchTime = Camera.main.GetComponent<ThirdPersonCam>().switchTime;
+        Invoke("SummonArrow", (switchTime <= 0) ? aimTime : switchTime);
     }
 
     private void SummonArrow()
@@ -425,7 +426,10 @@ public class PlayerItemController : MonoBehaviour
 
         resetAnimTime[isRightAim ? 0 : 1] = Time.time + aimTime;
         Invoke("ResetAnim", aimTime);
-        Invoke("ResetCamera", aimTime);
+        if(Camera.main.GetComponent<ThirdPersonCam>().switchTime <= 0)
+            Invoke("ResetCamera", aimTime);
+        else
+            ResetCamera();
     }
 
     private void ResetCamera()
