@@ -6,20 +6,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class BotInterface : MonoBehaviour, IDataPersistence
 {
     [Header("Crafting")]
     public Color faintCraftIcon;
+    public Material glowMaterial;
     public Transform craftBackground;
     public Transform itemHover;
     public GameObject craftingIconPrefab;
     public GameObject materialIconPrefab;
+    public Image clickTint;
+    public Color successCraftColor;
+    public Color failCraftColor;
 
     private ItemDatabase database;
     private UDictionaryIntInt resources;
     private List<int> unlockedCrafts;
     private int[] replenishIndexes;
+
+    private Transform hoveredCraft;
+    private Transform clickedCraft;
 
     // Start is called before the first frame update
     private void Start()
@@ -53,18 +61,56 @@ public class BotInterface : MonoBehaviour, IDataPersistence
     private void SetCraftIcon(int itemID)
     {
         Item item = database.GetItem[itemID];
-        GameObject icon = Instantiate(craftingIconPrefab, craftBackground);
-        icon.transform.GetChild(0).GetComponent<Image>().sprite = item.icon;
+        Transform icon = Instantiate(craftingIconPrefab, craftBackground).transform;
+        icon.GetChild(0).GetComponent<Image>().sprite = item.icon;
 
         EventTrigger.Entry entry1 = new EventTrigger.Entry();
         entry1.eventID = EventTriggerType.PointerEnter;
-        entry1.callback.AddListener((eventData) => { ShowItemHover(icon.transform); });
+        entry1.callback.AddListener((eventData) => { 
+            ShowItemHover(icon);
+            if (hoveredCraft != null && hoveredCraft != clickedCraft)
+                hoveredCraft.GetComponent<Image>().material = hoveredCraft.GetChild(0).GetComponent<Image>().material = null;
+            hoveredCraft = icon;
+            icon.GetComponent<Image>().material = icon.GetChild(0).GetComponent<Image>().material = glowMaterial;
+        });
         icon.GetComponent<EventTrigger>().triggers[0] = entry1;
 
         EventTrigger.Entry entry2 = new EventTrigger.Entry();
         entry2.eventID = EventTriggerType.PointerClick;
-        entry2.callback.AddListener((eventData) => { CraftItem(icon.transform); });
+        entry2.callback.AddListener((eventData) => {
+            PointerEventData pointer = (PointerEventData)eventData;
+            if (pointer.button == PointerEventData.InputButton.Left)
+                CraftItem(icon);
+        });
         icon.GetComponent<EventTrigger>().triggers[1] = entry2;
+
+        EventTrigger.Entry entry3 = new EventTrigger.Entry();
+        entry3.eventID = EventTriggerType.PointerDown;
+        entry3.callback.AddListener((eventData) => {
+            PointerEventData pointer = (PointerEventData)eventData;
+            if (pointer.button == PointerEventData.InputButton.Left)
+            {
+                clickTint.color = (icon.GetComponent<Image>().color == Color.white) ? successCraftColor : failCraftColor;
+                clickTint.enabled = true;
+                clickTint.transform.position = icon.position;
+                clickedCraft = icon;
+            }
+        });
+        icon.GetComponent<EventTrigger>().triggers[2] = entry3;
+
+        EventTrigger.Entry entry4 = new EventTrigger.Entry();
+        entry4.eventID = EventTriggerType.PointerUp;
+        entry4.callback.AddListener((eventData) => {
+            PointerEventData pointer = (PointerEventData)eventData;
+            if (pointer.button == PointerEventData.InputButton.Left)
+            {
+                clickTint.enabled = false;
+                if (clickedCraft != hoveredCraft)
+                    clickedCraft.GetComponent<Image>().material = clickedCraft.GetChild(0).GetComponent<Image>().material = null;
+                clickedCraft = null;
+            }
+        });
+        icon.GetComponent<EventTrigger>().triggers[3] = entry4;
     }
 
     public void ShowItemHover(Transform sender)
@@ -100,6 +146,11 @@ public class BotInterface : MonoBehaviour, IDataPersistence
 
     public void HideItemHover()
     {
+        if(hoveredCraft != null && hoveredCraft != clickedCraft)
+        {
+            hoveredCraft.GetComponent<Image>().material = hoveredCraft.GetChild(0).GetComponent<Image>().material = null;
+            hoveredCraft = null;
+        }
         itemHover.gameObject.SetActive(false);
     }
 
@@ -128,7 +179,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
 
             foreach (KeyValuePair<int, int> entry in recipe)
             {
-                if (resources.ContainsKey(entry.Key) && resources[entry.Key] < entry.Value)
+                if (!resources.ContainsKey(entry.Key) || resources[entry.Key] < entry.Value)
                 {
                     craftable = false;
                     break;
@@ -151,6 +202,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
     {
         GetComponent<Canvas>().enabled = false;
         PlayerController.instance.forcedInteraction = false;
+        HideItemHover();
     }
 
     public void LoadData(GameData data)
