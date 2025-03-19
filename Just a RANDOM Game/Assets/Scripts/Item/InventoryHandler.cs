@@ -148,10 +148,16 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
 
         int invType = (int)database.GetItem[itemID].inventoryType;
 
-        if (slotIndex != -1)
+        if (slotIndex == -1)
             inventoryList[invType].RemoveItem(itemID, count);
         else
+        {
             inventoryList[invType].itemSlots[slotIndex].currentStack -= count;
+            if(inventoryList[invType].itemSlots[slotIndex].currentStack == 0)
+            {
+                inventoryList[invType].itemSlots[slotIndex].ID = 0;
+            }
+        }
         PlayerItemController.instance.UpdateHandModel();
         //itemWheel.UpdateItemWheelUI(itemID);
 

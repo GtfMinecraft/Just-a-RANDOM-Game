@@ -11,5 +11,6 @@ public class TreeEntity : Entity
         // TODO: voronoi destroy
         //random 2 to 3
         ItemDropHandler.instance.SpawnNewDrop(itemID, transform.position);
+        //set the chunk for the drop if the axe crossed chunk border
     }
 }

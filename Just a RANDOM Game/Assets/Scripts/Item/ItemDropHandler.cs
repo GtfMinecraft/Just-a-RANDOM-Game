@@ -18,6 +18,7 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         public ChunkTypes chunk;
         public float[] position;
         public float[] rotation;
+        public bool isKinematic;
     }
     private List<ItemDrop> itemDrops;
     private List<GameObject> itemObjs;
@@ -50,6 +51,10 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
             {
                 if (itemObjs[i] != null)
                 {
+                    Vector3 position = itemObjs[i].transform.position;
+                    Vector3 rotation = itemObjs[i].transform.rotation.eulerAngles;
+                    itemDrops[i].position = new float[] { position.x, position.y, position.z };
+                    itemDrops[i].rotation = new float[] { rotation.x, rotation.y, rotation.z };
                     ObjectPoolManager.DestroyPooled(itemObjs[i]);
                     itemObjs[i] = null;
                 }
@@ -100,6 +105,38 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         //wait a bit and play add into inventory anim if auto pickup
     }
 
+    public void AddNewDrop(int itemID, GameObject obj, bool isKinematic = true)
+    {
+        Vector3 position = obj.transform.position;
+        Vector3 rotation = obj.transform.rotation.eulerAngles;
+        itemDrops.Add(new ItemDrop
+        {
+            itemID = itemID,
+            chunk = ChunkLoadingController.instance.currentChunk,
+            position = new float[] { position.x, position.y, position.z },
+            rotation = new float[] { rotation.x, rotation.y, rotation.z },
+            isKinematic = isKinematic
+        });
+        itemObjs.Add(obj);
+        itemObjs[^1].transform.SetParent(itemDropParent);
+        itemObjs[^1].GetComponent<ItemInteractable>().enabled = true;
+        itemObjs[^1].GetComponent<Rigidbody>().isKinematic = isKinematic;
+    }
+
+    public void SetDropChunk(ChunkTypes chunk, int index = -1)
+    {
+        itemDrops[(index == -1) ? ^1 : index].chunk = chunk;
+    }
+
+    public void SetDropChunk(ChunkTypes chunk, GameObject itemObj)
+    {
+        int index = itemObjs.IndexOf(itemObj);
+        if (index != -1)
+            itemDrops[index].chunk = chunk;
+        else
+            Debug.LogError($"Item drop not found in itemObjs list for GameObject {itemObj}");
+    }
+
     private void SpawnDrop(int index)
     {
         GameObject model = database.GetItem[itemDrops[index].itemID].model;
@@ -108,7 +145,7 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         itemObjs[index] = ObjectPoolManager.CreatePooled(model, position, rotation);
         itemObjs[index].transform.SetParent(itemDropParent);
         itemObjs[index].GetComponent<ItemInteractable>().enabled = true;
-        itemObjs[index].GetComponent<Rigidbody>().isKinematic = false;
+        itemObjs[index].GetComponent<Rigidbody>().isKinematic = itemDrops[index].isKinematic;
     }
 
     public void RemoveItem(GameObject itemObj)
@@ -116,9 +153,14 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         int index = itemObjs.IndexOf(itemObj);
         if (index != -1)
         {
+            GameObject obj = itemObjs[index];
             itemDrops.RemoveAt(index);
             itemObjs.RemoveAt(index);
+            // glow contour fly to ring
+            ObjectPoolManager.DestroyPooled(obj);
         }
+        else
+            Debug.LogError($"Item drop not found in itemObjs list for GameObject {itemObj}");
     }
 
     public void LoadData(GameData data)

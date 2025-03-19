@@ -30,14 +30,15 @@ public class ItemInteractable : Interactable
 
     protected override void OnInteractionStart()
     {
+        base.OnInteractionStart();
         Invoke("OnInteractionEnd", interactTime);
     }
 
     protected override void OnInteractionEnd()
     {
+        base.OnInteractionEnd();
+        isPicked = false;
         InventoryHandler.instance.AddItem(itemID);
         ItemDropHandler.instance.RemoveItem(gameObject);
-        isPicked = false;
-        ObjectPoolManager.DestroyPooled(gameObject);
     }
 }

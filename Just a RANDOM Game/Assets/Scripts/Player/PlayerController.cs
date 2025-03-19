@@ -125,7 +125,9 @@ public class PlayerController : MonoBehaviour
                     if (itemController.isFishing)
                         itemController.StopFishing();
                     if (itemController.isEating)
-                        //itemController.StopEating();
+                        itemController.StopEating();
+                    if(itemController.torchCoroutine != null)
+                        StopCoroutine(itemController.torchCoroutine);
                     itemController.CancelInvoke("ResetAnim");
                     itemController.ResetAnim();
                     itemController.ResetAnim();

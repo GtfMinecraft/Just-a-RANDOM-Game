@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detect: 0
+  range: {x: 0, y: 0, z: 0}
 --- !u!1 &2694769328612589286
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffd6e4669441b146a8debe11a2b319a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemID: 3
+  itemID: 7
 --- !u!65 &9064123762379223449
 BoxCollider:
   m_ObjectHideFlags: 0

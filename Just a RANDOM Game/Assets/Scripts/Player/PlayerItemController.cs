@@ -33,7 +33,11 @@ public class PlayerItemController : MonoBehaviour
     public GameObject arrowPrefab;
     private GameObject arrow;
     public float eatSpeed = 0.3f;
+    public Vector3 torchOrigin;
     public Vector3 torchPlacement;
+    public float torchPlaceMargin = 0.1f;
+
+    public Coroutine torchCoroutine { get; private set; }
 
     public bool isFishing { get; private set; }
     private FishingController fishingController;
@@ -42,7 +46,7 @@ public class PlayerItemController : MonoBehaviour
     private RodTrigger rodTrigger;
     private bool showFishingCanvas = false;
     private bool isRightFish;
-    public Coroutine fishCoroutine { get; private set; }
+    private Coroutine fishCoroutine;
 
     public bool isAiming { get; private set; }
     private bool isRightAim;
@@ -117,15 +121,16 @@ public class PlayerItemController : MonoBehaviour
         InventoryCanvasController.instance.ChangeToolInventory(currentInventory);
 
         if (isAiming)
-        {
             StopAiming();
-        }
 
         if (isFishing)
-        {
-            CancelInvoke("StopFishing");
             StartCoroutine(StopFishing());
-        }
+
+        if (isEating)
+            StopEating();
+
+        if(torchCoroutine != null)
+            StopCoroutine(torchCoroutine);
 
         CancelInvoke("ResetAnim");
         ResetAnim();
@@ -263,7 +268,7 @@ public class PlayerItemController : MonoBehaviour
             axeTrigger.damage = item.damage;
             axeTrigger.detect = true;
 
-            float useTime = toolUseTime[2] * (1 - item.attackSpeed / 100f);
+            float useTime = toolUseTime[1] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
             axeTrigger.Invoke("StopDetecting", useTime);
@@ -276,7 +281,7 @@ public class PlayerItemController : MonoBehaviour
             pickaxeTrigger.damage = item.damage;
             pickaxeTrigger.detect = true;
 
-            float useTime = toolUseTime[3] * (1 - item.attackSpeed / 100f);
+            float useTime = toolUseTime[2] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
             pickaxeTrigger.Invoke("StopDetecting", useTime);
@@ -289,7 +294,7 @@ public class PlayerItemController : MonoBehaviour
             hoeTrigger.detect = true;
             hoeTrigger.range = item.range;
 
-            float useTime = toolUseTime[4] * (1 - item.attackSpeed / 100f);
+            float useTime = toolUseTime[3] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
             hoeTrigger.Invoke("StopDetecting", useTime);
@@ -303,7 +308,7 @@ public class PlayerItemController : MonoBehaviour
                 rodTrigger.detect = true;
                 fishTime = item.attackSpeed;
                 isRightFish = isRight;
-                fishCoroutine = StartCoroutine(StopFishing(toolUseTime[5]));
+                fishCoroutine = StartCoroutine(StopFishing(toolUseTime[4]));
             }
             else
             {
@@ -316,7 +321,7 @@ public class PlayerItemController : MonoBehaviour
             if (!isEating)
             {
                 anim.SetInteger("ItemType", 6);
-                Invoke("Eat", toolUseTime[6]);
+                Invoke("Eat", toolUseTime[5]);
                 isRightEat = isRight;
                 GetComponent<PlayerEntity>().speedMultiplier *= eatSpeed;
             }
@@ -326,26 +331,26 @@ public class PlayerItemController : MonoBehaviour
             anim.SetInteger("ItemType", 7); //throw carrot anim
 
             StartFarming(item.range, item.ID);
-            float useTime = toolUseTime[7] * (1 - item.attackSpeed / 100f);
+            float useTime = toolUseTime[6] * (1 - item.attackSpeed / 100f);
             resetAnimTime[isRight ? 0 : 1] = Time.time + useTime;
             Invoke("ResetAnim", useTime);
         }
         else if(item.itemType == ItemTypes.Torch)
         {
             RaycastHit wallToPlace;
-            if(Physics.Raycast(PlayerController.instance.playerObj.position, torchPlacement, out wallToPlace, torchPlacement.magnitude, 7))
+            Transform playerObj = PlayerController.instance.playerObj;
+            LayerMask layerMask = 1 << 7;
+            if (Physics.Raycast(playerObj.position + torchOrigin, playerObj.rotation * torchPlacement, out wallToPlace, torchPlacement.magnitude, layerMask))
             {
-                //torch place anim (reach out, place, & delete hand torch, summon new torch from ring if there are more torches)
-                //use Invoke & CancelInvoke when changed
-                //InventoryHandler.instance.RemoveItem(torchID);
-                //move torch to ItemDropHandler
-                if (isRight) rightHeldItem = 0;
-                else leftHeldItem = 0;
-                //summon torch prefab at wallToPlace.transform.position facing off the wall's tangent
-                Quaternion rot = Quaternion.Euler(wallToPlace.normal);
+                anim.SetInteger("ItemType", 8);
 
-                //play hold new torch anim through UpdateHandModel();
-                //save torch position and rotation
+                GameObject torch = isRight ? rightHandObj.transform.GetChild(0).gameObject : leftHandObj.transform.GetChild(0).gameObject;
+                torchCoroutine = StartCoroutine(PlaceTorch(toolUseTime[7], isRight, item.ID, torch, wallToPlace));
+            }
+            else
+            {
+                resetAnimTime[isRight ? 0 : 1] = Time.time;
+                ResetAnim();
             }
         }
     }
@@ -442,7 +447,8 @@ public class PlayerItemController : MonoBehaviour
         GetComponent<PlayerEntity>().satiation += database.GetItem[isRightEat?rightItems[6]:leftItems[6]].damage;
         StopEating();
     }
-    private void StopEating()
+
+    public void StopEating()
     {
         CancelInvoke("Eat");
         GetComponent<PlayerEntity>().speedMultiplier /= eatSpeed;
@@ -480,7 +486,7 @@ public class PlayerItemController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         resetAnimTime[isRightFish ? 0 : 1] = Time.time;
-        Invoke("ResetAnim", toolUseTime[5]);
+        Invoke("ResetAnim", toolUseTime[4]);
 
         //reel in anim
         isFishing = false;
@@ -494,21 +500,51 @@ public class PlayerItemController : MonoBehaviour
         }
     }
 
+    private IEnumerator PlaceTorch(float delay, bool isRight, int itemID, GameObject torch, RaycastHit wallToPlace)
+    {
+        //use StopCoroutine when changed
+
+        //rotate torch at wallToPlace.transform.position facing off the wall's tangent
+        Vector3 pos = wallToPlace.point + wallToPlace.normal * 0.5f;
+        Quaternion rot = Quaternion.LookRotation(wallToPlace.normal);
+
+        //set IK and lerp torch rotation
+
+        yield return new WaitForSeconds(delay / 2); // reach out
+
+        if ((torch.transform.position - pos).magnitude >= torchPlaceMargin)
+        {
+            resetAnimTime[isRight ? 0 : 1] = Time.time;
+            ResetAnim();
+            yield break;
+        }
+        
+        ItemDropHandler.instance.AddNewDrop(itemID, torch);
+        InventoryHandler.instance.RemoveItem(itemID);
+        if (isRight) rightHeldItem = 0;
+        else leftHeldItem = 0;
+        
+        yield return new WaitForSeconds(delay / 2); // retract hand
+
+        UpdateHandModel();
+        resetAnimTime[isRight ? 0 : 1] = Time.time;
+        ResetAnim();
+    }
+
     // visualizing hoe interaction area
     private void OnDrawGizmosSelected()
     {
-        Item item = database.GetItem[3];
-
         CharacterController pos = GetComponent<CharacterController>();
         Transform playerObj = transform.GetChild(0).transform;
 
-        // Calculate the center position of the box
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + torchOrigin, transform.position + torchOrigin + playerObj.rotation * torchPlacement);
+
+        Item item = database.GetItem[7];
         Vector3 boxCenter = transform.position + pos.center - new Vector3(0, pos.height / 2, 0) + item.range.z / 2 * playerObj.forward;
 
-        // Draw the box using Gizmos.DrawWireCube (half the range since it's the full box size)
-        Gizmos.color = Color.green;  // You can change the color here
-        Gizmos.matrix = Matrix4x4.TRS(boxCenter, playerObj.rotation, Vector3.one); // Apply rotation of the player
-
+        Gizmos.color = Color.green;
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, playerObj.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, item.range);
     }
 }
