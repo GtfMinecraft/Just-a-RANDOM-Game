@@ -125,6 +125,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
             {
                 resources[itemID] = 1;
             }
+            InteractablePromptController.instance.AddDrop(itemID);
             PlayerItemController.instance.UpdateHandModel();
             //itemWheel.UpdateItemWheelUI(itemID);
 
@@ -240,7 +241,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         //vfx
         Vector3 position = PlayerController.instance.transform.position + PlayerController.instance.playerObj.forward;
         for(int i = 0; i < count; i++)
-            ItemDropHandler.instance.SpawnNewDrop(itemID, position, false, false);
+            ItemDropHandler.instance.SpawnNewDrop(itemID, position, ChunkLoadingController.instance.currentChunk, false, false);
     }
 
     public void LoadData(GameData data)

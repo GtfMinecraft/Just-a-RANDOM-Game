@@ -11,10 +11,11 @@ public class PickaxeTrigger : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (detect && collision.gameObject.GetComponent<OreEntity>() != null)
+        OreEntity entity = collision.gameObject.GetComponent<OreEntity>();
+        if (detect && entity != null)
         {
             detect = false;
-            collision.gameObject.GetComponent<OreEntity>().health -= damage;
+            entity.TakeDamage(new Damage(damage));
         }
     }
 

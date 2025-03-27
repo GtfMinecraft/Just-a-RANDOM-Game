@@ -337,10 +337,9 @@ public class PlayerItemController : MonoBehaviour
         }
         else if(item.itemType == ItemTypes.Torch)
         {
-            RaycastHit wallToPlace;
             Transform playerObj = PlayerController.instance.playerObj;
             LayerMask layerMask = 1 << 7;
-            if (Physics.Raycast(playerObj.position + torchOrigin, playerObj.rotation * torchPlacement, out wallToPlace, torchPlacement.magnitude, layerMask))
+            if (Physics.Raycast(playerObj.position + torchOrigin, playerObj.rotation * torchPlacement, out RaycastHit wallToPlace, torchPlacement.magnitude, layerMask))
             {
                 anim.SetInteger("ItemType", 8);
 
@@ -394,6 +393,9 @@ public class PlayerItemController : MonoBehaviour
 
         float switchTime = Camera.main.GetComponent<ThirdPersonCam>().switchTime;
         Invoke("SummonArrow", (switchTime <= 0) ? aimTime : switchTime);
+
+        if (switchTime <= 0)
+            InteractablePromptController.instance.EnableCrosshair();
     }
 
     private void SummonArrow()
@@ -401,6 +403,8 @@ public class PlayerItemController : MonoBehaviour
         Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
         arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
         arrow.transform.SetParent(PlayerController.instance.playerObj);
+
+        InteractablePromptController.instance.EnableCrosshair();
     }
 
     private void ShootArrow()
@@ -440,6 +444,7 @@ public class PlayerItemController : MonoBehaviour
     private void ResetCamera()
     {
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
+        InteractablePromptController.instance.DisableCrosshair();
     }
 
     private void Eat()

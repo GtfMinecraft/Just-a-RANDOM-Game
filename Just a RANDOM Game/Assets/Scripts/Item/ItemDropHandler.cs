@@ -55,6 +55,7 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
                     Vector3 rotation = itemObjs[i].transform.rotation.eulerAngles;
                     itemDrops[i].position = new float[] { position.x, position.y, position.z };
                     itemDrops[i].rotation = new float[] { rotation.x, rotation.y, rotation.z };
+                    itemDrops[i].isKinematic = itemObjs[i].GetComponent<Rigidbody>().isKinematic;
                     ObjectPoolManager.DestroyPooled(itemObjs[i]);
                     itemObjs[i] = null;
                 }
@@ -73,11 +74,11 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void SpawnNewDrop(int itemID, Vector3 position, bool random = true, bool towards = true)
+    public void SpawnNewDrop(int itemID, Vector3 position, ChunkTypes chunk, bool random = true, bool towards = true)
     {
         itemDrops.Add(new ItemDrop {
             itemID = itemID,
-            chunk = ChunkLoadingController.instance.currentChunk,
+            chunk = chunk,
             position = new float[] { position.x, position.y, position.z },
             rotation = new float[3]
         });
@@ -121,11 +122,6 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
         itemObjs[^1].transform.SetParent(itemDropParent);
         itemObjs[^1].GetComponent<ItemInteractable>().enabled = true;
         itemObjs[^1].GetComponent<Rigidbody>().isKinematic = isKinematic;
-    }
-
-    public void SetDropChunk(ChunkTypes chunk, int index = -1)
-    {
-        itemDrops[(index == -1) ? ^1 : index].chunk = chunk;
     }
 
     public void SetDropChunk(ChunkTypes chunk, GameObject itemObj)
@@ -179,6 +175,7 @@ public class ItemDropHandler : MonoBehaviour, IDataPersistence
                 Vector3 rot = itemObjs[i].transform.rotation.eulerAngles;
                 itemDrops[i].position = new float[] { pos.x, pos.y, pos.z };
                 itemDrops[i].rotation = new float[] { rot.x, rot.y, rot.z };
+                itemDrops[i].isKinematic = itemObjs[i].GetComponent<Rigidbody>().isKinematic;
             }
         }
         data.itemDropData.itemDrops = itemDrops;

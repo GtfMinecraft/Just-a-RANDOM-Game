@@ -10,7 +10,33 @@ public class TreeEntity : Entity
     {
         // TODO: voronoi destroy
         //random 2 to 3
-        ItemDropHandler.instance.SpawnNewDrop(itemID, transform.position);
+        ItemDropHandler.instance.SpawnNewDrop(itemID, transform.position, ChunkLoadingController.instance.currentChunk);
         //set the chunk for the drop if the axe crossed chunk border
+
+        Destroy(gameObject);
+    }
+
+    public override void LoadData(GameData data)
+    {
+        if (!data.entityData.ContainsKey(entityName))
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            base.LoadData(data);
+        }
+    }
+
+    public override void SaveData(GameData data)
+    {
+        if (health <= 0)
+        {
+            data.entityData.Remove(entityName);
+        }
+        else
+        {
+            base.SaveData(data);
+        }
     }
 }

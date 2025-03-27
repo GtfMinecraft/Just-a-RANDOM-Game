@@ -15,7 +15,7 @@ public class SwordTrigger : MonoBehaviour
         if (detect && entity != null && entity.IsMob)
         {
             detect = false;
-            entity.health -= damage;
+            entity.TakeDamage(new Damage(damage));
         }
     }
 

@@ -18,7 +18,7 @@ public class ItemInteractable : Interactable
         if (!hasPickedUp)
         {
             Debug.Log("Inventory full");
-            //didn't pick up - reasons: ex. inventory is full
+            //didn't pick up - reasons: ex. inventory is full, ring glow red & magic error sound
             return;
         }
         else

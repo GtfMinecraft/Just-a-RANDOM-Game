@@ -94,6 +94,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
                 clickTint.enabled = true;
                 clickTint.transform.position = icon.position;
                 clickedCraft = icon;
+                hoveredCraft = null;
             }
         });
         icon.GetComponent<EventTrigger>().triggers[2] = entry3;
@@ -140,7 +141,7 @@ public class BotInterface : MonoBehaviour, IDataPersistence
             //play item anim to bot and play bot anim according to item then go back to player
 
             //need to adjust item spawn position
-            ItemDropHandler.instance.SpawnNewDrop(item.ID, transform.parent.position, false);
+            ItemDropHandler.instance.SpawnNewDrop(item.ID, transform.parent.position, ChunkLoadingController.instance.currentChunk, false);
         }
     }
 

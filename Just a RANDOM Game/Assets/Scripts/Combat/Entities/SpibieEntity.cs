@@ -12,6 +12,8 @@ public class SpibieEntity : Entity
     private NavMeshAgent agent;
     private float wanderTimer;
     private Vector3 biasedNormal;
+    private float previousDistance;
+    private Vector3 previousDestination;
 
     private bool alerted = false;
 
@@ -30,41 +32,51 @@ public class SpibieEntity : Entity
             wanderTimer -= Time.deltaTime;
             if (wanderTimer <= 0)
             {
-                Transform f = Instantiate(target);
-                f.position = transform.position;
                 Wander();
                 wanderTimer = Random.Range(wanderInterval[0], wanderInterval[1]);
             }
         }
         else
         {
-            //call a sphere alert for allies when being attacked
+            //if player is detected in a cone shape in front vision + sphere space around
             //move towards player
+
+            //call a circle alert for allies when being attacked
         }
     }
 
     private void Wander()
     {
-        Vector3 targetPos = transform.position + BiasDirectionAwayFromBorder();
+        Vector3 direction = BiasDirectionAwayFromBorder();
+        previousDestination = transform.position + direction;
+        previousDistance = direction.magnitude;
 
-        agent.SetDestination(targetPos);
-
-        StartCoroutine(CheckForBorder());
-    }
-
-    private IEnumerator CheckForBorder()
-    {
-        yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
-
-        biasedNormal = transform.position - agent.destination;
+        agent.SetDestination(previousDestination);
+        
+        biasedNormal = agent.destination - previousDestination;
+        biasedNormal.y = 0;
     }
 
     private Vector3 BiasDirectionAwayFromBorder()
     {
-        Vector2 direction = Random.insideUnitCircle.normalized * Random.Range(wanderDistance[0], wanderDistance[1]);
-        
-        //biased towards biasedNormal direction according to the magnitude
+        if (biasedNormal.magnitude < 0.1f)
+        {
+            Vector2 randomDir = Random.insideUnitCircle.normalized;
+            return new Vector3(randomDir.x, 0, randomDir.y) * Random.Range(wanderDistance[0], wanderDistance[1]);
+        }
 
-        return new Vector3(direction.x, 0, direction.y);
+        float mu = Mathf.Atan2(biasedNormal.z, biasedNormal.x);
+        float sigma = 60f / (1 + biasedNormal.magnitude / previousDistance) * Mathf.Deg2Rad;
+        float angle = BoxMuller(mu, sigma);
+
+        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * Random.Range(wanderDistance[0], wanderDistance[1]);
+    }
+
+    private float BoxMuller(float mu, float sigma)
+    {
+        float u1 = Random.value;
+        float u2 = Random.value;
+        float randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);
+        return mu + sigma * randStdNormal;
     }
 }

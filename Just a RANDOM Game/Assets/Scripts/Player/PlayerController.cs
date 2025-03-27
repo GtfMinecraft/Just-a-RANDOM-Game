@@ -132,13 +132,15 @@ public class PlayerController : MonoBehaviour
                     itemController.ResetAnim();
                     itemController.ResetAnim();
                 }
+                if (canInteract[0] is ItemInteractable)
+                    InteractablePromptController.instance.ResetPickedDrops();
                 isInteracting = false;
                 for (int i = 0; i < canInteract.Count; i++)
                     canInteract[i].Interact();
             }
 
             // possibly implement double-wielding
-            if (usingRight && (itemController.isFishing || playerAction == 0 || playerAction == 4))
+            if (usingRight && (itemController.isFishing || playerAction == 0 || playerAction == 4 || playerAction == 2 && canInteract[0] is ItemInteractable))
             {
                 UseItem(true);
             }
@@ -262,7 +264,7 @@ public class PlayerController : MonoBehaviour
                 return interactions;
         }
 
-        controller.DisableCanvas();
+        controller.DisablePrompt();
         return null;
     }
 

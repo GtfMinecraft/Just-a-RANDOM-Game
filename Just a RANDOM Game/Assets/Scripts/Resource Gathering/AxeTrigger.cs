@@ -11,10 +11,11 @@ public class AxeTrigger : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (detect && collision.gameObject.GetComponent<TreeEntity>() != null)
+        TreeEntity entity = collision.gameObject.GetComponent<TreeEntity>();
+        if (detect && entity != null)
         {
             detect = false;
-            collision.gameObject.GetComponent<TreeEntity>().health -= damage;
+            entity.TakeDamage(new Damage(damage));
         }
     }
 

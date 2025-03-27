@@ -45,6 +45,13 @@ public class Projectile : MonoBehaviour
 
     public void Fire()
     {
+        LayerMask layerMask = LayerMask.GetMask("Scene", "Tree", "Ore", "Entity");
+        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, layerMask))
+        {
+            Vector3 arrowDirection = hit.point - transform.position;
+            transform.rotation = Quaternion.LookRotation(arrowDirection);   
+        }
+
         fired = true;
         transform.GetChild(1).gameObject.SetActive(true);
         transform.GetChild(2).gameObject.SetActive(true);
