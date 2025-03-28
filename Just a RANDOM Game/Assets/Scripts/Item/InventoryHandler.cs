@@ -90,16 +90,16 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         selectedIndex = index;
         Item item = database.GetItem[inventoryList[currentGroup].itemSlots[index].ID];
 
-        itemInfo.GetChild(0).GetComponent<TMP_Text>().text = item.itemDescription;
-        int numLines = item.itemDescription.Split('\n').Length;
-        string newlinePadding = "\n";
-        for(int i = 0;i < numLines; i++)
-        {
-            newlinePadding += "\n";
-        }
-        itemInfo.GetChild(1).GetComponent<TMP_Text>().text = newlinePadding + item.itemDescription;
-        itemInfo.GetChild(2).GetComponent<TMP_Text>().text = item.itemName;
-        itemInfo.GetChild(3).GetComponent<Image>().sprite = item.icon;
+        TMP_Text description = itemInfo.GetChild(0).GetComponent<TMP_Text>();
+        description.text = item.itemDescription + "\n\n";
+
+        string attackPowerText = $"<color=#FF0000>Attack Power</color>\t----------------\t<color=#FF0000>{item.damage}</color>\n";
+        string speedText = $"<color=#00FF00>Speed</color>\t----------------------\t<color=#00FF00>{item.attackSpeed}</color>\n";
+
+        description.text += attackPowerText + speedText;
+
+        itemInfo.GetChild(1).GetComponent<TMP_Text>().text = item.itemName;
+        itemInfo.GetChild(2).GetComponent<Image>().sprite = item.icon;
 
         crystalSelected.gameObject.SetActive(true);
         crystalSelected.position = inventorySlots[index].transform.position;

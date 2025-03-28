@@ -9,6 +9,14 @@ public class SpibieEntity : Entity
     public float[] wanderDistance = new float[2];
     public float[] wanderInterval = new float[2];
 
+    [Header("Behavior")]
+    public float rallyRadius = 6;
+    public float alertConeDistance;
+    public float alertConeRadius;
+    public float alertRadius;
+    public float unalertDistance;
+    public float unalertTime;
+
     private NavMeshAgent agent;
     private float wanderTimer;
     private Vector3 biasedNormal;
@@ -16,12 +24,17 @@ public class SpibieEntity : Entity
     private Vector3 previousDestination;
 
     private bool alerted = false;
+    private Transform player;
+    private float outerAlertRadius;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         wanderTimer = Random.Range(wanderInterval[0], wanderInterval[1]);
         agent = GetComponent<NavMeshAgent>();
+        player = PlayerController.instance.transform;
+
+        outerAlertRadius = Mathf.Sqrt(alertConeRadius * alertConeRadius + alertConeDistance * alertConeDistance);
     }
 
     // Update is called once per frame
@@ -37,14 +50,39 @@ public class SpibieEntity : Entity
 
                 wanderTimer = Random.Range(wanderInterval[0], wanderInterval[1]);
             }
+
+            if (Vector3.Distance(transform.position, player.position) <= outerAlertRadius)
+            {
+                //detect if player is in a cone shape in front vision + sphere space around
+                //if yes, cancelInvoke Unalert
+            }
         }
         else
         {
-            //if player is detected in a cone shape in front vision + sphere space around
             //move towards player
 
-            //call a circle alert for allies when being attacked
+            if(Vector3.Distance(transform.position, player.position) > unalertDistance)
+            {
+                //Invoke(Unalert, unalertTime)
+            }
         }
+    }
+
+    public override void TakeDamage(Damage damage)
+    {
+        base.TakeDamage(damage);
+        Collider[] hits = Physics.OverlapSphere(transform.position, rallyRadius);
+
+        foreach (Collider hit in hits)
+        {
+            SpibieEntity spibie = hit.GetComponent<SpibieEntity>();
+            if(spibie != null)
+            {
+                spibie.alerted = true;
+            }
+        }
+
+        //call a circle alert for allies when being attacked
     }
 
     private void Wander()
