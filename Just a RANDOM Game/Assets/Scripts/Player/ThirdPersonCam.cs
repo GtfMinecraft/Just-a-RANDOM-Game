@@ -100,10 +100,13 @@ public class ThirdPersonCam : MonoBehaviour
         thirdPersonCam.SetActive(newStyle == CameraStyle.Basic);
         combatCam.SetActive(newStyle == CameraStyle.Combat);
         topDownCam.SetActive(newStyle == CameraStyle.Topdown);
+        
+        if(currentStyle != newStyle)
+        {
+            switchTime = 2 - switchTime;
+            previousOrientation = orientation.forward;
 
-        switchTime = 2 - switchTime;
-        previousOrientation = orientation.forward;
-
-        currentStyle = newStyle;
+            currentStyle = newStyle;
+        }
     }
 }

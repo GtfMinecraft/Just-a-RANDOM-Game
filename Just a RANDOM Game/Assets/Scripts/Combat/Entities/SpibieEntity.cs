@@ -33,6 +33,8 @@ public class SpibieEntity : Entity
             if (wanderTimer <= 0)
             {
                 Wander();
+                //wander also add a central place for each of them to separate after unalerted
+
                 wanderTimer = Random.Range(wanderInterval[0], wanderInterval[1]);
             }
         }

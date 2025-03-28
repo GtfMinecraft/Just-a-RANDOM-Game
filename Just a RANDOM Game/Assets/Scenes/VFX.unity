@@ -153,11 +153,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33be8cb29fbbde641b3451ee9013e782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growSpeed: 0.08
+  growDuration: 0.08
   growDistance: 0.08
   player: {fileID: 833821459}
   strangleDistance: 0.5
   leafPrefab: {fileID: 1054289694849378554, guid: 38b11e4aea715dd45b43163016d0bf1b, type: 3}
+  leafInterval: 080000000c000000
+  vineSineFrequency: 2
+  vineSineAmplitude: 0.15
 --- !u!120 &45367063
 LineRenderer:
   serializedVersion: 2

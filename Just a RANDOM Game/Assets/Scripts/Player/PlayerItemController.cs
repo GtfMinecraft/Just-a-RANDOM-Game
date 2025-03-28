@@ -436,15 +436,19 @@ public class PlayerItemController : MonoBehaviour
         resetAnimTime[isRightAim ? 0 : 1] = Time.time + aimTime;
         Invoke("ResetAnim", aimTime);
         if(Camera.main.GetComponent<ThirdPersonCam>().switchTime <= 0)
-            Invoke("ResetCamera", aimTime);
+            Invoke("ResetCamera", aimTime + 0.01f);
         else
             ResetCamera();
     }
 
     private void ResetCamera()
     {
-        Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
-        InteractablePromptController.instance.DisableCrosshair();
+        if (!isAiming)
+        {
+            print('j');
+            Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
+            InteractablePromptController.instance.DisableCrosshair();
+        }
     }
 
     private void Eat()
