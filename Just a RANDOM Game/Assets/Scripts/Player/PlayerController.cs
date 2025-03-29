@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
                 if ((nowRight || nowLeft) && canInteract[0].GetType() != typeof(ItemInteractable))
                 {
                     if (itemController.isAiming)
-                        itemController.StopAiming();
+                        itemController.StopAiming(true);
                     if (itemController.isFishing)
                         itemController.StopFishing();
                     if (itemController.isEating)

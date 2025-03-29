@@ -121,7 +121,7 @@ public class PlayerItemController : MonoBehaviour
         InventoryCanvasController.instance.ChangeToolInventory(currentInventory);
 
         if (isAiming)
-            StopAiming();
+            StopAiming(true);
 
         if (isFishing)
             StartCoroutine(StopFishing());
@@ -368,7 +368,7 @@ public class PlayerItemController : MonoBehaviour
             if(!esc)
                 ShootArrow();
             else
-                StopAiming();
+                StopAiming(true);
         }
     }
 
@@ -387,7 +387,7 @@ public class PlayerItemController : MonoBehaviour
     {
         //bow anim + vfx
         isAiming = true;
-        CancelInvoke("ResetCamera");
+        StopCoroutine("ResetCameraAfterDelay");
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Combat);
         GetComponent<PlayerEntity>().speedMultiplier *= aimSpeed;
 
@@ -420,7 +420,7 @@ public class PlayerItemController : MonoBehaviour
         StopAiming();
     }
 
-    public void StopAiming()
+    public void StopAiming(bool esc = false)
     {
         CancelInvoke("SummonArrow");
 
@@ -435,17 +435,22 @@ public class PlayerItemController : MonoBehaviour
 
         resetAnimTime[isRightAim ? 0 : 1] = Time.time + aimTime;
         Invoke("ResetAnim", aimTime);
-        if(Camera.main.GetComponent<ThirdPersonCam>().switchTime <= 0)
-            Invoke("ResetCamera", aimTime + 0.01f);
+        if (!esc && Camera.main.GetComponent<ThirdPersonCam>().switchTime <= 0)
+            StartCoroutine(ResetCameraAfterDelay(aimTime + 0.01f));
         else
             ResetCamera();
+    }
+
+    private IEnumerator ResetCameraAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ResetCamera();
     }
 
     private void ResetCamera()
     {
         if (!isAiming)
         {
-            print('j');
             Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Basic);
             InteractablePromptController.instance.DisableCrosshair();
         }

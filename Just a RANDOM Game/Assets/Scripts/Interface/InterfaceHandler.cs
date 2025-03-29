@@ -36,9 +36,6 @@ public class InterfaceHandler : MonoBehaviour
 
     public void CloseAllInterface()
     {
-        PlayerItemController.instance.Release(true, true);
-        PlayerItemController.instance.Release(false, true);
-
         inventoryCanvas.CloseAllInventory();
         //trading.CloseTradingInterface();
         EscCanvas.enabled = false;
@@ -68,6 +65,12 @@ public class InterfaceHandler : MonoBehaviour
         if(control == false)
         {
             player.canControl = false;
+            PlayerItemController itemController = PlayerItemController.instance;
+            if (itemController.isAiming || itemController.isEating)
+            {
+                itemController.Release(true, true);
+                itemController.Release(false, true);
+            }
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -77,9 +80,15 @@ public class InterfaceHandler : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if(currentInterface != Interfaces.None)
+            PlayerItemController itemController = PlayerItemController.instance;
+            if (currentInterface != Interfaces.None)
             {
                 CloseAllInterface();
+            }
+            else if(itemController.isAiming || itemController.isEating)
+            {
+                itemController.Release(true, true);
+                itemController.Release(false, true);
             }
             else
             {
