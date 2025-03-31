@@ -42,6 +42,13 @@ public class StarterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Time.time > 10)
+        {
+            sfx.clip = audioClip[2];
+            gameObject.SetActive(false);
+            return;
+        }
+
         pink.transform.localPosition = new Vector3(0, 0, 0);
         blue.transform.localPosition = new Vector3(0, 0, 0);
         pink.SetActive(false);

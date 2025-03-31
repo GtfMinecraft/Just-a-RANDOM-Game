@@ -12,10 +12,12 @@ public class GameStartup : MonoBehaviour
     public Canvas canvas;
     public Canvas starter;
     public AudioSource music;
+    public GameObject scene;
 
     [HideInInspector]
     public bool played = false;
     private bool once = true;
+    private bool returning = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,18 +25,24 @@ public class GameStartup : MonoBehaviour
         Cursor.visible = false;
         starter.enabled = true;
         canvas.enabled = false;
+
+        if (Time.time > 10)
+        {
+            returning = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown&&played&&once)
+        if ((Input.anyKeyDown&&played || returning)&&once)
         {
             music.Play();
             starter.GetComponent<StarterController>().enabled = false;
             Cursor.visible = true;
             once = false;
             starter.enabled = false;
+            scene.SetActive(true);
             canvas.enabled = true;
             canvas.GetComponent<CanvasGroup>().alpha = 0;
         }

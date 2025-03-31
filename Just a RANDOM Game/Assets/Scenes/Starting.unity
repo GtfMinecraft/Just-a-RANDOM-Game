@@ -2793,6 +2793,7 @@ MonoBehaviour:
   canvas: {fileID: 1683900826}
   starter: {fileID: 18383071}
   music: {fileID: 717700413}
+  scene: {fileID: 1539322325}
   played: 0
 --- !u!114 &1360481221
 MonoBehaviour:
@@ -3252,7 +3253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1539322326
 Transform:
   m_ObjectHideFlags: 0
@@ -3262,7 +3263,7 @@ Transform:
   m_GameObject: {fileID: 1539322325}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.799805, y: 88.01976, z: 5.338867}
+  m_LocalPosition: {x: 8.799805, y: 93.7, z: 5.338867}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3591,7 +3592,7 @@ Canvas:
   m_GameObject: {fileID: 1683900823}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1360481218}
   m_PlaneDistance: 5
   m_PixelPerfect: 0
