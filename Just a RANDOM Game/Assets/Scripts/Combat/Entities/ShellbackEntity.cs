@@ -3,16 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ShellbackEntity : Entity
+public class ShellbackEntity : HostileEntity
 {
-    private NavMeshAgent agent;
-    private Transform player;
+    [Header("Animation")]
+    public float walkAnimThreshold = 1f;
+
+    private Animator anim;
 
     protected override void Start()
     {
         base.Start();
-        player = PlayerController.instance.transform;
-        agent = GetComponent<NavMeshAgent>();
+        anim.GetComponent<Animator>();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if(agent.velocity.magnitude >= walkAnimThreshold)
+        {
+            //anim.SetBool("walk", true);
+            //walk ground dust vfx
+            //walk sound
+        }
+        else
+        {
+            //anim.SetBool("walk", false);
+        }
+
+        if (Vector3.Distance(player.transform.position, transform.position) <= 10)
+        {
+            //anim.SetBool("pounce", true);
+            //pounce sound
+            //calculate damage to player
+        }
+        else
+        {
+            //anim.SetBool("pounce", false);
+        }
     }
 
     public override void Kill()

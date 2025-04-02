@@ -775,28 +775,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1826609245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b11a2db79883ba545adec07e832f28cc, type: 3}
+  m_Script: {fileID: 11500000, guid: a67022557c6c3fb4ebf527f7156a837a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   entityName: 
   model: {fileID: 0}
-  maxHealth: 0
-  health: 0
-  baseSpeed: 0
-  speedMultiplier: 0
-  baseDamage: 0
-  damageMultiplier: 0
+  maxHealth: 100
+  health: 100
+  baseSpeed: 1
+  speedMultiplier: 1
+  baseDamage: 25
+  damageMultiplier: 1
   spawnPoints: []
   respawnCooldown:
   - 0
   - 0
-  target: {fileID: 547266915}
+  player: {fileID: 547266915}
   wanderDistance:
   - 3
   - 10
   wanderInterval:
   - 4
   - 12
+  rallyRadius: 6
+  alertConeDistance: 0
+  alertConeRadius: 0
+  alertRadius: 0
+  unalertDistance: 0
+  unalertTime: 0
+  walkAnimThreshold: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
