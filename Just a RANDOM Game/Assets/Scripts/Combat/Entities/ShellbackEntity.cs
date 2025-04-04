@@ -6,39 +6,42 @@ using UnityEngine.AI;
 public class ShellbackEntity : HostileEntity
 {
     [Header("Animation")]
-    public float walkAnimThreshold = 1f;
+    public float walkAnimSpeed = 1f;
 
     private Animator anim;
 
     protected override void Start()
     {
         base.Start();
-        anim.GetComponent<Animator>();
+        anim = entityObj.GetComponent<Animator>();
     }
 
     protected override void Update()
     {
         base.Update();
-        if(agent.velocity.magnitude >= walkAnimThreshold)
+        if(agent.hasPath)
         {
-            //anim.SetBool("walk", true);
+            print("hi");
+            Vector3 ratio = agent.transform.InverseTransformDirection(agent.velocity).normalized;
+            anim.SetBool("Walk", true);
+            anim.SetFloat("Speed",  Mathf.Max(ratio.x, ratio.z) * walkAnimSpeed);
             //walk ground dust vfx
             //walk sound
         }
         else
         {
-            //anim.SetBool("walk", false);
+            anim.SetBool("Walk", false);
         }
 
-        if (Vector3.Distance(player.transform.position, transform.position) <= 10)
+        if (Vector3.Distance(player.transform.position, transform.position) <= 1)
         {
-            //anim.SetBool("pounce", true);
+            anim.SetBool("Charge", true);
             //pounce sound
             //calculate damage to player
         }
         else
         {
-            //anim.SetBool("pounce", false);
+            anim.SetBool("Charge", false);
         }
     }
 

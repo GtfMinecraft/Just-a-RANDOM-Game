@@ -30,6 +30,7 @@ public class HostileEntity : Entity
     // Start is called before the first frame update
     protected override void Start()
     {
+        base.Start();
         wanderTimer = Random.Range(wanderInterval[0], wanderInterval[1]);
         agent = GetComponent<NavMeshAgent>();
         //player = PlayerController.instance.transform;

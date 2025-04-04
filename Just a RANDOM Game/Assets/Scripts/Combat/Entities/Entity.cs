@@ -60,7 +60,7 @@ abstract public class Entity : MonoBehaviour, IDataPersistence
     {
         if(respawnTimer <= 0)
         {
-            entityObj = ObjectPoolManager.CreatePooled(entityObj, transform.position, transform.rotation);
+            entityObj = ObjectPoolManager.CreatePooled(model, transform.position, transform.rotation);
             entityObj.transform.SetParent(transform);
             isSpawn = true;
         }
