@@ -10990,12 +10990,12 @@ MonoBehaviour:
   botInterface: {fileID: 21300000, guid: 9d74d2a526f47a741b0f8832f2e85bc4, type: 3}
   pickedDropParent: {fileID: 1710286662}
   pickedDropPrefab: {fileID: 1877170659817333270, guid: 501ed1a56dc96624a88f5e0014348187, type: 3}
-  pickedDrophintTime: 1.2
+  pickedDropHintTime: 1.2
   pickedDropColors:
-  - {r: 0.5803922, g: 0.5803922, b: 0.5803922, a: 0.7058824}
-  - {r: 0.33669543, g: 0.57266206, b: 0.8050314, a: 0.7058824}
-  - {r: 0.8679245, g: 0.6567884, b: 0.23199224, a: 0.7058824}
-  - {r: 0.7137255, g: 0.5176471, b: 0.72156864, a: 0.7058824}
+  - {fileID: 21300000, guid: b2671e357cd5af94b8690e1d21965eb4, type: 3}
+  - {fileID: 21300000, guid: f811a25c46622f44281a41cbd187ac8a, type: 3}
+  - {fileID: 21300000, guid: 9dc493231eff4fe4eb5dd96d5f70d20b, type: 3}
+  - {fileID: 21300000, guid: 514495dbc976afa48a0f8b98ee30b0d4, type: 3}
 --- !u!1 &90097169
 GameObject:
   m_ObjectHideFlags: 0
@@ -33386,7 +33386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555352170}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.25930947, y: -0.077402055, z: 0.026062822, w: 0.9623348}
+  m_LocalRotation: {x: 0.25930947, y: -0.07740209, z: 0.026062833, w: 0.9623348}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -66886,7 +66886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237832001}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23873542, y: 0.000000012887183, z: -0.000000003168238, w: 0.97108465}
+  m_LocalRotation: {x: 0.23873542, y: -2.9916367e-10, z: 7.354762e-11, w: 0.97108465}
   m_LocalPosition: {x: 9.658215, y: 7.5603876, z: -16.50956}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -99270,7 +99270,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -200}
+  m_AnchoredPosition: {x: 30, y: -10}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1710286663
@@ -99291,7 +99291,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 25
+  m_Spacing: -311.1
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -100409,7 +100409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2006882692
 Transform:
   m_ObjectHideFlags: 0

@@ -20,8 +20,8 @@ public class InteractablePromptController : MonoBehaviour
     [Header("Picked Drop")]
     public Transform pickedDropParent;
     public GameObject pickedDropPrefab;
-    public float pickedDrophintTime = 1.2f;
-    public Color[] pickedDropColors = new Color[4];
+    public float pickedDropHintTime = 1.2f;
+    public Sprite[] pickedDropColors = new Sprite[4];
     /* White: Material
      * Blue: Tool & Armor
      * Orange: Consumable
@@ -68,7 +68,7 @@ public class InteractablePromptController : MonoBehaviour
     {
         if (pickedDrops.Contains(itemID))
         {
-            TMP_Text countText = pickedDropParent.GetChild(pickedDrops.IndexOf(itemID)).GetChild(3).GetComponent<TMP_Text>();
+            TMP_Text countText = pickedDropParent.GetChild(pickedDrops.IndexOf(itemID)).GetChild(2).GetComponent<TMP_Text>();
             countText.text = "x" + (Int32.Parse(countText.text.Substring(1)) + count);
             return;
         }
@@ -78,19 +78,19 @@ public class InteractablePromptController : MonoBehaviour
         Transform hint = Instantiate(pickedDropPrefab, pickedDropParent).transform;
         int type = (int)item.itemType;
         if(type >= 13 && type <= 16)
-            hint.GetComponent<Image>().color = pickedDropColors[0];
+            hint.GetComponent<Image>().sprite = pickedDropColors[0];
         else if(type == 7 || type == 12)
-            hint.GetComponent<Image>().color = pickedDropColors[2];
+            hint.GetComponent<Image>().sprite = pickedDropColors[2];
         else if(type == 17)
-            hint.GetComponent<Image>().color = pickedDropColors[3];
+            hint.GetComponent<Image>().sprite = pickedDropColors[3];
         else
-            hint.GetComponent<Image>().color = pickedDropColors[1];
-        hint.GetChild(1).GetComponent<Image>().sprite = item.icon;
-        hint.GetChild(2).GetComponent<TMP_Text>().text = item.itemName;
-        hint.GetChild(3).GetComponent<TMP_Text>().text = "x" + count;
+            hint.GetComponent<Image>().sprite = pickedDropColors[1];
+        hint.GetChild(0).GetComponent<Image>().sprite = item.icon;
+        hint.GetChild(1).GetComponent<TMP_Text>().text = item.itemName;
+        hint.GetChild(2).GetComponent<TMP_Text>().text = "x" + count;
 
         pickedDrops.Add(itemID);
-        Invoke("RemoveDrop", pickedDrophintTime);
+        Invoke("RemoveDrop", pickedDropHintTime);
     }
 
     private void RemoveDrop()
