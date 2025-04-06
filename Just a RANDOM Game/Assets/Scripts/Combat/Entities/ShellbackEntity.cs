@@ -21,7 +21,6 @@ public class ShellbackEntity : HostileEntity
         base.Update();
         if(agent.hasPath)
         {
-            print("hi");
             Vector3 ratio = agent.transform.InverseTransformDirection(agent.velocity).normalized;
             anim.SetBool("Walk", true);
             anim.SetFloat("Speed",  Mathf.Max(ratio.x, ratio.z) * walkAnimSpeed);

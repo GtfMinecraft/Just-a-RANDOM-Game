@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EscController : MonoBehaviour
 {
-    public EscController instance;
+    public static EscController instance;
 
     private void Awake()
     {
