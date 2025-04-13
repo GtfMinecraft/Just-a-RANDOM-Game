@@ -159,6 +159,9 @@ public class PlayerController : MonoBehaviour
         float speedMultiplier = isRunning ? runMultiplier : 1f;
         float maxSpeed = GetComponent<PlayerEntity>().baseSpeed * GetComponent<PlayerEntity>().speedMultiplier;
 
+        anim.SetBool("Walking", currentMovement != Vector2.zero);
+        anim.SetBool("Running", isRunning);
+
         if (!nowDashing)
 		{
 			targetVelocity = Quaternion.AngleAxis(orientation.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed * speedMultiplier;
