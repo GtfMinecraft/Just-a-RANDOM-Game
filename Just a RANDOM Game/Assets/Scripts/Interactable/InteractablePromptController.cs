@@ -90,12 +90,13 @@ public class InteractablePromptController : MonoBehaviour
         hint.GetChild(2).GetComponent<TMP_Text>().text = "x" + count;
 
         pickedDrops.Add(itemID);
-        Invoke("RemoveDrop", pickedDropHintTime);
+        StartCoroutine(RemoveDrop(hint.gameObject, pickedDropHintTime));
     }
 
-    private void RemoveDrop()
+    private IEnumerator RemoveDrop(GameObject drop, float delay)
     {
-        Destroy(pickedDropParent.GetChild(0).gameObject);
+        yield return new WaitForSeconds(delay);
+        Destroy(drop);
     }
 
     public void ResetPickedDrops()
