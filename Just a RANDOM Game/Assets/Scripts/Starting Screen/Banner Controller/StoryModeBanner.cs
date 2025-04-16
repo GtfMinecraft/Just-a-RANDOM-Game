@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StoryModeBanner : StartingBanner
+public class StoryModeBanner : StartingBanner, IDataPersistence
 {
     public TMP_Text loading;
     public float loadingDotSpeed;
@@ -19,6 +19,8 @@ public class StoryModeBanner : StartingBanner
     private bool activateOnce = true;
     AsyncOperation activation;
     private float time = 0;
+
+    private ChunkTypes chunk = ChunkTypes.Logging;
 
     private void Start()
     {
@@ -44,11 +46,13 @@ public class StoryModeBanner : StartingBanner
             {
                 activateOnce = false;
                 activation = gameScene.Result.ActivateAsync();
+                DataPersistenceManager.firstLoad = true;
             }
 
             if (activation.isDone)
             {
                 SceneManager.SetActiveScene(gameScene.Result.Scene);
+                DataPersistenceManager.instance.SceneLoad();
                 SceneManager.UnloadSceneAsync("Starting");
             }
         }
@@ -56,8 +60,8 @@ public class StoryModeBanner : StartingBanner
 
     async void LoadScenes()
     {
-        //var mapsScene = Addressables.LoadSceneAsync("Maps", LoadSceneMode.Additive);
-        //await mapsScene.Task;
+        //load chunk
+        //await Addressables.LoadSceneAsync("Maps", LoadSceneMode.Additive).Task;
 
         gameScene = Addressables.LoadSceneAsync("PlayerScene", LoadSceneMode.Additive, false);
         await gameScene.Task;
@@ -70,5 +74,15 @@ public class StoryModeBanner : StartingBanner
         //TODO: swipe left to the save files -> fade black
         //TODO: set DataPersistenceManager saveFileIndex
         loading.enabled = true;
+    }
+
+    public void LoadData(GameData data)
+    {
+        chunk = data.statisticsData.playerChunk;
+    }
+
+    public void SaveData(GameData data)
+    {
+
     }
 }

@@ -47,7 +47,7 @@ public class EscController : MonoBehaviour
     private IEnumerator LoadStartingScene()
     {
         yield return new WaitForEndOfFrame();
-        DestoryDontDestroyOnLoad();
+        //DestoryDontDestroyOnLoad();
         SceneManager.LoadSceneAsync("Starting");
     }
 

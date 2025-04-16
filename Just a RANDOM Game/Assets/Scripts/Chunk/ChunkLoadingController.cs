@@ -28,6 +28,7 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
     void Start()
     {
         SpawnPlayer();
+        loadedChunks[(int)currentChunk] = true;
         ChangeLoadedChunks(currentChunk);
     }
 

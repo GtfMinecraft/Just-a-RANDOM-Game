@@ -25,6 +25,10 @@ public class DataPersistenceManager : MonoBehaviour
     private FileDataHandler dataHandler;
     private List<IDataPersistence> dataPersistenceObjects;
 
+    [HideInInspector]
+    public static bool firstLoad = false;
+    private List<GameObject> gameObjectStates = new List<GameObject>();
+
     /*  
      *  TODO: save file timing, multiple save files
      *  
@@ -58,6 +62,15 @@ public class DataPersistenceManager : MonoBehaviour
         dataHandler = new FileDataHandler(Application.persistentDataPath, useEncryption);
     }
 
+    public void SceneLoad()
+    {
+        foreach (var entry in gameObjectStates)
+        {
+            entry.SetActive(true);
+        }
+        gameObjectStates.Clear();
+    }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -72,6 +85,19 @@ public class DataPersistenceManager : MonoBehaviour
     {
         dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
+
+        if (firstLoad)
+        {
+            firstLoad = false;
+            foreach (GameObject obj in FindObjectsOfType<GameObject>())
+            {
+                if (obj.scene == SceneManager.GetSceneByName("Game") && obj.activeSelf && obj != gameObject)
+                {
+                    gameObjectStates.Add(obj);
+                    obj.SetActive(false);
+                }
+            }
+        }
     }
 
     public void NewGame()
