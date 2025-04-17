@@ -77,6 +77,13 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         //    groups[i] = groupUI.GetChild(i).GetComponent<Image>();
         //}
 
+        for (int i = 0; i < slotCount; ++i)
+        {
+            GameObject slot = Instantiate(slotPrefab, storage);
+            int remainder = i % 9;
+            slot.GetComponent<RectTransform>().anchoredPosition = new Vector2(97.7f + (remainder % 5) * 129.6f + (remainder <= 4 ? 0 : 64.8f), 946 - (i / 9) * 162.06f - (remainder <= 4 ? 0 : 81.03f));
+        }
+
         inventorySlots = new InventorySlotUI[storage.childCount];
         for(int i = 0; i < inventorySlots.Length; i++)
         {
@@ -247,12 +254,6 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         slotCount = data.inventoryData[0].itemIDs.Count;// future function to implement: dynamically adjust inventory space to add 1 row
-        for (int i = 0; i < slotCount; ++i)
-        {
-            GameObject slot = Instantiate(slotPrefab, storage);
-            int remainder = i % 9;
-            slot.GetComponent<RectTransform>().anchoredPosition = new Vector2(97.7f + (remainder % 5) * 129.6f + (remainder <= 4 ? 0 : 64.8f), 946 - (i / 9) * 162.06f - (remainder <= 4 ? 0 : 81.03f));
-        }
 
         for (int i = 0; i < data.inventoryData.Count; i++)
         {
