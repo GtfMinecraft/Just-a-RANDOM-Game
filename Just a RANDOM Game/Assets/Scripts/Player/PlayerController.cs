@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
         RunAnimTrance();
     }
-
+    private bool firstJump = true;
     private void UpdateVelocity()
 	{
         float speedMultiplier = isRunning ? runMultiplier : 1f;
@@ -162,33 +162,47 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Walking", currentMovement != Vector2.zero);
         anim.SetBool("Running", isRunning);
 
+        if(!anim.GetBool("Jump") && !isGrounded && firstJump)
+        {
+            firstJump = false;
+            anim.SetBool("Jump", true);
+        }
+        else if (anim.GetBool("Jump") && currentVelocity.y < 0 && Physics.Raycast(playerObj.position, Vector3.down, midAirUseDistance))
+        {
+            anim.SetBool("Jump", false);
+        }
+        else if(!anim.GetBool("Jump") && isGrounded && !firstJump)
+        {
+            firstJump = true;
+        }
+
         if (!nowDashing)
-		{
-			targetVelocity = Quaternion.AngleAxis(orientation.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed * speedMultiplier;
-			horizontalVelocity = new Vector3(playerCharacterController.velocity.x, 0, playerCharacterController.velocity.z);
+        {
+            targetVelocity = Quaternion.AngleAxis(orientation.eulerAngles.y, Vector3.up) * new Vector3(currentMovement.x, 0, currentMovement.y) * maxSpeed * speedMultiplier;
+            horizontalVelocity = new Vector3(playerCharacterController.velocity.x, 0, playerCharacterController.velocity.z);
 
-			if (isGrounded && isJumping)
-			{
-				currentVelocity.y = jumpSpeed;
-			}
+            if (isGrounded && isJumping)
+            {
+                currentVelocity.y = jumpSpeed;
+            }
 
-			// update horizontal velocity
-			if (targetVelocity == Vector3.zero)
-				horizontalVelocity *= Mathf.Pow(0.5f, (isGrounded ? groundFriction : airResistance) * Time.deltaTime);
-			else if (isGrounded)
-			{
-				horizontalVelocity = Vector3.Lerp(horizontalVelocity, targetVelocity, groundAcceleration * speedMultiplier * Time.deltaTime);
-			}
-			else
-			{
-				horizontalVelocity = Vector3.Lerp(horizontalVelocity, targetVelocity, airAcceleration * speedMultiplier * Time.deltaTime);
-			}
+            // update horizontal velocity
+            if (targetVelocity == Vector3.zero)
+                horizontalVelocity *= Mathf.Pow(0.5f, (isGrounded ? groundFriction : airResistance) * Time.deltaTime);
+            else if (isGrounded)
+            {
+                horizontalVelocity = Vector3.Lerp(horizontalVelocity, targetVelocity, groundAcceleration * speedMultiplier * Time.deltaTime);
+            }
+            else
+            {
+                horizontalVelocity = Vector3.Lerp(horizontalVelocity, targetVelocity, airAcceleration * speedMultiplier * Time.deltaTime);
+            }
 
             // update vertical velocity
             if (!isGrounded)
                 currentVelocity.y -= gravity * Time.deltaTime;
 
-			// limit speed
+            // limit speed
             horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, maxSpeed * speedMultiplier);
         }
 
@@ -204,17 +218,14 @@ public class PlayerController : MonoBehaviour
 			else
 			{
 				nowDashing = false;
-				dashCooldownTracker = dashCooldown;
+                anim.SetInteger("PlayerAction", 0);
+                dashCooldownTracker = dashCooldown;
             }
         }
 
         if (dashCooldownTracker > 0f)
 		{
             dashCooldownTracker -= Time.deltaTime;
-        }
-        else if (anim.GetInteger("PlayerAction") == 1 && !nowDashing && dashCooldownTracker <= 0f)
-        {
-            anim.SetInteger("PlayerAction", 0);
         }
         else if (anim.GetInteger("PlayerAction") == 0 && dashCooldownTracker <= 0f && (isGrounded || dashInAir) && isDashing && !nowDashing)
 		{
@@ -346,7 +357,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if(anim.GetInteger("PlayerAction") != 0 && Enum.TryParse(ctx.action.name, out AnimTrance trance))
+            if(Enum.TryParse(ctx.action.name, out AnimTrance trance) && (anim.GetInteger("PlayerAction") != 0 || trance == AnimTrance.Dash && dashCooldownTracker > 0))
             {
                 animTrance = trance;
                 CancelInvoke("ResetAnimTrance");

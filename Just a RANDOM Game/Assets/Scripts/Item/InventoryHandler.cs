@@ -245,6 +245,7 @@ public class InventoryHandler : MonoBehaviour, IDataPersistence
         int itemID = inventoryList[currentGroup].itemSlots[hoveredSlot].ID;
         int count = dropAll ? inventoryList[currentGroup].itemSlots[hoveredSlot].currentStack : 1;
         RemoveItem(itemID, count, hoveredSlot);
+        PlayerController.instance.anim.SetTrigger("Throw Item");
         //vfx
         Vector3 position = PlayerController.instance.transform.position + PlayerController.instance.playerObj.forward;
         for(int i = 0; i < count; i++)

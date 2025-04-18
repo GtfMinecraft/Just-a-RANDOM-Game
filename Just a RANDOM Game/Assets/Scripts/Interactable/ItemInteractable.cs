@@ -6,7 +6,7 @@ using UnityEngine;
 public class ItemInteractable : Interactable
 {
     public int itemID;
-    private float interactTime = 0.3f; // *** picking time has to be in sync with anim
+    private float interactTime = 0.916667f; // *** picking time has to be in sync with anim
     private bool isPicked = false;
 
     public override void Interact()

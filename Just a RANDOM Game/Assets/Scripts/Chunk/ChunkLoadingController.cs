@@ -28,7 +28,8 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
     void Start()
     {
         SpawnPlayer();
-        loadedChunks[(int)currentChunk] = true;
+        if(DataPersistenceManager.firstLoad)
+            loadedChunks[(int)currentChunk] = true;
         ChangeLoadedChunks(currentChunk);
     }
 
@@ -67,6 +68,7 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
             chunksToLoad[(int)chunk] = chunksToLoad[6 - (int)chunk] = true;
         }
 
+        DataPersistenceManager.instance.SaveGame();
         LoadChunks(chunksToLoad);
     }
 

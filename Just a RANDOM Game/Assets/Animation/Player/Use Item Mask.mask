@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Use Item Mask
+  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 1
+  - m_Path: Armature/Consoler
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_L/lowerleg_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_L/lowerleg_L/foot_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_L/lowerleg_L/foot_L/foot_L_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_R/lowerleg_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_R/lowerleg_R/foot_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/upperleg_R/lowerleg_R/foot_R/foot_R_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/neck
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/neck/head
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/neck/head/head_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      index_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      index_L/Middle index_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      index_L/Middle index_L/Lower index_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      index_L/Middle index_L/Lower index_L/Lower index_L_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      middle_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      middle_L/Middle middle_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      middle_L/Middle middle_L/Lower middle_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      middle_L/Middle middle_L/Lower middle_L/Lower middle_L_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      pinky_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      pinky_L/Lower pinky_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      pinky_L/Lower pinky_L/Lower pinky_L_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      ring_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      ring_L/Middle ring_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      ring_L/Middle ring_L/Lower ring_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      ring_L/Middle ring_L/Lower ring_L/Lower ring_L_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      thumb_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      thumb_L/Middle thumb_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      thumb_L/Middle thumb_L/Lower thumb_L
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_L/upperarm_L/lowerarm_L/hand_L/Upper
+      thumb_L/Middle thumb_L/Lower thumb_L/Lower thumb_L_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      index_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      index_R/Middle index_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      index_R/Middle index_R/Lower index_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      index_R/Middle index_R/Lower index_R/Lower index_R_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      middle_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      middle_R/Middle middle_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      middle_R/Middle middle_R/Lower middle_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      middle_R/Middle middle_R/Lower middle_R/Lower middle_R_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      pinky_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      pinky_R/Lower pinky_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      pinky_R/Lower pinky_R/Lower pinky_R_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      ring_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      ring_R/Middle ring_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      ring_R/Middle ring_R/Lower ring_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      ring_R/Middle ring_R/Lower ring_R/Lower ring_R_end
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      thumb_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      thumb_R/Middle thumb_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      thumb_R/Middle thumb_R/Lower thumb_R
+    m_Weight: 1
+  - m_Path: Armature/Consoler/Butt/waist/Lower chest/Upper chest/Shoulder_R/upperarm_R/lowerarm_R/hand_R/Upper
+      thumb_R/Middle thumb_R/Lower thumb_R/Lower thumb_R_end
+    m_Weight: 1
+  - m_Path: Belt 1.001
+    m_Weight: 1
+  - m_Path: Belt 3.001
+    m_Weight: 1
+  - m_Path: Belt 4.003
+    m_Weight: 1
+  - m_Path: 'Belt Clip '
+    m_Weight: 1
+  - m_Path: Belt Clip 3.001
+    m_Weight: 1
+  - m_Path: Belt Fix.003
+    m_Weight: 1
+  - m_Path: Belt Fix.005
+    m_Weight: 1
+  - m_Path: Belt Fix.006
+    m_Weight: 1
+  - m_Path: Body_reto
+    m_Weight: 1
+  - m_Path: eyes
+    m_Weight: 1
+  - m_Path: Hair Reto
+    m_Weight: 1
+  - m_Path: Legging lower_reto
+    m_Weight: 1
+  - m_Path: Legging upper_reto
+    m_Weight: 1
+  - m_Path: Shawl.001
+    m_Weight: 1
+  - m_Path: Shirt_reto Partly Subdivide
+    m_Weight: 1
+  - m_Path: Shoe lace
+    m_Weight: 1
+  - m_Path: Shoes
+    m_Weight: 1
+  - m_Path: Skirt_reto
+    m_Weight: 1
