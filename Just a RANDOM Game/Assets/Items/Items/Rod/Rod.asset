@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01cf5149fbef7ad4ca5d44c3511fd7f2, type: 3}
   m_Name: Rod
   m_EditorClassIdentifier: 
-  ID: 4
+  ID: 8
   itemName: Fishing Rod
   itemDescription: Simple rod for catching fish. Patience is its only requirement.
   icon: {fileID: 21300000, guid: d91fe02bfa65c9f47a3f82b0900b7842, type: 3}
-  model: {fileID: 2297453642340661118, guid: 65196f909563a5341a93913a03a1c5fc, type: 3}
+  model: {fileID: 2191995137156924329, guid: f72db8c3402a61049a726ac7b14938d3, type: 3}
   inventoryType: 0
   itemType: 6
+  damage: 0
   attackSpeed: 1
   range: {x: 0, y: 0, z: 0}
   maxStack: 1

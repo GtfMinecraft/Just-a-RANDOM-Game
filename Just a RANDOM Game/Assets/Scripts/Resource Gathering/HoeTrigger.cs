@@ -6,6 +6,7 @@ public class HoeTrigger : MonoBehaviour
 {
     [HideInInspector]
     public bool detect = false;
+    [HideInInspector]
     public Vector3 range;
 
     private void OnCollisionEnter(Collision collision)

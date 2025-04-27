@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Carrot
   itemDescription: A crisp, sweet root used in cooking or planting.
   icon: {fileID: 21300000, guid: c88ca657f70acc844b71c9be2acf2a10, type: 3}
-  model: {fileID: 0}
+  model: {fileID: 2356969861789090825, guid: dc6df60aafbfecb4ca883ab7940e0ea5, type: 3}
   inventoryType: 0
   itemType: 13
   damage: 0

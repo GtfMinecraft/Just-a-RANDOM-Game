@@ -62,7 +62,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isRunning;
 	private bool isJumping;
-	private bool isInteracting = false;
+    private bool firstJump = true;
+    private bool isInteracting = false;
     [HideInInspector]
     public bool forcedInteraction = false;
     private bool isDashing;
@@ -98,16 +99,15 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
 	{
-        isGrounded = playerCharacterController.isGrounded;
+        isGrounded = playerCharacterController.isGrounded || Physics.Raycast(playerObj.position, Vector3.down, 1.1f);
         int playerAction = anim.GetInteger("PlayerAction");
 
-        if (MovementIsEnable())
-        {
-            UpdateVelocity();
+        UpdateVelocity();
 
-            // handle movement
-            playerCharacterController.Move(currentVelocity * Time.deltaTime);
-        }
+        // handle movement
+        playerCharacterController.Move(currentVelocity * Time.deltaTime);
+
+        anim.SetBool("Walking", currentMovement != Vector2.zero && !forcedInteraction);
 
         List<Interactable> canInteract = InteractablePrompt();
 
@@ -153,13 +153,20 @@ public class PlayerController : MonoBehaviour
 
         RunAnimTrance();
     }
-    private bool firstJump = true;
+
     private void UpdateVelocity()
 	{
+        if (!MovementIsEnable())
+        {
+            isDashing = false;
+            isJumping = false;
+            isRunning = false;
+            currentMovement = Vector2.zero;
+        }
+
         float speedMultiplier = isRunning ? runMultiplier : 1f;
         float maxSpeed = GetComponent<PlayerEntity>().baseSpeed * GetComponent<PlayerEntity>().speedMultiplier;
 
-        anim.SetBool("Walking", currentMovement != Vector2.zero);
         anim.SetBool("Running", isRunning);
 
         if(!anim.GetBool("Jump") && !isGrounded && firstJump)
@@ -167,7 +174,7 @@ public class PlayerController : MonoBehaviour
             firstJump = false;
             anim.SetBool("Jump", true);
         }
-        else if (anim.GetBool("Jump") && currentVelocity.y < 0 && Physics.Raycast(playerObj.position, Vector3.down, midAirUseDistance))
+        else if (anim.GetBool("Jump") && currentVelocity.y <= 0 && Physics.Raycast(playerObj.position, Vector3.down, midAirUseDistance))
         {
             anim.SetBool("Jump", false);
         }
@@ -219,6 +226,7 @@ public class PlayerController : MonoBehaviour
 			{
 				nowDashing = false;
                 anim.SetInteger("PlayerAction", 0);
+                anim.SetBool("Dash", false);
                 dashCooldownTracker = dashCooldown;
             }
         }
@@ -233,6 +241,7 @@ public class PlayerController : MonoBehaviour
             isDashing = false;
             dashTimer = Time.time;
             anim.SetInteger("PlayerAction", 1);
+            anim.SetBool("Dash", true);
         }
 
         horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, dashSpeed);
@@ -438,11 +447,13 @@ public class PlayerController : MonoBehaviour
         if (ctx.performed)
         {
             usingRight = true;
+            anim.SetBool("RightHand", true);
         }
         else if (ctx.canceled)
         {
             usingRight = false;
-            if(nowRight)
+            anim.SetBool("RightHand", false);
+            if (nowRight)
             {
                 PlayerItemController.instance.Release();
             }
@@ -454,10 +465,12 @@ public class PlayerController : MonoBehaviour
         if (ctx.performed)
         {
             usingLeft = true;
+            anim.SetBool("LeftHand", true);
         }
         else if (ctx.canceled)
         {
             usingLeft = false;
+            anim.SetBool("LeftHand", false);
             if (nowLeft)
             {
                 PlayerItemController.instance.Release(false);

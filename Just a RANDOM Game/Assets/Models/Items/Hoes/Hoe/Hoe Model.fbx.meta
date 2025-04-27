@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3105c9671f5495641ad43759d19e3c1c
+guid: 1c07f49a6bc58414ebfc1983b50adbc0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.002
-    second: {fileID: 2100000, guid: 21c1d070930af97498cf3806bec5a39a, type: 2}
+      name: Cube_
+    second: {fileID: 2100000, guid: 1845988d1852af043a12abb93ddd8297, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane
+    second: {fileID: 2100000, guid: d87f72812563af84e9ce3059ea9867d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bottom low
+    second: {fileID: 2100000, guid: 9cbcb9333a41bc742b3d51815abd4c76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bottom_low.002
+    second: {fileID: 2100000, guid: bf21ffca9d0ed724a815ac548e73c78f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

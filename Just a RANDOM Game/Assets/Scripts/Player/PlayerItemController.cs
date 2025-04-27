@@ -31,6 +31,8 @@ public class PlayerItemController : MonoBehaviour
     public float aimSpeed = 0.3f;
     public float aimTime = 0.5f;
     public GameObject arrowPrefab;
+    public Vector3 rightAimOffset;
+    public Vector3 leftAimOffset;
     private GameObject arrow;
     public float eatSpeed = 0.3f;
     public Vector3 torchOrigin;
@@ -288,7 +290,7 @@ public class PlayerItemController : MonoBehaviour
         }
         else if (item.itemType == ItemTypes.Hoe)
         {
-            anim.SetInteger("ItemType", 4);
+            anim.SetInteger("ItemType", 5);
 
             HoeTrigger hoeTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<HoeTrigger>();
             hoeTrigger.detect = true;
@@ -303,7 +305,7 @@ public class PlayerItemController : MonoBehaviour
         {
             if (!isFishing)
             {
-                anim.SetInteger("ItemType", 5);
+                anim.SetInteger("ItemType", 6);
                 rodTrigger = rightHandObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<RodTrigger>();
                 rodTrigger.detect = true;
                 fishTime = item.attackSpeed;
@@ -320,7 +322,7 @@ public class PlayerItemController : MonoBehaviour
             //eat
             if (!isEating)
             {
-                anim.SetInteger("ItemType", 6);
+                anim.SetInteger("ItemType", 7);
                 Invoke("Eat", toolUseTime[5]);
                 isRightEat = isRight;
                 GetComponent<PlayerEntity>().speedMultiplier *= eatSpeed;
@@ -328,7 +330,7 @@ public class PlayerItemController : MonoBehaviour
         }
         else if(item.itemType == ItemTypes.Crop)
         {
-            anim.SetInteger("ItemType", 7); //throw carrot anim
+            anim.SetInteger("ItemType", 8); //throw carrot anim
 
             StartFarming(item.range, item.ID);
             float useTime = toolUseTime[6] * (1 - item.attackSpeed / 100f);
@@ -341,7 +343,7 @@ public class PlayerItemController : MonoBehaviour
             LayerMask layerMask = 1 << 7;
             if (Physics.Raycast(playerObj.position + torchOrigin, playerObj.rotation * torchPlacement, out RaycastHit wallToPlace, torchPlacement.magnitude, layerMask))
             {
-                anim.SetInteger("ItemType", 8);
+                anim.SetInteger("ItemType", 9);
 
                 GameObject torch = isRight ? rightHandObj.transform.GetChild(0).gameObject : leftHandObj.transform.GetChild(0).gameObject;
                 torchCoroutine = StartCoroutine(PlaceTorch(toolUseTime[7], isRight, item.ID, torch, wallToPlace));
@@ -385,14 +387,13 @@ public class PlayerItemController : MonoBehaviour
 
     private void StartAiming()
     {
-        //bow anim + vfx
         isAiming = true;
         StopCoroutine("ResetCameraAfterDelay");
         Camera.main.GetComponent<ThirdPersonCam>().SwitchCameraStyle(CameraStyle.Combat);
         GetComponent<PlayerEntity>().speedMultiplier *= aimSpeed;
 
         float switchTime = Camera.main.GetComponent<ThirdPersonCam>().switchTime;
-        Invoke("SummonArrow", (switchTime <= 0) ? aimTime : switchTime);
+        Invoke("SummonArrow", Mathf.Max(aimTime, switchTime));
 
         if (switchTime <= 0)
             InteractablePromptController.instance.EnableCrosshair();
@@ -401,8 +402,10 @@ public class PlayerItemController : MonoBehaviour
     private void SummonArrow()
     {
         Vector3 arrowDirection = Camera.main.GetComponent<ThirdPersonCam>().combatLookAt.position - Camera.main.transform.position;
-        arrow = ObjectPoolManager.CreatePooled(arrowPrefab, isRightAim ? rightHandObj.transform.position : leftHandObj.transform.position, Quaternion.LookRotation(arrowDirection));
-        arrow.transform.SetParent(PlayerController.instance.playerObj);
+        Transform playerObj = PlayerController.instance.playerObj;
+        arrow = ObjectPoolManager.CreatePooled(arrowPrefab, leftHandObj.transform.GetChild(0).position, Quaternion.LookRotation(arrowDirection));
+        arrow.transform.SetParent(leftHandObj.transform.GetChild(0));
+        arrow.transform.localPosition = isRightAim ? rightAimOffset : leftAimOffset;
 
         InteractablePromptController.instance.EnableCrosshair();
     }
@@ -411,6 +414,7 @@ public class PlayerItemController : MonoBehaviour
     {
         if(arrow != null)
         {
+            anim.SetTrigger("Shoot");
             arrow.transform.SetParent(null);
             arrow.GetComponent<Projectile>().Fire();
             arrow.GetComponent<Rigidbody>().velocity = arrow.transform.forward * database.GetItem[isRightAim ? rightHeldItem : leftHeldItem].attackSpeed;

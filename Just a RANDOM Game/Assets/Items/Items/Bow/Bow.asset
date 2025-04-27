@@ -17,7 +17,7 @@ MonoBehaviour:
   itemDescription: A compact, nimble bow. Quick to draw but lacks the punch of heavier
     bows.
   icon: {fileID: 21300000, guid: 5fafac901e533904f91f95e1a7502451, type: 3}
-  model: {fileID: 5863745638388628282, guid: 02a0afde967a2084aa840f4af2a75709, type: 3}
+  model: {fileID: 3388432242746078444, guid: 149e054c8e6ebe643bdf16fd75c37906, type: 3}
   inventoryType: 0
   itemType: 2
   damage: 30

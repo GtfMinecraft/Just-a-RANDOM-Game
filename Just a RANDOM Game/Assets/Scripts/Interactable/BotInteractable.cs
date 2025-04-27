@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class BotInteractable : Interactable
 {
-    private float interactTime = 0.05f; // *** bot interface time has to be in sync with anim
+    public float botMaxDistance = 5;
+
+    private float interactTime = 0f; // *** bot interface time has to be in sync with anim
+
+    private void Update()
+    {
+        if (InterfaceHandler.instance.currentInterface == Interfaces.Bot && Vector3.Distance(PlayerController.instance.transform.position, transform.position) > botMaxDistance)
+        {
+            InterfaceHandler.instance.CloseAllInterface();
+        }
+    }
 
     public override void Interact()
     {
