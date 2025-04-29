@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EscController : MonoBehaviour
 {
     public static EscController instance;
+
+    public Image[] resumeButton;
 
     private bool exited = false;
 
@@ -25,6 +28,10 @@ public class EscController : MonoBehaviour
     void Start()
     {
         GetComponent<Canvas>().enabled = false;
+        foreach(Image image in resumeButton)
+        {
+            image.alphaHitTestMinimumThreshold = 0.1f;
+        }
     }
 
     public void Resume()
