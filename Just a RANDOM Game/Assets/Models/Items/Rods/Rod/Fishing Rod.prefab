@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4244181523797943832}
   - component: {fileID: 8772468599469289478}
   - component: {fileID: 3764836203739843154}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 3852311823815186610}
   - component: {fileID: 5940269131854006596}
   - component: {fileID: 6528909338681469018}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1533408833742336129}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishing rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 8431456453013390695}
   - component: {fileID: 7191770906019846228}
   - component: {fileID: 7647309916936153153}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Fishing Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 5690245089743474011}
   - component: {fileID: 6392041478242135855}
   - component: {fileID: 8160208005719433653}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -583,7 +583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6701253104270866057}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,7 +649,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6179044724498424578}
   - component: {fileID: 687804757222199062}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3850790198455237460}
   - component: {fileID: 8512182221598080069}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -787,7 +787,7 @@ GameObject:
   - component: {fileID: 5714702051267134907}
   - component: {fileID: 3155607171024570235}
   - component: {fileID: 8137046892307021776}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -869,7 +869,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7436775088764275743}
   - component: {fileID: 8059079950312836652}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
