@@ -1,0 +1,344 @@
+fileFormatVersion: 2
+guid: d4e7cf48c4e433c4199edcee95e85f0b
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Beam 1.001
+    second: {fileID: 2100000, guid: 10d6445d644cbcf499e2d25254b7e7a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Beam 2.001
+    second: {fileID: 2100000, guid: f9ab2b48a1c17f6439490fa4059edd55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bed base.002
+    second: {fileID: 2100000, guid: 8b6f588b9b544f042868517aa99e743e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bed board.001
+    second: {fileID: 2100000, guid: 44c57cd80102ece4a821be531781ffb5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book Shelf.001
+    second: {fileID: 2100000, guid: 65462daf5fc22e04c95ceb1c187bcc47, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover A.001
+    second: {fileID: 2100000, guid: 2329e909b8ad16644a6f9595793da4eb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover B.001
+    second: {fileID: 2100000, guid: d1ae5b63cfd746349a65403c40f4f551, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover C.001
+    second: {fileID: 2100000, guid: 2e06eb4af79702f42b29ae6b6a3bd7f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover D.001
+    second: {fileID: 2100000, guid: 3228dc581a643f54e83f77b8ad01af1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover E.001
+    second: {fileID: 2100000, guid: 67b564107bd07c24fbb8f4028cc3c196, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover F.001
+    second: {fileID: 2100000, guid: 2fa32ea7b9eb57b4193ce3f5a58714aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover G.001
+    second: {fileID: 2100000, guid: 8fddad58a9b9d89489b280f9e64e5c96, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover H.001
+    second: {fileID: 2100000, guid: 1899505177652604bb0dc48e8dfa41db, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover I.001
+    second: {fileID: 2100000, guid: f3c382c1f4c777d498c2bf5f4b231a2d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover J.001
+    second: {fileID: 2100000, guid: e7b07c75b8fc12f4bade0e1dd115a805, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cabinet Base.001
+    second: {fileID: 2100000, guid: f03c9eff7c3650440b02b52e5d00d99f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Celling.001
+    second: {fileID: 2100000, guid: 245f43d4b0bd8824d8119e28a8d04d7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chimney.001
+    second: {fileID: 2100000, guid: c0d138d6b2a348e4eb1d6e705e541897, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door.001
+    second: {fileID: 2100000, guid: 59a15650d9db5cc4fb814977e8bd6116, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Drawer handle .001
+    second: {fileID: 2100000, guid: 253e75b12d6e56e4eb8871568d5766aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Drawer.001
+    second: {fileID: 2100000, guid: 8dd54f4742ddbc648be02cc95163e2d8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor 1.001
+    second: {fileID: 2100000, guid: 541827686b31d394e99e42b458f59653, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor 2.001
+    second: {fileID: 2100000, guid: c5bf3896f263cc54085ee1e6ed319b75, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Front & Back Wall.001
+    second: {fileID: 2100000, guid: 27e46f1aaa9c42d4fb7d281bb776bd56, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gate.001
+    second: {fileID: 2100000, guid: e1614f165c05a994d9ad8a1f2d460bab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ground.001
+    second: {fileID: 2100000, guid: 2fc46ef33246dd94ca95357da48736b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Handle.001
+    second: {fileID: 2100000, guid: 2460064d6613a9e4a8689759080406e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mattress.001
+    second: {fileID: 2100000, guid: 699750be4abf34d4eab7f65e4aee6e94, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Panel 1.001
+    second: {fileID: 2100000, guid: 020134de20ecf004a82188d534c667df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Panel 2.001
+    second: {fileID: 2100000, guid: e1ae20474be110b458a9b1cfd9991e1b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Paper.001
+    second: {fileID: 2100000, guid: 6128bfd05fba4114aa375b98f3db7468, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pillar 1.002
+    second: {fileID: 2100000, guid: e1326f92f5b05e94c8d0ac334fb28005, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pillar 2.001
+    second: {fileID: 2100000, guid: 345e10cb6088a4940a960d083f7d4cb8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pillow.001
+    second: {fileID: 2100000, guid: e18babfa430e1ea4b9e5360a2c069a51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Qulit.001
+    second: {fileID: 2100000, guid: 4606d69921aff22428c0729a8dd4acbf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Roof Beam.001
+    second: {fileID: 2100000, guid: 9837d0778497e074cb9b703d530238db, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Roof Middle Beam.001
+    second: {fileID: 2100000, guid: 288eeb17b024abe40bfd23778c3d7de3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Roof.001
+    second: {fileID: 2100000, guid: 99af0cbac68152b498136fdc2aa02695, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Side Wall 1.001
+    second: {fileID: 2100000, guid: e4571dc130171034285fafb867e41df6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Side Wall 2.001
+    second: {fileID: 2100000, guid: 04e1a7a782ea02a4195334a437b1e624, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Top.001
+    second: {fileID: 2100000, guid: 6c2eac5d7cbae7747b15d84d947a1bf8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Weapon Rack.001
+    second: {fileID: 2100000, guid: 22676604f5c7449419215842288dff5f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window Frame 1.001
+    second: {fileID: 2100000, guid: 5213caf2551117443b6e77a3f32c8927, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window Frame 2.001
+    second: {fileID: 2100000, guid: d17b013f789c4e448b3a1496c3f0a12f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window Frame 3.001
+    second: {fileID: 2100000, guid: f707b2e3395e4a34abd6d91d6e4a30cc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window Frame 4.001
+    second: {fileID: 2100000, guid: 6618b65940e328b40a0b95d3a035a273, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window Frame 5.001
+    second: {fileID: 2100000, guid: 367dba650d09f2a4e810da6dabbbf341, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
