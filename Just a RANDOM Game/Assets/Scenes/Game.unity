@@ -54702,6 +54702,91 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 809085336}
   m_CullTransparentMesh: 1
+--- !u!1001 &820013612
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6835198113007481151, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 302.1634
+      objectReference: {fileID: 0}
+    - target: {fileID: -5205176855096788282, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 315.4364
+      objectReference: {fileID: 0}
+    - target: {fileID: -4699073531199927196, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 316.1175
+      objectReference: {fileID: 0}
+    - target: {fileID: -830481376793521536, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 298.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_Name
+      value: Gates
+      objectReference: {fileID: 0}
+    - target: {fileID: 1084611403132142580, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 298.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3288998918688865630, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 298.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318675904858913567, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 315.4364
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a19be0f7c3db04c408b84a793f463425, type: 3}
 --- !u!1 &833185848
 GameObject:
   m_ObjectHideFlags: 0
@@ -100357,6 +100442,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentChunk: 0
+  sceneNames:
+  - LoggingChunk
+  - MiningChunk
+  - FishingChunk
+  - FarmingChunk
+  - SpibiesLair
+  - SnowField
 --- !u!4 &1728160322
 Transform:
   m_ObjectHideFlags: 0
@@ -108757,3 +108849,4 @@ SceneRoots:
   - {fileID: 1728160322}
   - {fileID: 431401139}
   - {fileID: 959060355}
+  - {fileID: 820013612}

@@ -16,7 +16,12 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 954730b713e921a469d8a7794c39fa49
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: e8e6c238245fcfb478c5e3e4de7c642b
+    m_Address: SpibiesLair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37ebd9a4d17004243938420d0bfa3f31, type: 2}
   m_SchemaSet:

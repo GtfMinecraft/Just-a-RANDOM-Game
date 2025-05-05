@@ -16,7 +16,12 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 44fb39fb369c4634c95ff33a8b24c48d
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: e6dc8d66362a545409dab10d3d3b5a33
+    m_Address: SnowField
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37ebd9a4d17004243938420d0bfa3f31, type: 2}
   m_SchemaSet:

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 public class ChunkLoadingController : MonoBehaviour, IDataPersistence
 {
@@ -9,6 +11,15 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
     public bool[] unlockedChunks { get; private set; } = new bool[6] { true, false, false, false, false, false };
     public ChunkTypes currentChunk = ChunkTypes.Logging;
     public bool[] loadedChunks { get; private set; } = new bool[6];
+
+    public string[] sceneNames = {
+        "LoggingChunk",
+        "MiningChunk",
+        "FishingChunk",
+        "FarmingChunk",
+        "SpibiesLair",
+        "SnowField"
+    };
 
     private Vector3 spawnPos;
     private Quaternion spawnRot;
@@ -79,13 +90,13 @@ public class ChunkLoadingController : MonoBehaviour, IDataPersistence
             if (chunks[i] && !loadedChunks[i])
             {
                 loadedChunks[i] = true;
-                //load the chunk
+                Addressables.LoadSceneAsync(sceneNames[i], LoadSceneMode.Additive);
                 ItemDropHandler.instance.LoadChunk((ChunkTypes)i);
             }
             else if (!chunks[i] && loadedChunks[i])
             {
                 loadedChunks[i] = false;
-                //unload the chunk
+                SceneManager.UnloadSceneAsync(sceneNames[i]);
                 ItemDropHandler.instance.UnloadChunk((ChunkTypes)i);
             }
         }

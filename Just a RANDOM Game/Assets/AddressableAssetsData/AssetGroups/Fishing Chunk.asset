@@ -16,7 +16,12 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: c17e76c712ef2f14691268035de67e1a
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 53c71105e9b38e847b46cc29b51e5448
+    m_Address: FishingChunk
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37ebd9a4d17004243938420d0bfa3f31, type: 2}
   m_SchemaSet:
